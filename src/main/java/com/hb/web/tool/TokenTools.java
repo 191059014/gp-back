@@ -24,7 +24,7 @@ public class TokenTools {
     /**
      * token缓存的过期时间
      */
-    private static final Long TOKEN_EXPIRE_TIME = 24 * 60 * 60L;
+    private static final Long TOKEN_EXPIRE_TIME = 30 * 24 * 60 * 60L;
 
     /**
      * ########## 生成Token ##########
