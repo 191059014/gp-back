@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hb.web.mapper.OfflinePayCheckMapper">
+    <resultMap id="BaseResultMap" type="com.hb.web.model.OfflinePayChekDO">
+        <id column="checkId" property="checkId" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <result column="happenMoney" property="happenMoney" jdbcType="DECIMAL"/>
+        <result column="payChannel" property="payChannel" jdbcType="CHAR"/>
+        <result column="checkStatus" property="checkStatus" jdbcType="CHAR"/>
+        <result column="payStatus" property="payStatus" jdbcType="CHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="systemRemark" property="systemRemark" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="createUserId" property="createUserId" jdbcType="INTEGER"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="updateUserId" property="updateUserId" jdbcType="INTEGER"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="CHAR"/>
+        <result column="parentId" property="parentId" jdbcType="CHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    checkId, userId, happenMoney, payChannel, checkStatus, payStatus, remark, systemRemark, 
+    createTime, createUserId, updateTime, updateUserId, recordStatus, parentId
+  </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_offline_pay_check
+        where checkId = #{checkId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update t_offline_pay_check set recordStatus='0'
+    where checkId = #{checkId,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.hb.web.model.OfflinePayChekDO">
+        insert into t_offline_pay_check
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="happenMoney != null">
+                happenMoney,
+            </if>
+            <if test="payChannel != null">
+                payChannel,
+            </if>
+            <if test="checkStatus != null">
+                checkStatus,
+            </if>
+            <if test="payStatus != null">
+                payStatus,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="systemRemark != null">
+                systemRemark,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="createUserId != null">
+                createUserId,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="updateUserId != null">
+                updateUserId,
+            </if>
+            <if test="recordStatus != null">
+                recordStatus,
+            </if>
+            <if test="parentId != null">
+                parentId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="happenMoney != null">
+                #{happenMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="payChannel != null">
+                #{payChannel,jdbcType=CHAR},
+            </if>
+            <if test="checkStatus != null">
+                #{checkStatus,jdbcType=CHAR},
+            </if>
+            <if test="payStatus != null">
+                #{payStatus,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="systemRemark != null">
+                #{systemRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserId != null">
+                #{updateUserId,jdbcType=INTEGER},
+            </if>
+            <if test="recordStatus != null">
+                #{recordStatus,jdbcType=CHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.OfflinePayChekDO">
+        update t_offline_pay_check
+        <set>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="happenMoney != null">
+                happenMoney = #{happenMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="payChannel != null">
+                payChannel = #{payChannel,jdbcType=CHAR},
+            </if>
+            <if test="checkStatus != null">
+                checkStatus = #{checkStatus,jdbcType=CHAR},
+            </if>
+            <if test="payStatus != null">
+                payStatus = #{payStatus,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="systemRemark != null">
+                systemRemark = #{systemRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                createUserId = #{createUserId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserId != null">
+                updateUserId = #{updateUserId,jdbcType=INTEGER},
+            </if>
+            <if test="recordStatus != null">
+                recordStatus = #{recordStatus,jdbcType=CHAR},
+            </if>
+            <if test="parentId != null">
+                parentId = #{parentId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where checkId = #{checkId,jdbcType=INTEGER}
+    </update>
+
+    <select id="findList" resultType="com.hb.web.model.OfflinePayChekDO">
+        select * from t_offline_pay_check where 1=1
+        <include refid="selectByConditionSql"/>
+        order by createtime desc
+        <if test="pageSize != null and pageSize != 0">
+            limit #{startRow},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(1) from t_offline_pay_check where 1=1
+        <include refid="selectByConditionSql"/>
+    </select>
+
+    <select id="findOne" resultType="com.hb.web.model.OfflinePayChekDO">
+        select * from t_offline_pay_check where 1=1
+        <include refid="selectByConditionSql"/>
+    </select>
+
+    <sql id="selectByConditionSql">
+        <if test="offlinePayChekDO.checkId != null and offlinePayChekDO.checkId != ''">
+            and checkId=#{offlinePayChekDO.checkId}
+        </if>
+        <if test="offlinePayChekDO.payStatus != null and offlinePayChekDO.payStatus != ''">
+            and payStatus=#{offlinePayChekDO.payStatus}
+        </if>
+        <if test="offlinePayChekDO.checkStatus != null and offlinePayChekDO.checkStatus != ''">
+            and checkStatus=#{offlinePayChekDO.checkStatus}
+        </if>
+        <if test="offlinePayChekDO.payChannel != null and offlinePayChekDO.payChannel != ''">
+            and payChannel=#{offlinePayChekDO.payChannel}
+        </if>
+        and recordStatus='1'
+    </sql>
+
+</mapper>

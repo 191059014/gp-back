@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+            location="C:\Users\huangbiao\.m2\repository\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar"/>
+    <context id="contextId">
+        <!-- 是否生成注释 -->
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!-- 数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&amp;useInformationSchema=true"
+                        userId="root" password="root3306">
+        </jdbcConnection>
+
+        <!-- 生成的包名和工程名 -->
+        <javaModelGenerator targetPackage="com.hb.web.mybatis_generate"
+                            targetProject="src/main/java"/>
+        <!-- xml映射文件   -->
+        <sqlMapGenerator targetPackage="com.hb.web.mybatis_generate"
+                         targetProject="src/main/java"/>
+        <!--  mapper接口    -->
+        <javaClientGenerator targetPackage="com.hb.web.mybatis_generate"
+                             targetProject="src/main/java" type="XMLMAPPER"/>
+
+        <!-- 数据库表 以及是否生成example-->
+        <table tableName="t_user" domainObjectName="user"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <!-- 设置别名 -->
+            <columnOverride column="userId" property="userId"/>
+            <columnOverride column="userName" property="userName"/>
+            <columnOverride column="password" property="password"/>
+            <columnOverride column="bankName" property="bankName"/>
+            <columnOverride column="bankNo" property="bankNo"/>
+            <columnOverride column="idCardNo" property="idCardNo"/>
+            <columnOverride column="realAuthStatus" property="realAuthStatus"/>
+            <columnOverride column="mobile" property="mobile"/>
+            <columnOverride column="inviterMobile" property="inviterMobile"/>
+            <columnOverride column="riskLevel" property="riskLevel"/>
+            <columnOverride column="riskScore" property="riskScore"/>
+            <columnOverride column="createTime" property="createTime"/>
+            <columnOverride column="createUserId" property="createUserId"/>
+            <columnOverride column="updateTime" property="updateTime"/>
+            <columnOverride column="updateUserId" property="updateUserId"/>
+            <columnOverride column="recordStatus" property="recordStatus"/>
+            <columnOverride column="parentId" property="parentId"/>
+        </table>
+    </context>
+</generatorConfiguration>
