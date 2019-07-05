@@ -143,12 +143,17 @@
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
             <url>http://192.168.17.128:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository >
-    </distributionManagement >
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
 
         <plugins>
+            <!--spring-boot-maven插件-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <!--mybatis-generator插件-->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
