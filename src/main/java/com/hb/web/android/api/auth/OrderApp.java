@@ -11,6 +11,7 @@ import com.hb.web.util.CloneUtils;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.OrderRequestVO;
 import com.hb.web.vo.appvo.request.QueryOrderRequestVO;
+import com.hb.web.vo.appvo.response.OrderQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -60,13 +61,15 @@ public class OrderApp extends BaseApp {
 
     @ApiOperation(value = "查询订单")
     @PostMapping("/queryOrder")
-    public AppResultModel<List<OrderDO>> queryOrder(@RequestBody QueryOrderRequestVO requestVO) {
+    public AppResultModel<OrderQueryResponseVO> queryOrder(@RequestBody QueryOrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("查询订单，入参：{}"), requestVO);
+        OrderQueryResponseVO responseVO = new OrderQueryResponseVO();
         OrderDO orderDO = new OrderDO();
         orderDO.setOrderStatus(requestVO.getOrderStatus());
         List<OrderDO> list = iOrderService.findListPages(orderDO, requestVO.getStartRow(), requestVO.getPageNum());
+        responseVO.setOrderList(list);
         LOGGER.info(LogUtils.appLog("查询订单，返回结果：{}"), list);
-        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, list);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);
     }
 
 }
