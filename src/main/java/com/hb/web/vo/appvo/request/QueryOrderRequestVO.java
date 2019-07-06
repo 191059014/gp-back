@@ -19,6 +19,14 @@ public class QueryOrderRequestVO implements Serializable {
      * 订单状态
      */
     private String orderStatus;
+    /**
+     * 开始行数
+     */
+    private Integer startRow;
+    /**
+     * 每页条数
+     */
+    private Integer pageNum;
 
     public String getOrderStatus() {
         return orderStatus;
@@ -28,10 +36,28 @@ public class QueryOrderRequestVO implements Serializable {
         this.orderStatus = orderStatus;
     }
 
+    public Integer getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(Integer startRow) {
+        this.startRow = startRow;
+    }
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
     @Override
     public String toString() {
         return "QueryOrderRequestVO{" +
                 "orderStatus='" + orderStatus + '\'' +
+                ", startRow=" + startRow +
+                ", pageNum=" + pageNum +
                 '}';
     }
 }

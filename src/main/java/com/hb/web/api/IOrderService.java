@@ -25,6 +25,8 @@ public interface IOrderService {
 
     List<OrderDO> findList(OrderDO orderDO, Integer pageNum, Integer pageSize);
 
+    List<OrderDO> findListPages(OrderDO orderDO, Integer startRow, Integer pageSize);
+
     Integer findCount(OrderDO orderDO);
 
     List<Map<String, Object>> getOrderStatusList();

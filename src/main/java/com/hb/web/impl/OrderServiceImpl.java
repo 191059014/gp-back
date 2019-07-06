@@ -53,6 +53,11 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
+    public List<OrderDO> findListPages(OrderDO orderDO, Integer startRow, Integer pageSize) {
+        return orderMapper.findList(orderDO, startRow, pageSize);
+    }
+
+    @Override
     public Integer findCount(OrderDO orderDO) {
         return orderMapper.findCount(orderDO);
     }

@@ -2,7 +2,6 @@ package com.hb.web.android.api.auth;
 
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IOrderService;
-import com.hb.web.api.IStockService;
 import com.hb.web.constant.enumutil.OrderStatusEnum;
 import com.hb.web.model.AppResponseCodeEnum;
 import com.hb.web.model.AppResultModel;
@@ -10,7 +9,6 @@ import com.hb.web.model.OrderDO;
 import com.hb.web.model.UserDO;
 import com.hb.web.util.CloneUtils;
 import com.hb.web.util.LogUtils;
-import com.hb.web.vo.StockModel;
 import com.hb.web.vo.appvo.request.OrderRequestVO;
 import com.hb.web.vo.appvo.request.QueryOrderRequestVO;
 import io.swagger.annotations.Api;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * ========== 订单 ==========
@@ -63,11 +60,11 @@ public class OrderApp extends BaseApp {
 
     @ApiOperation(value = "查询订单")
     @PostMapping("/queryOrder")
-    public AppResultModel<List<OrderDO>> queryOrder(@RequestBody QueryOrderRequestVO queryOrderRequestVO) {
-        LOGGER.info(LogUtils.appLog("查询订单，入参：{}"), queryOrderRequestVO);
+    public AppResultModel<List<OrderDO>> queryOrder(@RequestBody QueryOrderRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("查询订单，入参：{}"), requestVO);
         OrderDO orderDO = new OrderDO();
-        orderDO.setOrderStatus(queryOrderRequestVO.getOrderStatus());
-        List<OrderDO> list = iOrderService.findList(orderDO, null, null);
+        orderDO.setOrderStatus(requestVO.getOrderStatus());
+        List<OrderDO> list = iOrderService.findListPages(orderDO, requestVO.getStartRow(), requestVO.getPageNum());
         LOGGER.info(LogUtils.appLog("查询订单，返回结果：{}"), list);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, list);
     }
