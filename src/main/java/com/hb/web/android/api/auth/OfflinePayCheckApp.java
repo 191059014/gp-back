@@ -6,6 +6,7 @@ import com.hb.web.model.AppResultModel;
 import com.hb.web.model.OfflinePayChekDO;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.QueryOfflinePayCheckRequestVO;
+import com.hb.web.vo.appvo.response.OfflinePayQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -39,16 +40,18 @@ public class OfflinePayCheckApp {
     private IOfflinePayService iOfflinePayService;
 
     @ApiOperation(value = "查询线下支付审核信息")
-    @PostMapping("/queryOrder")
-    public AppResultModel<List<OfflinePayChekDO>> queryOfflinePayCheck(@RequestBody QueryOfflinePayCheckRequestVO queryOfflinePayCheckRequestVO) {
+    @PostMapping("/queryOfflinePayCheck")
+    public AppResultModel<OfflinePayQueryResponseVO> queryOfflinePayCheck(@RequestBody QueryOfflinePayCheckRequestVO queryOfflinePayCheckRequestVO) {
         LOGGER.info(LogUtils.appLog("查询线下支付审核信息，入参：{}"), queryOfflinePayCheckRequestVO);
+        OfflinePayQueryResponseVO responseVO = new OfflinePayQueryResponseVO();
         OfflinePayChekDO query = new OfflinePayChekDO();
         query.setCheckStatus(queryOfflinePayCheckRequestVO.getCheckStatus());
         query.setPayStatus(queryOfflinePayCheckRequestVO.getPayStatus());
         query.setPayChannel(queryOfflinePayCheckRequestVO.getPayChannel());
         List<OfflinePayChekDO> list = iOfflinePayService.findList(query, null, null);
+        responseVO.setOfflinePayList(list);
         LOGGER.info(LogUtils.appLog("查询线下支付审核信息，返回结果：{}"), list);
-        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, list);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);
     }
 
 }
