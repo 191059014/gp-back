@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 echo "Stopping SpringBoot Application"
 pid=`ps -ef | grep gp-back.jar | grep -v grep | awk '{print $2}'`
 if [[ -n "$pid" ]]
