@@ -33,7 +33,7 @@ public class OrderQueryResponseVO implements Serializable {
     @Override
     public String toString() {
         return "OrderQueryResponseVO{" +
-                "orderList=" + orderList +
+                "orderList=" + String.valueOf(orderList) +
                 '}';
     }
 }
