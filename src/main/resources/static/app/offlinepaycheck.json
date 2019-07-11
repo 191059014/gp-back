@@ -1,0 +1,140 @@
+{
+  "code": 200,
+  "message": "成功",
+  "data": {
+    "offlinePayList": [
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 1,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 2,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 3,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 4,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 5,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 6,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 7,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 8,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 9,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 10,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      },
+      {
+        "createTime": "2019-06-24 22:43:09",
+        "updateTime": "2019-06-24 22:43:09",
+        "recordStatus": "1",
+        "checkId": 11,
+        "userId": "U1561184974125",
+        "happenMoney": 120,
+        "payChannel": "1",
+        "checkStatus": "1",
+        "payStatus": "0",
+        "systemRemark": "信息都是正确的"
+      }
+    ]
+  }
+}

@@ -41,14 +41,14 @@ public class OfflinePayCheckApp {
 
     @ApiOperation(value = "查询线下支付审核信息")
     @PostMapping("/queryOfflinePayCheck")
-    public AppResultModel<OfflinePayQueryResponseVO> queryOfflinePayCheck(@RequestBody QueryOfflinePayCheckRequestVO queryOfflinePayCheckRequestVO) {
-        LOGGER.info(LogUtils.appLog("查询线下支付审核信息，入参：{}"), queryOfflinePayCheckRequestVO);
+    public AppResultModel<OfflinePayQueryResponseVO> queryOfflinePayCheck(@RequestBody QueryOfflinePayCheckRequestVO queryCondition) {
+        LOGGER.info(LogUtils.appLog("查询线下支付审核信息，入参：{}"), queryCondition);
         OfflinePayQueryResponseVO responseVO = new OfflinePayQueryResponseVO();
         OfflinePayChekDO query = new OfflinePayChekDO();
-        query.setCheckStatus(queryOfflinePayCheckRequestVO.getCheckStatus());
-        query.setPayStatus(queryOfflinePayCheckRequestVO.getPayStatus());
-        query.setPayChannel(queryOfflinePayCheckRequestVO.getPayChannel());
-        List<OfflinePayChekDO> list = iOfflinePayService.findList(query, null, null);
+        query.setCheckStatus(queryCondition.getCheckStatus());
+        query.setPayStatus(queryCondition.getPayStatus());
+        query.setPayChannel(queryCondition.getPayChannel());
+        List<OfflinePayChekDO> list = iOfflinePayService.findAppList(query, queryCondition.getStartRow(), queryCondition.getPageSize());
         responseVO.setOfflinePayList(list);
         LOGGER.info(LogUtils.appLog("查询线下支付审核信息，返回结果：{}"), list);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);

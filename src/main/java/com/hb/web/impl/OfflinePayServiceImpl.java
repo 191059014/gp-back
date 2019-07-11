@@ -70,6 +70,11 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
     }
 
     @Override
+    public List<OfflinePayChekDO> findAppList(OfflinePayChekDO offlinePayChekDO, Integer startRow, Integer pageSize) {
+        return offlinePayCheckMapper.findList(offlinePayChekDO, startRow, pageSize);
+    }
+
+    @Override
     public Integer findCount(OfflinePayChekDO offlinePayChekDO) {
         return offlinePayCheckMapper.findCount(offlinePayChekDO);
     }

@@ -39,6 +39,16 @@ public interface IOfflinePayService {
     List<OfflinePayChekDO> findList(OfflinePayChekDO offlinePayChekDO, Integer pageNum, Integer pageSize);
 
     /**
+     * ########## 分页查询线下支付列表 ##########
+     *
+     * @param startRow         开始页数
+     * @param pageSize         每页条数
+     * @param offlinePayChekDO 线下支付审核实体
+     * @return 分页结果
+     */
+    List<OfflinePayChekDO> findAppList(OfflinePayChekDO offlinePayChekDO, Integer startRow, Integer pageSize);
+
+    /**
      * ########## 查询线下支付列表总条数 ##########
      *
      * @param offlinePayChekDO 线下支付审核实体
@@ -83,6 +93,6 @@ public interface IOfflinePayService {
      *
      * @return 支付状态集合
      */
-    List<Map<String,Object>> getOfflinePayStatusCombobox();
+    List<Map<String, Object>> getOfflinePayStatusCombobox();
 
 }

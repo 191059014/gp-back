@@ -31,6 +31,16 @@ public class QueryOfflinePayCheckRequestVO implements Serializable {
      */
     private String payStatus;
 
+    /**
+     * 开始行数
+     */
+    private Integer startRow;
+
+    /**
+     * 每页条数
+     */
+    private Integer pageSize;
+
     public String getPayChannel() {
         return payChannel;
     }
@@ -55,12 +65,30 @@ public class QueryOfflinePayCheckRequestVO implements Serializable {
         this.payStatus = payStatus;
     }
 
+    public Integer getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(Integer startRow) {
+        this.startRow = startRow;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
     @Override
     public String toString() {
         return "QueryOfflinePayCheckRequestVO{" +
                 "payChannel='" + payChannel + '\'' +
                 ", checkStatus='" + checkStatus + '\'' +
                 ", payStatus='" + payStatus + '\'' +
+                ", startRow=" + startRow +
+                ", pageSize=" + pageSize +
                 '}';
     }
 }
