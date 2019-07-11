@@ -25,7 +25,7 @@ public class JsonFileParseTools {
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonFileParseTools.class);
 
     public static void main(String[] args) {
-        String jsonString = readJsonFile2String("static/app/app.json");
+        String jsonString = readJsonFile2String("static/app/test.json");
         LOGGER.info(jsonString);
     }
 
