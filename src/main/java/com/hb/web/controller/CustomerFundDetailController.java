@@ -1,16 +1,15 @@
 package com.hb.web.controller;
 
 import com.hb.web.api.ICustomerFundDetailService;
-import com.hb.web.model.ResponseEnum;
+import com.hb.web.common.ResponseEnum;
 import com.hb.web.model.CustomerFundDetailDO;
-import com.hb.web.model.ResponseData;
+import com.hb.web.common.ResponseData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * ========== 客户资金流水controller ==========

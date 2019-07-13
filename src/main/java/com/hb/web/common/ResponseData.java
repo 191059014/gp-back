@@ -1,4 +1,4 @@
-package com.hb.web.model;
+package com.hb.web.common;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
  * ========== 公共返回数据模型 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.model.ResponseData.java, v1.0
+ * @version com.hb.web.common.ResponseData.java, v1.0
  * @date 2019年06月05日 16时18分
  */
 public class ResponseData<T> implements Serializable {

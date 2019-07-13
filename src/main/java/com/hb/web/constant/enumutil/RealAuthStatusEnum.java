@@ -9,18 +9,18 @@ package com.hb.web.constant.enumutil;
  */
 public enum RealAuthStatusEnum {
 
-    NO_AUTH("0", "未实名认证"),
-    IS_AUTH("1", "已实名认证");
+    NO_AUTH(0, "未实名认证"),
+    IS_AUTH(1, "已实名认证");
 
-    private String value;
+    private Integer value;
     private String name;
 
-    RealAuthStatusEnum(String value, String name) {
+    RealAuthStatusEnum(Integer value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 

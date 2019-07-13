@@ -9,18 +9,18 @@ package com.hb.web.constant.enumutil;
  */
 public enum AgentLevelEnum {
 
-    FIRST("1", "一级代理商"),
-    SECOND("2", "二级代理商");
+    FIRST(1, "一级代理商"),
+    SECOND(2, "二级代理商");
 
-    private String value;
+    private Integer value;
     private String name;
 
-    AgentLevelEnum(String value, String name) {
+    AgentLevelEnum(Integer value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 

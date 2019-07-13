@@ -1,4 +1,4 @@
-package com.hb.web.model;
+package com.hb.web.common;
 
 import java.io.Serializable;
 

@@ -5,19 +5,19 @@
         <result column="agentId" property="agentId" jdbcType="VARCHAR"/>
         <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="agentLevel" property="agentLevel" jdbcType="CHAR"/>
+        <result column="agentLevel" property="agentLevel" jdbcType="INTEGER"/>
         <result column="bankName" property="bankName" jdbcType="VARCHAR"/>
         <result column="bankNo" property="bankNo" jdbcType="VARCHAR"/>
         <result column="idCardNo" property="idCardNo" jdbcType="VARCHAR"/>
-        <result column="realAuthStatus" property="realAuthStatus" jdbcType="CHAR"/>
+        <result column="realAuthStatus" property="realAuthStatus" jdbcType="INTEGER"/>
         <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
-        <result column="agentUnit" property="agentUnit" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="updateUserId" property="updateUserId" jdbcType="VARCHAR"/>
-        <result column="recordStatus" property="recordStatus" jdbcType="CHAR"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="INTEGER"/>
         <result column="parentId" property="parentId" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="INTEGER"/>
     </resultMap>
 
     <insert id="insertSelective" parameterType="com.hb.web.model.AgentDO">
@@ -51,9 +51,6 @@
             <if test="mobile != null">
                 mobile,
             </if>
-            <if test="agentUnit != null">
-                agentUnit,
-            </if>
             <if test="createTime != null">
                 createTime,
             </if>
@@ -72,6 +69,9 @@
             <if test="parentId != null">
                 parentId,
             </if>
+            <if test="unit != null">
+                unit,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             #{agentId,jdbcType=VARCHAR},
@@ -82,7 +82,7 @@
                 #{password,jdbcType=VARCHAR},
             </if>
             <if test="agentLevel != null">
-                #{agentLevel,jdbcType=CHAR},
+                #{agentLevel,jdbcType=INTEGER},
             </if>
             <if test="bankName != null">
                 #{bankName,jdbcType=VARCHAR},
@@ -94,13 +94,10 @@
                 #{idCardNo,jdbcType=VARCHAR},
             </if>
             <if test="realAuthStatus != null">
-                #{realAuthStatus,jdbcType=CHAR},
+                #{realAuthStatus,jdbcType=INTEGER},
             </if>
             <if test="mobile != null">
                 #{mobile,jdbcType=VARCHAR},
-            </if>
-            <if test="agentUnit != null">
-                #{agentUnit,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -115,10 +112,13 @@
                 #{updateUserId,jdbcType=VARCHAR},
             </if>
             <if test="recordStatus != null">
-                #{recordStatus,jdbcType=CHAR},
+                #{recordStatus,jdbcType=INTEGER},
             </if>
             <if test="parentId != null">
                 #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -150,9 +150,6 @@
             <if test="agentDO.mobile != null and agentDO.mobile !=''">
                 mobile=#{agentDO.mobile},
             </if>
-            <if test="agentDO.agentUnit != null and agentDO.agentUnit !=''">
-                agentUnit=#{agentDO.agentUnit},
-            </if>
             <if test="agentDO.createTime != null">
                 createTime=#{agentDO.createTime},
             </if>
@@ -170,6 +167,9 @@
             </if>
             <if test="agentDO.parentId != null and agentDO.parentId !=''">
                 parentId=#{agentDO.parentId},
+            </if>
+            <if test="agentDO.unit != null and agentDO.unit !=''">
+                unit=#{agentDO.unit},
             </if>
         </trim>
         where agentId=#{agentId}
@@ -226,9 +226,6 @@
         <if test="agentDO.mobile != null and agentDO.mobile !=''">
             <![CDATA[ and mobile = #{agentDO.mobile} ]]>
         </if>
-        <if test="agentDO.agentUnit != null and agentDO.agentUnit !=''">
-            <![CDATA[ and agentUnit = #{agentDO.agentUnit} ]]>
-        </if>
         <if test="agentDO.createTime != null">
             <![CDATA[ and createTime = #{agentDO.createTime} ]]>
         </if>
@@ -243,6 +240,9 @@
         </if>
         <if test="agentDO.parentId != null and agentDO.parentId !=''">
             <![CDATA[ and parentId = #{agentDO.parentId} ]]>
+        </if>
+        <if test="agentDO.unit != null and agentDO.unit !=''">
+            <![CDATA[ and unit = #{agentDO.unit} ]]>
         </if>
         and recordStatus = "1"
     </sql>

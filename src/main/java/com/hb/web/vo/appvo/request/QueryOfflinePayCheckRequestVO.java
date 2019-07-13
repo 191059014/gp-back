@@ -19,17 +19,17 @@ public class QueryOfflinePayCheckRequestVO implements Serializable {
     /**
      * 支付渠道
      */
-    private String payChannel;
+    private Integer payChannel;
 
     /**
      * 审核状态
      */
-    private String checkStatus;
+    private Integer checkStatus;
 
     /**
      * 支付状态
      */
-    private String payStatus;
+    private Integer payStatus;
 
     /**
      * 开始行数
@@ -41,27 +41,27 @@ public class QueryOfflinePayCheckRequestVO implements Serializable {
      */
     private Integer pageSize;
 
-    public String getPayChannel() {
+    public Integer getPayChannel() {
         return payChannel;
     }
 
-    public void setPayChannel(String payChannel) {
+    public void setPayChannel(Integer payChannel) {
         this.payChannel = payChannel;
     }
 
-    public String getCheckStatus() {
+    public Integer getCheckStatus() {
         return checkStatus;
     }
 
-    public void setCheckStatus(String checkStatus) {
+    public void setCheckStatus(Integer checkStatus) {
         this.checkStatus = checkStatus;
     }
 
-    public String getPayStatus() {
+    public Integer getPayStatus() {
         return payStatus;
     }
 
-    public void setPayStatus(String payStatus) {
+    public void setPayStatus(Integer payStatus) {
         this.payStatus = payStatus;
     }
 

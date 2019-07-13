@@ -1,6 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 import java.math.BigDecimal;
 
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
  * @date 2019年06月09日 10时32分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@SelfTableClass(value = "t_agent_fund_detail", comment = "代理商资金流水明细")
 public class AgentFundDeailDO extends BaseDO {
 
     private static final long serialVersionUID = -1052328982243050208L;
@@ -19,31 +22,37 @@ public class AgentFundDeailDO extends BaseDO {
     /**
      * 流水编号
      */
+    @SelfTableColumn(value = "detailId", id = true, comment = "流水编号")
     private Integer detailId;
 
     /**
      * 代理商编号
      */
+    @SelfTableColumn(value = "agentId", comment = "代理商编号")
     private String agentId;
 
     /**
      * 代理商名称
      */
+    @SelfTableColumn(value = "agentName", comment = "代理商名称")
     private String agentName;
 
     /**
      * 发生金额
      */
+    @SelfTableColumn(value = "money", length = 12, defaultValue = "0", comment = "发生金额")
     private BigDecimal money;
 
     /**
      * 资金类型
      */
-    private String type;
+    @SelfTableColumn(value = "type", length = 1, comment = "资金类型")
+    private Integer type;
 
     /**
      * 备注
      */
+    @SelfTableColumn(value = "remark", comment = "备注")
     private String remark;
 
     public Integer getDetailId() {
@@ -78,11 +87,11 @@ public class AgentFundDeailDO extends BaseDO {
         this.money = money;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

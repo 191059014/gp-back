@@ -12,7 +12,7 @@
         <result column="buyPriceTotal" property="buyPriceTotal" jdbcType="DECIMAL"/>
         <result column="sellPrice" property="sellPrice" jdbcType="DECIMAL"/>
         <result column="sellPriceTotal" property="sellPriceTotal" jdbcType="DECIMAL"/>
-        <result column="orderStatus" property="orderStatus" jdbcType="CHAR"/>
+        <result column="orderStatus" property="orderStatus" jdbcType="INTEGER"/>
         <result column="profit" property="profit" jdbcType="DECIMAL"/>
         <result column="profitRate" property="profitRate" jdbcType="DECIMAL"/>
         <result column="strategyOwnMoney" property="strategyOwnMoney" jdbcType="DECIMAL"/>
@@ -25,14 +25,15 @@
         <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="updateUserId" property="updateUserId" jdbcType="VARCHAR"/>
-        <result column="recordStatus" property="recordStatus" jdbcType="CHAR"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="INTEGER"/>
         <result column="parentId" property="parentId" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
     orderId, userId, userName, stockCode, stockName, buyNumber, buyPrice, buyPriceTotal, 
     sellPrice, sellPriceTotal, orderStatus, profit, profitRate, strategyOwnMoney, serviceMoney, 
     delayMoney, strategyMoney, stopEarnMoney, stopLossMoney, createTime, createUserId, 
-    updateTime, updateUserId, recordStatus, parentId
+    updateTime, updateUserId, recordStatus, parentId, unit
   </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -126,6 +127,9 @@
             <if test="parentId != null">
                 parentId,
             </if>
+            <if test="unit != null">
+                unit,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             #{orderId,jdbcType=VARCHAR},
@@ -157,7 +161,7 @@
                 #{sellPriceTotal,jdbcType=DECIMAL},
             </if>
             <if test="orderStatus != null">
-                #{orderStatus,jdbcType=CHAR},
+                #{orderStatus,jdbcType=INTEGER},
             </if>
             <if test="profit != null">
                 #{profit,jdbcType=DECIMAL},
@@ -196,10 +200,13 @@
                 #{updateUserId,jdbcType=VARCHAR},
             </if>
             <if test="recordStatus != null">
-                #{recordStatus,jdbcType=CHAR},
+                #{recordStatus,jdbcType=INTEGER},
             </if>
             <if test="parentId != null">
                 #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -235,7 +242,7 @@
                 sellPriceTotal = #{sellPriceTotal,jdbcType=DECIMAL},
             </if>
             <if test="orderStatus != null">
-                orderStatus = #{orderStatus,jdbcType=CHAR},
+                orderStatus = #{orderStatus,jdbcType=INTEGER},
             </if>
             <if test="profit != null">
                 profit = #{profit,jdbcType=DECIMAL},
@@ -274,10 +281,13 @@
                 updateUserId = #{updateUserId,jdbcType=VARCHAR},
             </if>
             <if test="recordStatus != null">
-                recordStatus = #{recordStatus,jdbcType=CHAR},
+                recordStatus = #{recordStatus,jdbcType=INTEGER},
             </if>
             <if test="parentId != null">
                 parentId = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=INTEGER},
             </if>
         </set>
         where orderId = #{orderId,jdbcType=VARCHAR}
@@ -300,6 +310,7 @@
     <select id="getHotStockSet" resultType="java.lang.String">
         <![CDATA[
 
+
         select tt.stockCode from
         (
           select @rownum:=@rownum+1 as rownum,t1.stockCode,t1.totalNum from
@@ -307,6 +318,7 @@
             (select @rownum:=0) t2
         )
         tt where tt.rownum<=#{number}
+
 
         ]]>
     </select>
@@ -323,6 +335,9 @@
         </if>
         <if test="orderDO.orderStatus != null and orderDO.orderStatus != ''">
             and orderStatus=#{orderDO.orderStatus}
+        </if>
+        <if test="orderDO.unit != null and orderDO.unit != ''">
+            and unit=#{orderDO.unit}
         </if>
         and recordStatus='1'
     </sql>

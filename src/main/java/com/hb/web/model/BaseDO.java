@@ -2,6 +2,7 @@ package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableColumn;
 import com.hb.web.util.DateUtils;
 
 import java.io.Serializable;
@@ -21,33 +22,45 @@ public class BaseDO implements Serializable {
      * 创建时间
      */
     @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
+    @SelfTableColumn(value = "createTime", defaultValue = "CURRENT_TIMESTAMP", comment = "创建时间")
     private Date createTime;
 
     /**
      * 创建人
      */
+    @SelfTableColumn(value = "createUserId", comment = "创建人")
     private String createUserId;
 
     /**
      * 更新时间
      */
     @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
+    @SelfTableColumn(value = "updateTime", defaultValue = "CURRENT_TIMESTAMP", comment = "更新时间")
     private Date updateTime;
 
     /**
      * 更新人
      */
+    @SelfTableColumn(value = "updateUserId", comment = "更新人")
     private String updateUserId;
 
     /**
      * 数据有效状态
      */
-    private String recordStatus;
+    @SelfTableColumn(value = "recordStatus", length = 1, defaultValue = "1", comment = "数据有效状态")
+    private Integer recordStatus;
 
     /**
      * 父级ID
      */
+    @SelfTableColumn(value = "parentId", comment = "父级ID")
     private String parentId;
+
+    /**
+     * 数据分区
+     */
+    @SelfTableColumn(value = "unit", length = 5, comment = "数据分区")
+    private Integer unit;
 
     public Date getCreateTime() {
         return createTime;
@@ -81,11 +94,11 @@ public class BaseDO implements Serializable {
         this.updateUserId = updateUserId;
     }
 
-    public String getRecordStatus() {
+    public Integer getRecordStatus() {
         return recordStatus;
     }
 
-    public void setRecordStatus(String recordStatus) {
+    public void setRecordStatus(Integer recordStatus) {
         this.recordStatus = recordStatus;
     }
 
@@ -97,6 +110,14 @@ public class BaseDO implements Serializable {
         this.parentId = parentId;
     }
 
+    public Integer getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Integer unit) {
+        this.unit = unit;
+    }
+
     @Override
     public String toString() {
         return "BaseDO{" +
@@ -106,6 +127,7 @@ public class BaseDO implements Serializable {
                 ", updateUserId='" + updateUserId + '\'' +
                 ", recordStatus='" + recordStatus + '\'' +
                 ", parentId='" + parentId + '\'' +
+                ", unit='" + unit + '\'' +
                 '}';
     }
 }

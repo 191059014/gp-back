@@ -1,6 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 /**
  * ========== 代理商 ==========
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @date 2019年06月16日 12时06分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@SelfTableClass(value = "t_agent", comment = "代理商")
 public class AgentDO extends BaseDO {
 
     private static final long serialVersionUID = 3960685371501045357L;
@@ -17,52 +20,56 @@ public class AgentDO extends BaseDO {
     /**
      * 代理商编号
      */
+    @SelfTableColumn(value = "agentId", id = true, comment = "代理商编号")
     private String agentId;
 
     /**
      * 代理商名称
      */
+    @SelfTableColumn(value = "agentName", comment = "代理商名称")
     private String agentName;
 
     /**
      * 密码
      */
+    @SelfTableColumn(value = "password", comment = "密码")
     private String password;
 
     /**
      * 代理商等级
      */
-    private String agentLevel;
+    @SelfTableColumn(value = "agentLevel", length = 1, comment = "代理商等级")
+    private Integer agentLevel;
 
     /**
      * 银行名称
      */
+    @SelfTableColumn(value = "bankName", comment = "银行名称")
     private String bankName;
 
     /**
      * 银行卡号
      */
+    @SelfTableColumn(value = "bankNo", length = 19, comment = "银行卡号")
     private String bankNo;
 
     /**
      * 身份证号
      */
+    @SelfTableColumn(value = "idCardNo", length = 18, comment = "身份证号")
     private String idCardNo;
 
     /**
      * 实名认证状态
      */
+    @SelfTableColumn(value = "realAuthStatus", length = 1, defaultValue = "0", comment = "实名认证状态")
     private String realAuthStatus;
 
     /**
      * 手机号
      */
+    @SelfTableColumn(value = "mobile", length = 11, comment = "手机号")
     private String mobile;
-
-    /**
-     * 代理商编制
-     */
-    private String agentUnit;
 
     public AgentDO() {
     }
@@ -95,11 +102,11 @@ public class AgentDO extends BaseDO {
         this.password = password;
     }
 
-    public String getAgentLevel() {
+    public Integer getAgentLevel() {
         return agentLevel;
     }
 
-    public void setAgentLevel(String agentLevel) {
+    public void setAgentLevel(Integer agentLevel) {
         this.agentLevel = agentLevel;
     }
 
@@ -143,14 +150,6 @@ public class AgentDO extends BaseDO {
         this.mobile = mobile;
     }
 
-    public String getAgentUnit() {
-        return agentUnit;
-    }
-
-    public void setAgentUnit(String agentUnit) {
-        this.agentUnit = agentUnit;
-    }
-
     @Override
     public String toString() {
         return "AgentDO{" +
@@ -163,7 +162,6 @@ public class AgentDO extends BaseDO {
                 ", idCardNo='" + idCardNo + '\'' +
                 ", realAuthStatus='" + realAuthStatus + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", agentUnit=" + agentUnit +
                 '}' + "," + super.toString();
     }
 }

@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface AgentFundMapper {
 
-    int insert(AgentFundDO record);
-
     int insertSelective(AgentFundDO record);
 
     List<AgentFundDO> findAgentFundList(@Param("agentFundDO") AgentFundDO agentFundDO, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);

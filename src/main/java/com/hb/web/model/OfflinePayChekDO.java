@@ -1,6 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 import java.math.BigDecimal;
 
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
  * @date 2019年06月09日 11时24分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@SelfTableClass(value = "t_offline_pay_check", comment = "线下支付审核")
 public class OfflinePayChekDO extends BaseDO {
 
     /**
@@ -20,43 +23,51 @@ public class OfflinePayChekDO extends BaseDO {
     private static final long serialVersionUID = -554520087138949757L;
 
     /**
-     * 编号
+     * 审核编号
      */
+    @SelfTableColumn(value = "checkId", id = true, comment = "审核编号")
     private Integer checkId;
 
     /**
      * 用户ID
      */
+    @SelfTableColumn(value = "userId", comment = "用户ID")
     private String userId;
 
     /**
      * 发生金额
      */
+    @SelfTableColumn(value = "happenMoney", length = 12, defaultValue = "0", comment = "发生金额")
     private BigDecimal happenMoney;
 
     /**
      * 支付渠道
      */
-    private String payChannel;
+    @SelfTableColumn(value = "payChannel", length = 1, comment = "支付渠道")
+    private Integer payChannel;
 
     /**
      * 审核状态
      */
-    private String checkStatus;
+    @SelfTableColumn(value = "checkStatus", length = 1, comment = "审核状态")
+    private Integer checkStatus;
 
     /**
      * 支付状态
      */
-    private String payStatus;
+    @SelfTableColumn(value = "payStatus", length = 1, comment = "支付状态")
+    private Integer payStatus;
 
     /**
      * 备注
      */
+    @SelfTableColumn(value = "remark", comment = "备注")
     private String remark;
 
     /**
      * 管理员备注
      */
+    @SelfTableColumn(value = "systemRemark", comment = "管理员备注")
     private String systemRemark;
 
     public OfflinePayChekDO() {
@@ -90,27 +101,27 @@ public class OfflinePayChekDO extends BaseDO {
         this.happenMoney = happenMoney;
     }
 
-    public String getPayChannel() {
+    public Integer getPayChannel() {
         return payChannel;
     }
 
-    public void setPayChannel(String payChannel) {
+    public void setPayChannel(Integer payChannel) {
         this.payChannel = payChannel;
     }
 
-    public String getCheckStatus() {
+    public Integer getCheckStatus() {
         return checkStatus;
     }
 
-    public void setCheckStatus(String checkStatus) {
+    public void setCheckStatus(Integer checkStatus) {
         this.checkStatus = checkStatus;
     }
 
-    public String getPayStatus() {
+    public Integer getPayStatus() {
         return payStatus;
     }
 
-    public void setPayStatus(String payStatus) {
+    public void setPayStatus(Integer payStatus) {
         this.payStatus = payStatus;
     }
 

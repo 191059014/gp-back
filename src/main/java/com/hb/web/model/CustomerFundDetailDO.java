@@ -1,6 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 import java.math.BigDecimal;
 
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
  * @date 2019年06月09日 10时58分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@SelfTableClass(value = "t_customer_fund_detail", comment = "客户资金流水")
 public class CustomerFundDetailDO extends BaseDO {
 
     private static final long serialVersionUID = -4338910585836548024L;
@@ -19,46 +22,55 @@ public class CustomerFundDetailDO extends BaseDO {
     /**
      * 流水编号
      */
+    @SelfTableColumn(value = "detailId", id = true, comment = "流水编号")
     private String detailId;
 
     /**
      * 客户编号
      */
+    @SelfTableColumn(value = "userId", comment = "客户编号")
     private String userId;
 
     /**
-     * 客户名
+     * 客户名称
      */
+    @SelfTableColumn(value = "userName", comment = "客户名称")
     private String userName;
 
     /**
      * 代理商编号
      */
+    @SelfTableColumn(value = "agentId", comment = "代理商编号")
     private String agentId;
 
     /**
      * 代理商名称
      */
+    @SelfTableColumn(value = "agentName", comment = "代理商名称")
     private String agentName;
 
     /**
      * 发生金额
      */
+    @SelfTableColumn(value = "happenMoney", length = 12, defaultValue = "0", comment = "发生金额")
     private BigDecimal happenMoney;
 
     /**
      * 发生后金额
      */
+    @SelfTableColumn(value = "afterHappenMoney", length = 12, defaultValue = "0", comment = "发生后金额")
     private BigDecimal afterHappenMoney;
 
     /**
      * 资金类型
      */
-    private String fundType;
+    @SelfTableColumn(value = "fundType", length = 1, comment = "资金类型")
+    private Integer fundType;
 
     /**
      * 备注
      */
+    @SelfTableColumn(value = "remark", comment = "备注")
     private String remark;
 
     public String getDetailId() {
@@ -117,11 +129,11 @@ public class CustomerFundDetailDO extends BaseDO {
         this.afterHappenMoney = afterHappenMoney;
     }
 
-    public String getFundType() {
+    public Integer getFundType() {
         return fundType;
     }
 
-    public void setFundType(String fundType) {
+    public void setFundType(Integer fundType) {
         this.fundType = fundType;
     }
 

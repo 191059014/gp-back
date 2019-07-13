@@ -58,6 +58,9 @@
             <if test="parentId != null">
                 parentId,
             </if>
+            <if test="unit != null">
+                unit,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             #{userId,jdbcType=VARCHAR},
@@ -77,7 +80,7 @@
                 #{idCardNo,jdbcType=VARCHAR},
             </if>
             <if test="realAuthStatus != null">
-                #{realAuthStatus,jdbcType=CHAR},
+                #{realAuthStatus,jdbcType=INTEGER},
             </if>
             <if test="mobile != null">
                 #{mobile,jdbcType=VARCHAR},
@@ -86,7 +89,7 @@
                 #{inviterMobile,jdbcType=VARCHAR},
             </if>
             <if test="riskLevel != null">
-                #{riskLevel,jdbcType=CHAR},
+                #{riskLevel,jdbcType=INTEGER},
             </if>
             <if test="riskScore != null">
                 #{riskScore,jdbcType=INTEGER},
@@ -104,10 +107,13 @@
                 #{updateUserId,jdbcType=VARCHAR},
             </if>
             <if test="recordStatus != null">
-                #{recordStatus,jdbcType=CHAR},
+                #{recordStatus,jdbcType=INTEGER},
             </if>
             <if test="parentId != null">
                 #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -242,6 +248,9 @@
         </if>
         <if test="userDO.parentId != null and userDO.parentId !=''">
             <![CDATA[ and parentId = #{userDO.parentId} ]]>
+        </if>
+        <if test="userDO.unit != null and userDO.unit !=''">
+            <![CDATA[ and unit = #{userDO.unit} ]]>
         </if>
         and recordStatus = "1"
     </sql>

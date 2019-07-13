@@ -71,8 +71,6 @@ public class AgentServiceImpl implements IAgentService {
         agentDO.setUpdateUserId(null);
         // 状态
         agentDO.setRecordStatus(GeneralConst.RECORD_STATUS_Y);
-        // 代理商编制
-        agentDO.setAgentUnit(agentUnit);
         return agentMapper.insertSelective(agentDO);
     }
 

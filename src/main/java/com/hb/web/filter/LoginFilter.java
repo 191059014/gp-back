@@ -2,9 +2,9 @@ package com.hb.web.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.hb.web.constant.GeneralConst;
-import com.hb.web.model.ResponseEnum;
+import com.hb.web.common.ResponseEnum;
 import com.hb.web.container.SpringUtil;
-import com.hb.web.model.ResponseData;
+import com.hb.web.common.ResponseData;
 import com.hb.web.tool.RedisTools;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

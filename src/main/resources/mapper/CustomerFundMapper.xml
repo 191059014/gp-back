@@ -18,8 +18,9 @@
         <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="updateUserId" property="updateUserId" jdbcType="VARCHAR"/>
-        <result column="recordStatus" property="recordStatus" jdbcType="CHAR"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="INTEGER"/>
         <result column="parentId" property="parentId" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -97,6 +98,9 @@
         <if test="customerFundDO.parentId != null and customerFundDO.parentId !=''">
             <![CDATA[ and parentId = #{customerFundDO.parentId} ]]>
         </if>
+        <if test="customerFundDO.unit != null and customerFundDO.unit !=''">
+            <![CDATA[ and unit = #{customerFundDO.unit} ]]>
+        </if>
         and recordStatus = "1"
     </sql>
 
@@ -161,6 +165,9 @@
             <if test="parentId != null">
                 parentId,
             </if>
+            <if test="unit != null">
+                unit,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -216,6 +223,9 @@
             </if>
             <if test="parentId != null">
                 #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -273,6 +283,9 @@
             </if>
             <if test="parentId != null">
                 parentId = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=INTEGER},
             </if>
         </set>
         where userId = #{userId,jdbcType=VARCHAR}

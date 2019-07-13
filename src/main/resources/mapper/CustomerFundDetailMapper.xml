@@ -9,14 +9,15 @@
         <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
         <result column="happenMoney" property="happenMoney" jdbcType="DECIMAL"/>
         <result column="afterHappenMoney" property="afterHappenMoney" jdbcType="DECIMAL"/>
-        <result column="fundType" property="fundType" jdbcType="CHAR"/>
+        <result column="fundType" property="fundType" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="updateUserId" property="updateUserId" jdbcType="VARCHAR"/>
-        <result column="recordStatus" property="recordStatus" jdbcType="CHAR"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="INTEGER"/>
         <result column="parentId" property="parentId" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -132,6 +133,9 @@
             <if test="parentId != null">
                 parentId,
             </if>
+            <if test="unit != null">
+                unit,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             #{detailId,jdbcType=VARCHAR},
@@ -154,7 +158,7 @@
                 #{afterHappenMoney,jdbcType=DECIMAL},
             </if>
             <if test="fundType != null">
-                #{fundType,jdbcType=CHAR},
+                #{fundType,jdbcType=INTEGER},
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
@@ -172,10 +176,13 @@
                 #{updateUserId,jdbcType=VARCHAR},
             </if>
             <if test="recordStatus != null">
-                #{recordStatus,jdbcType=CHAR},
+                #{recordStatus,jdbcType=INTEGER},
             </if>
             <if test="parentId != null">
                 #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>

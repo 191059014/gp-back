@@ -18,7 +18,7 @@ public class QueryOrderRequestVO implements Serializable {
     /**
      * 订单状态
      */
-    private String orderStatus;
+    private Integer orderStatus;
     /**
      * 开始行数
      */
@@ -28,11 +28,11 @@ public class QueryOrderRequestVO implements Serializable {
      */
     private Integer pageNum;
 
-    public String getOrderStatus() {
+    public Integer getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
     }
 

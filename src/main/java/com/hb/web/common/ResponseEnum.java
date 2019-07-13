@@ -1,10 +1,10 @@
-package com.hb.web.model;
+package com.hb.web.common;
 
 /**
  * ========== 响应码枚举 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.model.ResponseEnum.java, v1.0
+ * @version com.hb.web.common.ResponseEnum.java, v1.0
  * @date 2019年06月05日 16时21分
  */
 public enum ResponseEnum {

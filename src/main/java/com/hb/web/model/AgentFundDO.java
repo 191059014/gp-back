@@ -1,6 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 import java.math.BigDecimal;
 
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
  * @date 2019年06月09日 10时12分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@SelfTableClass(value = "t_agent_fund", comment = "代理商资金")
 public class AgentFundDO extends BaseDO {
 
     private static final long serialVersionUID = 2104128370207391370L;
@@ -19,31 +22,37 @@ public class AgentFundDO extends BaseDO {
     /**
      * 代理商编号
      */
+    @SelfTableColumn(value = "agentId", id = true, comment = "代理商编号")
     private String agentId;
 
     /**
      * 代理商名称
      */
+    @SelfTableColumn(value = "agentName", comment = "代理商名称")
     private String agentName;
 
     /**
      * 账户总金额
      */
+    @SelfTableColumn(value = "accountTotalMoney", length = 12, defaultValue = "0", comment = "账户总金额")
     private BigDecimal accountTotalMoney;
 
     /**
      * 冻结金额
      */
+    @SelfTableColumn(value = "freezeMoney", length = 12, defaultValue = "0", comment = "冻结金额")
     private BigDecimal freezeMoney;
 
     /**
      * 可用余额
      */
+    @SelfTableColumn(value = "usableMoney", length = 12, defaultValue = "0", comment = "可用余额")
     private BigDecimal usableMoney;
 
     /**
      * 备注
      */
+    @SelfTableColumn(value = "remark", comment = "备注")
     private String remark;
 
     public String getAgentId() {

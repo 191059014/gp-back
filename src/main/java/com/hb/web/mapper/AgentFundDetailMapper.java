@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface AgentFundDetailMapper {
 
-    int insert(AgentFundDeailDO record);
-
     int insertSelective(AgentFundDeailDO record);
 
     List<AgentFundDeailDO> findAgentFundDetailList(@Param("agentFundDetailRequestVO") AgentFundDetailRequestVO agentFundDetailRequestVO, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);

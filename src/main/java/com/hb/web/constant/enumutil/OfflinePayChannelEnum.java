@@ -9,20 +9,20 @@ package com.hb.web.constant.enumutil;
  */
 public enum OfflinePayChannelEnum {
 
-    BANK_TRANSFER("0", "银行转账"),
-    E_CURRENCY_PAY("1", "网银支付"),
-    ALIPAY("2", "支付宝"),
-    WECHAT("3", "微信");
+    BANK_TRANSFER(0, "银行转账"),
+    E_CURRENCY_PAY(1, "网银支付"),
+    ALIPAY(2, "支付宝"),
+    WECHAT(3, "微信");
 
-    private String value;
+    private Integer value;
     private String name;
 
-    OfflinePayChannelEnum(String value, String name) {
+    OfflinePayChannelEnum(Integer value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 

@@ -1,6 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 import java.math.BigDecimal;
 
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
  * @date 2019年06月09日 10时44分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@SelfTableClass(value = "t_customer_fund", comment = "客户资金信息")
 public class CustomerFundDO extends BaseDO {
 
     private static final long serialVersionUID = 5605560815676115501L;
@@ -19,61 +22,73 @@ public class CustomerFundDO extends BaseDO {
     /**
      * 客户编号
      */
+    @SelfTableColumn(value = "userId", id = true, comment = "用户编号")
     private String userId;
 
     /**
      * 客户姓名
      */
+    @SelfTableColumn(value = "userName", comment = "用户名")
     private String userName;
 
     /**
      * 代理商编号
      */
+    @SelfTableColumn(value = "agentId", comment = "代理商编号")
     private String agentId;
 
     /**
      * 代理商姓名
      */
+    @SelfTableColumn(value = "agentName", comment = "代理商名称")
     private String agentName;
 
     /**
      * 账户总金额
      */
+    @SelfTableColumn(value = "accountTotalMoney", length = 12, defaultValue = "0", comment = "账户总金额")
     private BigDecimal accountTotalMoney;
 
     /**
      * 冻结金额
      */
+    @SelfTableColumn(value = "freezeMoney", length = 12, defaultValue = "0", comment = "冻结金额")
     private BigDecimal freezeMoney;
 
     /**
      * 可用余额
      */
+    @SelfTableColumn(value = "usableMoney", length = 12, defaultValue = "0", comment = "可用余额")
     private BigDecimal usableMoney;
 
     /**
      * 累计充值
      */
+    @SelfTableColumn(value = "totalRechargeMoney", length = 12, defaultValue = "0", comment = "累计充值")
     private BigDecimal totalRechargeMoney;
 
     /**
      * 累计提现
      */
+    @SelfTableColumn(value = "totalWithdrawMoney", length = 12, defaultValue = "0", comment = "累计提现")
     private BigDecimal totalWithdrawMoney;
 
     /**
      * 累计盈亏
      */
+    @SelfTableColumn(value = "totalProfitAndLossMoney", length = 12, defaultValue = "0", comment = "累计盈亏")
     private BigDecimal totalProfitAndLossMoney;
 
     /**
      * 累计信息服务费
      */
+    @SelfTableColumn(value = "totalMessageServiceMoney", length = 12, defaultValue = "0", comment = "累计信息服务费")
     private BigDecimal totalMessageServiceMoney;
 
     /**
      * 累计出入金额
      */
+    @SelfTableColumn(value = "totalInAndOutMoney", length = 12, defaultValue = "0", comment = "累计出入金额")
     private BigDecimal totalInAndOutMoney;
 
     public CustomerFundDO() {

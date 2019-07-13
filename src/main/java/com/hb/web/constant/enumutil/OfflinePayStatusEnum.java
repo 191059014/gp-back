@@ -9,18 +9,18 @@ package com.hb.web.constant.enumutil;
  */
 public enum OfflinePayStatusEnum {
 
-    NOT_PAY("0", "未支付"),
-    ALREADY_PAY("1", "已支付");
+    NOT_PAY(0, "未支付"),
+    ALREADY_PAY(1, "已支付");
 
-    private String value;
+    private Integer value;
     private String name;
 
-    OfflinePayStatusEnum(String value, String name) {
+    OfflinePayStatusEnum(Integer value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 

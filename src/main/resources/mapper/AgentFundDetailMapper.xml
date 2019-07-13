@@ -6,24 +6,17 @@
         <result column="agentId" property="agentId" jdbcType="VARCHAR"/>
         <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
         <result column="money" property="money" jdbcType="DECIMAL"/>
-        <result column="type" property="type" jdbcType="CHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="createUserId" property="createUserId" jdbcType="INTEGER"/>
+        <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
-        <result column="updateUserId" property="updateUserId" jdbcType="INTEGER"/>
-        <result column="recordStatus" property="recordStatus" jdbcType="CHAR"/>
+        <result column="updateUserId" property="updateUserId" jdbcType="VARCHAR"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="INTEGER"/>
+        <result column="parentId" property="parentId" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="INTEGER"/>
     </resultMap>
-    <insert id="insert" parameterType="com.hb.web.model.AgentFundDeailDO">
-    insert into t_agent_fund_detail (detailId, agentId, agentName, 
-      money, type, remark, createTime, 
-      createUserId, updateTime, updateUserId, 
-      recordStatus, agentUnit)
-    values (#{detailId,jdbcType=INTEGER}, #{agentId,jdbcType=VARCHAR}, #{agentName,jdbcType=VARCHAR}, 
-      #{money,jdbcType=DECIMAL}, #{type,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createUserId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserId,jdbcType=INTEGER}, 
-      #{recordStatus,jdbcType=CHAR}, #{agentUnit,jdbcType=VARCHAR})
-  </insert>
+
     <insert id="insertSelective" parameterType="com.hb.web.model.AgentFundDeailDO">
         insert into t_agent_fund_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -60,8 +53,11 @@
             <if test="recordStatus != null">
                 recordStatus,
             </if>
-            <if test="agentUnit != null">
-                agentUnit,
+            <if test="parentId != null">
+                parentId,
+            </if>
+            <if test="unit != null">
+                unit,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -78,7 +74,7 @@
                 #{money,jdbcType=DECIMAL},
             </if>
             <if test="type != null">
-                #{type,jdbcType=CHAR},
+                #{type,jdbcType=INTEGER},
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
@@ -87,19 +83,22 @@
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="createUserId != null">
-                #{createUserId,jdbcType=INTEGER},
+                #{createUserId,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateUserId != null">
-                #{updateUserId,jdbcType=INTEGER},
+                #{updateUserId,jdbcType=VARCHAR},
             </if>
             <if test="recordStatus != null">
-                #{recordStatus,jdbcType=CHAR},
+                #{recordStatus,jdbcType=INTEGER},
             </if>
-            <if test="agentUnit != null">
-                #{agentUnit,jdbcType=VARCHAR},
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>

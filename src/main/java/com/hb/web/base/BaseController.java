@@ -1,7 +1,7 @@
 package com.hb.web.base;
 
-import com.hb.web.model.ResponseEnum;
-import com.hb.web.model.ResponseData;
+import com.hb.web.common.ResponseEnum;
+import com.hb.web.common.ResponseData;
 import com.hb.web.util.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
