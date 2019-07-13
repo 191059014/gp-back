@@ -1,5 +1,7 @@
 package com.hb.web.model;
 
+import com.hb.web.annotation.SelfTableClass;
+
 import java.util.Date;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Date;
  * @version KeyStrategyDO.java, v1.0
  * @date 2019年06月20日 22时46分
  */
+@SelfTableClass("t_key_strategy")
 public class KeyStrategyDO {
 
     /**

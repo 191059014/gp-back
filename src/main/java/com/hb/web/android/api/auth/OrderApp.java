@@ -45,9 +45,11 @@ public class OrderApp extends BaseApp {
     @PostMapping("/order")
     public AppResultModel order(@RequestBody OrderRequestVO orderRequestVO) {
         LOGGER.info(LogUtils.appLog("股票下单，入参：{}"), orderRequestVO);
-        UserDO userCache = getUserCache();
+//        UserDO userCache = getUserCache();
+        UserDO userCache = new UserDO();
         OrderDO clone = CloneUtils.clone(orderRequestVO, OrderDO.class);
-        clone.setUserId(userCache.getUserId());
+//        clone.setUserId(userCache.getUserId());
+        clone.setUserId("A001");
         clone.setUserName(userCache.getUserName());
         clone.setOrderStatus(OrderStatusEnum.IN_THE_POSITION.getValue());
         clone.setUnit(userCache.getUnit());

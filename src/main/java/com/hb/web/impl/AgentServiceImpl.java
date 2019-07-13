@@ -73,6 +73,7 @@ public class AgentServiceImpl implements IAgentService {
             agentDO.setAgentLevel(AgentLevelEnum.SECOND.getValue());
         }
         agentDO.setUnit(unit);
+
         return agentMapper.insertSelective(agentDO);
     }
 

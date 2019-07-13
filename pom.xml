@@ -76,16 +76,10 @@
             <version>${mybatis-spring-boot-starter-version}</version>
         </dependency>
         <!--druid-->
-        <!--<dependency>-->
-            <!--<groupId>com.alibaba</groupId>-->
-            <!--<artifactId>druid-spring-boot-starter</artifactId>-->
-            <!--<version>1.1.10</version>-->
-        <!--</dependency>-->
-        <!--druid-->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>${druid-version}</version>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.10</version>
         </dependency>
 
         <!--sharding-jdbc-->

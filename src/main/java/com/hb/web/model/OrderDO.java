@@ -144,6 +144,14 @@ public class OrderDO extends BaseDO {
     @SelfTableColumn(value = "delayMoney", length = 12, defaultValue = "0", comment = "递延金")
     private BigDecimal delayMoney;
 
+    public OrderDO() {
+    }
+
+    public OrderDO(String orderId, String userId) {
+        this.orderId = orderId;
+        this.userId = userId;
+    }
+
     public String getOrderId() {
         return orderId;
     }

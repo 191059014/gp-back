@@ -49,15 +49,12 @@
   </delete>
 
     <insert id="insertSelective" parameterType="com.hb.web.model.OrderDO">
-        <selectKey keyProperty="orderId" resultType="string" order="BEFORE">
-            SELECT CONCAT(#{userId},'_',count(*)+1) from t_order where userId=#{userId};
-        </selectKey>
         insert into t_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            orderId,
             <if test="userId != null">
                 userId,
             </if>
+            orderId,
             <if test="userName != null">
                 userName,
             </if>
@@ -132,10 +129,10 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{orderId,jdbcType=VARCHAR},
             <if test="userId != null">
                 #{userId,jdbcType=VARCHAR},
             </if>
+            #{orderId,jdbcType=VARCHAR},
             <if test="userName != null">
                 #{userName,jdbcType=VARCHAR},
             </if>
@@ -311,6 +308,7 @@
         <![CDATA[
 
 
+
         select tt.stockCode from
         (
           select @rownum:=@rownum+1 as rownum,t1.stockCode,t1.totalNum from
@@ -318,6 +316,7 @@
             (select @rownum:=0) t2
         )
         tt where tt.rownum<=#{number}
+
 
 
         ]]>

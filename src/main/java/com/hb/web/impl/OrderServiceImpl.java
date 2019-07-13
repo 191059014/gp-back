@@ -33,6 +33,8 @@ public class OrderServiceImpl implements IOrderService {
     public int insertSelective(OrderDO record) {
         record.setCreateTime(DateUtils.getCurrentDate());
         record.setUpdateTime(DateUtils.getCurrentDate());
+        Integer count = findCount(new OrderDO(null, record.getUserId()));
+        record.setOrderId(record.getUserId() + "_" + ++count);
         return orderMapper.insertSelective(record);
     }
 
