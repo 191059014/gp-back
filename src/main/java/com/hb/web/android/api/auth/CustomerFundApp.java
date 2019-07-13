@@ -113,6 +113,7 @@ public class CustomerFundApp extends BaseApp {
             addOrUpdate.setTotalRechargeMoney(rechargeMoney);// 累计充值
             addOrUpdate.setCreateTime(DateUtils.getCurrentDate());
             addOrUpdate.setCreateUserId(userCache.getUserId());
+            addOrUpdate.setUnit(userCache.getUnit());
             LOGGER.info(LogUtils.appLog("即将新增的充值信息：{}"), addOrUpdate.toString());
             result = iCustomerFundService.addCustomerFund(addOrUpdate);
         } else {
@@ -141,6 +142,7 @@ public class CustomerFundApp extends BaseApp {
             customerFundDetailDO.setCreateUserId(userCache.getUserId());
             customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
             customerFundDetailDO.setUpdateUserId(userCache.getUserId());
+            customerFundDetailDO.setUnit(userCache.getUnit());
             int addOneResult = iCustomerFundDetailService.addOne(customerFundDetailDO);
             if (addOneResult > 0) {
                 LOGGER.info(LogUtils.appLog("添加充值流水成功：{}"), customerFundDetailDO);

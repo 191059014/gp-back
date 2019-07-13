@@ -5,6 +5,7 @@ import com.hb.web.model.AgentFundDO;
 import com.hb.web.mapper.AgentFundMapper;
 import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,9 @@ import java.util.List;
  */
 @Service
 public class AgentFundServiceImpl implements IAgentFundService {
+
+    @Value("${gpweb.unit}")
+    private Integer unit;
 
     @Autowired
     private AgentFundMapper agentFundMapper;
@@ -34,7 +38,8 @@ public class AgentFundServiceImpl implements IAgentFundService {
 
     @Override
     public int addAgentFund(AgentFundDO agentFundDO) {
-        return 0;
+        agentFundDO.setUnit(unit);
+        return agentFundMapper.insertSelective(agentFundDO);
     }
 
     @Override

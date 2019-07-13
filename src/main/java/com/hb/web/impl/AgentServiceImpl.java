@@ -32,8 +32,8 @@ public class AgentServiceImpl implements IAgentService {
     @Autowired
     private AgentMapper agentMapper;
 
-    @Value("${gpweb.agent.agentUnit}")
-    private String agentUnit;
+    @Value("${gpweb.unit}")
+    private Integer unit;
 
     @Override
     public List<Map<String, Object>> getAgentLevelList() {
@@ -61,16 +61,18 @@ public class AgentServiceImpl implements IAgentService {
     public Integer addAgent(AgentDO agentDO) {
         // 密码加密
         agentDO.setPassword(EncryptUtils.encode(agentDO.getPassword()));
-        // 创建时间
-        agentDO.setCreateTime(DateUtils.getCurrentDate());
         // TODO
         agentDO.setCreateUserId(null);
-        // 修改时间
-        agentDO.setUpdateTime(DateUtils.getCurrentDate());
         // TODO
         agentDO.setUpdateUserId(null);
         // 状态
         agentDO.setRecordStatus(GeneralConst.RECORD_STATUS_Y);
+        if (unit == null) {
+            agentDO.setAgentLevel(AgentLevelEnum.FIRST.getValue());
+        } else {
+            agentDO.setAgentLevel(AgentLevelEnum.SECOND.getValue());
+        }
+        agentDO.setUnit(unit);
         return agentMapper.insertSelective(agentDO);
     }
 

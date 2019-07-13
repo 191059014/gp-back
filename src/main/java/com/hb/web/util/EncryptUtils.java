@@ -16,7 +16,7 @@ public class EncryptUtils {
     private static final String DEFAULT_ENCODE_CODE = "MD5";
 
     public static void main(String[] args) {
-        String code = "123456";
+        String code = "123";
         LOGGER.info(encode(code));
     }
 

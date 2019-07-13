@@ -50,6 +50,7 @@ public class OrderApp extends BaseApp {
         clone.setUserId(userCache.getUserId());
         clone.setUserName(userCache.getUserName());
         clone.setOrderStatus(OrderStatusEnum.IN_THE_POSITION.getValue());
+        clone.setUnit(userCache.getUnit());
         int i = iOrderService.insertSelective(clone);
         if (i < 1) {
             LOGGER.info(LogUtils.appLog("股票下单失败"));

@@ -155,6 +155,7 @@ public class LoginApp extends BaseApp {
         userDO.setPassword(password);
         userDO.setMobile(mobile);
         userDO.setInviterMobile(inviterMobile);
+        userDO.setUnit(agentQuery.getUnit());
         // 添加用户
         iUserService.addUser(userDO);
         LOGGER.info(LogUtils.appLog("注册用户成功"));

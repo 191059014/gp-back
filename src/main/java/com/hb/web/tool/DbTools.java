@@ -2,10 +2,7 @@ package com.hb.web.tool;
 
 import com.hb.web.annotation.SelfTableClass;
 import com.hb.web.annotation.SelfTableColumn;
-import com.hb.web.model.AgentDO;
-import com.hb.web.model.CustomerFundDO;
-import com.hb.web.model.CustomerFundDetailDO;
-import com.hb.web.model.UserDO;
+import com.hb.web.model.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -24,7 +21,7 @@ import java.util.Map;
 public class DbTools {
 
     public static void main(String[] args) {
-        System.out.println(generateTable(AgentDO.class, "1"));
+        System.out.println(generateTable(OrderDO.class, ""));
     }
 
     /**
