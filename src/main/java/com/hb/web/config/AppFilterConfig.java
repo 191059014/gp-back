@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @version com.hb.web.config.FilterConfig.java, v1.0
  * @date 2019年06月11日 16时26分
  */
-//@Configuration
+@Configuration
 public class AppFilterConfig {
 
     @Bean

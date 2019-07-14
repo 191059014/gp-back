@@ -38,7 +38,11 @@ public class RedisTools {
      */
     public void set(String key, Object value, long expireTime) {
         String valueStr = JSON.toJSONString(value);
-        stringRedisTemplate.opsForValue().set(key, valueStr, expireTime, TIME_UNIT);
+        if (expireTime == 0) {
+            stringRedisTemplate.opsForValue().set(key, valueStr);
+        } else {
+            stringRedisTemplate.opsForValue().set(key, valueStr, expireTime, TIME_UNIT);
+        }
     }
 
     /**

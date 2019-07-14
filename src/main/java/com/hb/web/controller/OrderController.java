@@ -51,6 +51,7 @@ public class OrderController {
             Map<String, UserDO> userMap = userList.stream().collect(Collectors.toMap(UserDO::getUserId, u -> u, (k, v) -> k));
             for (OrderDO order : orderList) {
                 OrderQueryResponseVO clone = CloneUtils.clone(order, OrderQueryResponseVO.class);
+                clone.setUserName(userMap.get(order.getUserId()) == null ? "" : userMap.get(order.getUserId()).getUserName());
                 clone.setMobile(userMap.get(order.getUserId()) == null ? "" : userMap.get(order.getUserId()).getMobile());
                 resultList.add(clone);
             }

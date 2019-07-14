@@ -39,7 +39,6 @@ public class CrossFilter implements Filter {
 
         // 自适应所有自定义头
         String headers = request.getHeader("Access-Control-Request-Headers");
-        LOGGER.info("cross filter headers:{}", headers);
         if (StringUtils.isNotBlank(headers)) {
             response.setHeader("Access-Control-Allow-Headers", headers);
             response.setHeader("Access-Control-Expose-Headers", headers);
@@ -53,12 +52,10 @@ public class CrossFilter implements Filter {
 
         // 允许跨域的请求方法类型
         String request_method = request.getMethod();
-        LOGGER.info("request method is {}", request_method);
         if (StringUtils.equals("OPTIONS", request_method)) {
             LOGGER.info("request method is OPTIONS, return");
             return;
         }
-        LOGGER.info("cross filter pass");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

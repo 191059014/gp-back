@@ -2,6 +2,7 @@ package com.hb.web.config;
 
 import com.hb.web.filter.CrossFilter;
 import com.hb.web.filter.LoginFilter;
+import com.hb.web.filter.SecurityFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +28,19 @@ public class FilterConfig {
     }
 
     @Bean
-    public FilterRegistrationBean buildLoginFilter() {
+    public FilterRegistrationBean buildSecurityFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(2);
+        filterRegistrationBean.setFilter(new SecurityFilter());
+        filterRegistrationBean.setName("securityFilter");
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean buildLoginFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setOrder(3);
         filterRegistrationBean.setFilter(new LoginFilter());
         filterRegistrationBean.setName("loginFilter");
         filterRegistrationBean.addUrlPatterns("/controller/*");

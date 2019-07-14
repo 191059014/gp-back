@@ -27,5 +27,7 @@ public class GeneralConst {
     public static final Integer RECORD_STATUS_Y = 1;
     // 数据有效状态，0-无效
     public static final Integer RECORD_STATUS_N = 0;
+    // 请求ip缓存key
+    public static final String REQUEST_IP_KEY = "REQUEST_IP_";
 
 }
