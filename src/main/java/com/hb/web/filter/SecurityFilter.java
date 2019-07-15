@@ -38,7 +38,7 @@ public class SecurityFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         SelfRunner selfRunner = SpringUtil.getBean(SelfRunner.class);
-        String blacklist = selfRunner.getProperty("gp.ip.backlist");
+        String blacklist = selfRunner.getProperty("gp.ip.blacklist");
         String userRealIpAddress = getUserIpAddress(request);
         LOGGER.info("userRealIpAddress : {}", userRealIpAddress);
         if (blacklist != null && blacklist.contains(userRealIpAddress)) {

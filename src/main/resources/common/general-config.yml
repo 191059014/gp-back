@@ -1,3 +1,3 @@
 gp:
   ip:
-    backlist: 192.168.17.2
+    blacklist: 192.168.17.2
