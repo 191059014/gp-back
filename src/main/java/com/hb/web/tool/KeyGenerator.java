@@ -3,7 +3,6 @@ package com.hb.web.tool;
 import com.hb.web.constant.enumutil.TableEnum;
 import com.hb.web.util.DateUtils;
 import com.hb.web.util.StringUtils;
-import org.springframework.stereotype.Component;
 
 import java.util.Random;
 import java.util.UUID;
@@ -15,7 +14,6 @@ import java.util.UUID;
  * @version com.hb.web.tool.KeyGenerator.java, v1.0
  * @date 2019年06月11日 15时25分
  */
-@Component
 public class KeyGenerator {
 
     private static String FORMAT_MS = "yyMMddHHmmssSSS";
