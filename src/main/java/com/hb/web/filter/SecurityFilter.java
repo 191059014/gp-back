@@ -15,7 +15,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.InetAddress;
 
 /**
  * ========== 安全过滤器 ==========
@@ -38,21 +37,22 @@ public class SecurityFilter implements Filter {
         RedisTools redisTools = SpringUtil.getBean(RedisTools.class);
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String ip = InetAddress.getLocalHost().getHostAddress();
         SelfRunner selfRunner = SpringUtil.getBean(SelfRunner.class);
         String blacklist = selfRunner.getProperty("gp.ip.backlist");
-        if (blacklist != null && blacklist.contains(ip)) {
-            LOGGER.warn("current ip is in blacklist, ip:{}", ip);
+        String userRealIpAddress = getUserIpAddress(request);
+        LOGGER.info("userRealIpAddress : {}", userRealIpAddress);
+        if (blacklist != null && blacklist.contains(userRealIpAddress)) {
+            LOGGER.warn("current ip is in blacklist, ip:{}", userRealIpAddress);
             ResponseData<Object> responseData = ResponseData.generateResponseData(ResponseEnum.REQUEST_IN_BLACKLIST);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JSON.toJSONString(responseData));
             return;
         }
-        String cacheKey = GeneralConst.REQUEST_IP_KEY + ip;
+        String cacheKey = GeneralConst.REQUEST_IP_KEY + userRealIpAddress;
         String currentTimesStr = redisTools.get(cacheKey);
         int currentTimes = StringUtils.isBlank(currentTimesStr) ? 0 : Integer.parseInt(currentTimesStr);
         if (currentTimes > 3) {
-            LOGGER.warn("current request is too often, ip:{}", ip);
+            LOGGER.warn("current request is too often, ip:{}", userRealIpAddress);
             ResponseData<Object> responseData = ResponseData.generateResponseData(ResponseEnum.REQUEST_TOO_OFTEN);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JSON.toJSONString(responseData));
@@ -66,6 +66,32 @@ public class SecurityFilter implements Filter {
     @Override
     public void destroy() {
         LOGGER.info("security filter destroy");
+    }
+
+    /**
+     * ########## 获取用户真实IP地址 ##########
+     *
+     * @param request 请求
+     * @return ip地址
+     */
+    public static String getUserIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 
 }

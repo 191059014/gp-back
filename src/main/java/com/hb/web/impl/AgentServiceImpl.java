@@ -7,7 +7,6 @@ import com.hb.web.model.AgentDO;
 import com.hb.web.mapper.AgentMapper;
 import com.hb.web.util.DateUtils;
 import com.hb.web.util.EncryptUtils;
-import com.hb.web.util.IDCreateUtils;
 import com.hb.web.util.PageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
