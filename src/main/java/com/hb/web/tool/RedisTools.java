@@ -32,17 +32,24 @@ public class RedisTools {
     /**
      * ########## 放入缓存 ##########
      *
+     * @param key   键
+     * @param value 值
+     */
+    public void set(String key, Object value) {
+        String valueStr = JSON.toJSONString(value);
+        stringRedisTemplate.opsForValue().set(key, valueStr);
+    }
+
+    /**
+     * ########## 放入缓存 ##########
+     *
      * @param key        键
      * @param value      值
      * @param expireTime 过期时间
      */
     public void set(String key, Object value, long expireTime) {
         String valueStr = JSON.toJSONString(value);
-        if (expireTime == 0) {
-            stringRedisTemplate.opsForValue().set(key, valueStr);
-        } else {
-            stringRedisTemplate.opsForValue().set(key, valueStr, expireTime, TIME_UNIT);
-        }
+        stringRedisTemplate.opsForValue().set(key, valueStr, expireTime, TIME_UNIT);
     }
 
     /**
@@ -79,6 +86,15 @@ public class RedisTools {
      */
     public Long getExpire(String key) {
         return stringRedisTemplate.getExpire(key, TIME_UNIT);
+    }
+
+    /**
+     * ########## 根据key获取下一个值 ##########
+     *
+     * @param key 键
+     */
+    public Long getNextValue(String key) {
+        return stringRedisTemplate.opsForValue().increment(key);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.hb.web.constant.enumutil;
 
 /**
- * ========== Description ==========
+ * ========== 主键生成策略枚举 ==========
  *
  * @author Mr.huang
  * @version com.hb.web.constant.enumutil.TableEnum.java, v1.0
@@ -9,16 +9,18 @@ package com.hb.web.constant.enumutil;
  */
 public enum TableEnum {
 
-    T_AGENT("t_agent", "agentId", "A");
+    T_AGENT("t_agent", "agentId", "A", "t_agent_sequence");
 
     private String tableName;
     private String idName;
     private String keyPrefix;
+    private String sequenceKey;
 
-    private TableEnum(String tableName, String idName, String keyPrefix) {
+    private TableEnum(String tableName, String idName, String keyPrefix, String sequenceKey) {
         this.tableName = tableName;
         this.idName = idName;
         this.keyPrefix = keyPrefix;
+        this.sequenceKey = sequenceKey;
     }
 
     public String getTableName() {
@@ -33,4 +35,7 @@ public enum TableEnum {
         return keyPrefix;
     }
 
+    public String getSequenceKey() {
+        return sequenceKey;
+    }
 }
