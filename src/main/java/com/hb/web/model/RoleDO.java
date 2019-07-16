@@ -1,6 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 /**
  * ========== 角色实体 ==========
@@ -10,16 +12,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @date 2019年06月03日 11时28分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@SelfTableClass(value = "t_role", comment = "角色表")
 public class RoleDO extends BaseDO {
-
+    // serialVersionUID
     private static final long serialVersionUID = -3368509626521238017L;
     // 主键
+    @SelfTableColumn(value = "roleId", id = true, length = 10, comment = "角色ID")
     private Integer roleId;
     // 角色名称
+    @SelfTableColumn(value = "roleName", comment = "角色名称")
     private String roleName;
-    // 标题
-    private String title;
     // 描述
+    @SelfTableColumn(value = "description", comment = "描述")
     private String description;
 
     public Integer getRoleId() {
@@ -38,14 +42,6 @@ public class RoleDO extends BaseDO {
         this.roleName = roleName;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -57,12 +53,16 @@ public class RoleDO extends BaseDO {
     public RoleDO() {
     }
 
+    public RoleDO(Integer roleId, String roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+    }
+
     @Override
     public String toString() {
         return "RoleDO{" +
                 "roleId=" + roleId +
                 ", roleName='" + roleName + '\'' +
-                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 '}' + "," + super.toString();
     }

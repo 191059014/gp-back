@@ -32,13 +32,13 @@ public class KeyGenerator {
 
     /**
      * ########## 生成唯一ID ##########
-     * 前缀（1） + 时间戳（15） + 随机数（4） + 序列（5）= 25位
+     * 前缀（2） + 时间戳（15） + 随机数（4） + 序列（5）= 26位
      *
      * @return ID
      */
     public String generateKey(TableEnum tableEnum) {
         String dataStr = DateUtils.date2str(DateUtils.getCurrentDate(), FORMAT_MS);
-        String random = String.valueOf(new Random().nextInt(100));
+        String random = String.valueOf(new Random().nextInt(1000));
         random = StringUtils.fillZero(random, 4);
         Long nextValue = redisTools.getNextValue(tableEnum.getSequenceKey());
         if (nextValue == null) {

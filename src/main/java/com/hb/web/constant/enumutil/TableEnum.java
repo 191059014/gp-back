@@ -9,7 +9,7 @@ package com.hb.web.constant.enumutil;
  */
 public enum TableEnum {
 
-    T_AGENT("t_agent", "agentId", "A", "t_agent_sequence");
+    T_AGENT("t_order", "orderId", "OD", "t_agent_sequence");
 
     private String tableName;
     private String idName;

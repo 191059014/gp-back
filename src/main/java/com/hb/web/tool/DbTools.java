@@ -21,7 +21,7 @@ import java.util.Map;
 public class DbTools {
 
     public static void main(String[] args) {
-        System.out.println(generateTable(OrderDO.class, "0"));
+        System.out.println(generateTable(RolePermissionDO.class, ""));
     }
 
     /**

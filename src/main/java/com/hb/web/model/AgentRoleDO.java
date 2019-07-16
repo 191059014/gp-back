@@ -1,28 +1,37 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 /**
- * ========== 用户-角色 关联表 ==========
+ * ========== 代理商角色关联表 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.model.sys.UserRoleDO.java, v1.0
+ * @version com.hb.web.model.sys.AgentRoleDO.java, v1.0
  * @date 2019年06月03日 11时33分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class UserRoleDO extends BaseDO {
-
+@SelfTableClass(value = "t_agent_role", comment = "代理商角色关联表")
+public class AgentRoleDO extends BaseDO {
     // serialVersionUID
     private static final long serialVersionUID = -2147404515536143699L;
-
     // 主键
+    @SelfTableColumn(value = "id", id = true, length = 10, comment = "主键")
     private Integer id;
-    // 用户ID
+    // 代理商ID
+    @SelfTableColumn(value = "agentId", comment = "代理商ID")
     private String agentId;
     // 角色ID
+    @SelfTableColumn(value = "roleId", length = 10, comment = "角色ID")
     private Integer roleId;
 
-    public UserRoleDO() {
+    public AgentRoleDO() {
+    }
+
+    public AgentRoleDO(String agentId, Integer roleId) {
+        this.agentId = agentId;
+        this.roleId = roleId;
     }
 
     public Integer getId() {
@@ -51,7 +60,7 @@ public class UserRoleDO extends BaseDO {
 
     @Override
     public String toString() {
-        return "UserRoleDO{" +
+        return "AgentRoleDO{" +
                 "id=" + id +
                 ", agentId=" + agentId +
                 ", roleId=" + roleId +

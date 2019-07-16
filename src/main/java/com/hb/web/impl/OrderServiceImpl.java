@@ -2,8 +2,10 @@ package com.hb.web.impl;
 
 import com.hb.web.api.IOrderService;
 import com.hb.web.constant.enumutil.OrderStatusEnum;
+import com.hb.web.constant.enumutil.TableEnum;
 import com.hb.web.mapper.OrderMapper;
 import com.hb.web.model.OrderDO;
+import com.hb.web.tool.KeyGenerator;
 import com.hb.web.util.DateUtils;
 import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private KeyGenerator keyGenerator;
+
     @Override
     public int deleteByPrimaryKey(String orderId) {
         return orderMapper.deleteByPrimaryKey(orderId);
@@ -33,8 +38,7 @@ public class OrderServiceImpl implements IOrderService {
     public int insertSelective(OrderDO record) {
         record.setCreateTime(DateUtils.getCurrentDate());
         record.setUpdateTime(DateUtils.getCurrentDate());
-        Integer count = findCount(new OrderDO(null, record.getUserId()));
-        record.setOrderId(record.getUserId() + "_" + ++count);
+        record.setOrderId(keyGenerator.generateKey(TableEnum.T_AGENT));
         return orderMapper.insertSelective(record);
     }
 

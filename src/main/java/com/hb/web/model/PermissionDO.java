@@ -1,6 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hb.web.annotation.SelfTableClass;
+import com.hb.web.annotation.SelfTableColumn;
 
 /**
  * ========== 权限表 ==========
@@ -10,21 +12,28 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @date 2019年06月03日 11时39分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@SelfTableClass(value = "t_permission", comment = "权限表")
 public class PermissionDO extends BaseDO {
-
-    //serialVersionUID
+    // serialVersionUID
     private static final long serialVersionUID = -7962387562060600860L;
-
     // 主键
+    @SelfTableColumn(value = "permissionId", id = true, length = 10, comment = "权限表")
     private Integer permissionId;
     // 权限名称
+    @SelfTableColumn(value = "permissionName", comment = "权限名称")
     private String permissionName;
     // 资源类型
-    private String sourceType;
+    @SelfTableColumn(value = "sourceType", length = 1, comment = "资源类型")
+    private Integer sourceType;
     // 权限值
+    @SelfTableColumn(value = "permissionValue", length = 100, comment = "权限值")
     private String permissionValue;
 
     public PermissionDO() {
+    }
+
+    public PermissionDO(String permissionName) {
+        this.permissionName = permissionName;
     }
 
     public Integer getPermissionId() {
@@ -43,11 +52,11 @@ public class PermissionDO extends BaseDO {
         this.permissionName = permissionName;
     }
 
-    public String getSourceType() {
+    public Integer getSourceType() {
         return sourceType;
     }
 
-    public void setSourceType(String sourceType) {
+    public void setSourceType(Integer sourceType) {
         this.sourceType = sourceType;
     }
 
