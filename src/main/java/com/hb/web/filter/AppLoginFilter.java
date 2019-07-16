@@ -1,18 +1,18 @@
 package com.hb.web.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.hb.web.container.BodyReaderHttpServletRequestWrapper;
-import com.hb.web.constant.AppConstant;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
-import com.hb.web.tool.TokenTools;
+import com.hb.web.constant.AppConstant;
+import com.hb.web.container.BodyReaderHttpServletRequestWrapper;
 import com.hb.web.container.SpringUtil;
 import com.hb.web.model.UserDO;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
+import com.hb.web.tool.RedisTools;
+import com.hb.web.tool.TokenTools;
 import com.hb.web.util.EncryptUtils;
 import com.hb.web.util.LogUtils;
-import com.hb.web.tool.RedisTools;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
@@ -36,7 +36,7 @@ public class AppLoginFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        LOGGER.info(LogUtils.appLog("app login filter init"));
+        LOGGER.info("app login filter init");
     }
 
     @Override
