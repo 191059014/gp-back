@@ -113,8 +113,12 @@ public class Logger {
      * @return 包装后的日志信息
      */
     private String getLoggerEntity(String msg) {
+        String traceId = TraceIdUtils.getTraceId();
+        if (traceId == null || traceId == "") {
+            return msg;
+        }
         LoggerEntity loggerEntity = new LoggerEntity();
-        loggerEntity.setTraceId(TraceIdUtils.getTraceId());
+        loggerEntity.setTraceId(traceId);
         loggerEntity.setContent(msg);
         return JSON.toJSONString(loggerEntity);
     }
