@@ -70,7 +70,7 @@ public class BaseApp {
     @ExceptionHandler
     public AppResultModel exceptionHandler(Exception exception) {
         if (LOGGER.isErrorEnabled()) {
-            LOGGER.info(LogUtils.appLog("统一异常处理 => {}"), LogUtils.getStackTrace(exception));
+            LOGGER.error(LogUtils.appLog("统一异常处理 => {}"), LogUtils.getStackTrace(exception));
         }
         return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
     }

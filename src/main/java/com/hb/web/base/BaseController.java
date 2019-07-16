@@ -35,7 +35,7 @@ public class BaseController {
     @ExceptionHandler
     public ResponseData exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception exception) {
         if (LOGGER.isErrorEnabled()) {
-            LOGGER.info("【web】统一异常处理 => {}", LogUtils.getStackTrace(exception));
+            LOGGER.error("【web】统一异常处理 => {}", LogUtils.getStackTrace(exception));
         }
         return ResponseData.generateResponseData(ResponseEnum.ERROR);
     }
