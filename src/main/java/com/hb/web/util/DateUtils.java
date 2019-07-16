@@ -1,7 +1,7 @@
 package com.hb.web.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 
 import java.lang.ref.SoftReference;
 import java.text.ParseException;

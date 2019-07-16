@@ -5,8 +5,6 @@ import com.hb.web.common.Alarm;
 import com.hb.web.common.AlarmContent;
 import com.hb.web.util.LogUtils;
 import com.hb.web.util.OkHttpUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package com.hb.web.servlet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 

@@ -2,13 +2,13 @@ package com.hb.web.android.base;
 
 import com.hb.web.constant.AppConstant;
 import com.hb.web.model.UserDO;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.LogUtils;
 import com.hb.web.tool.RedisTools;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
 import com.hb.web.tool.TokenTools;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 

@@ -3,8 +3,6 @@ package com.hb.web.tool;
 import com.hb.web.constant.enumutil.TableEnum;
 import com.hb.web.util.DateUtils;
 import com.hb.web.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

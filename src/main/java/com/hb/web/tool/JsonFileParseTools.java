@@ -4,8 +4,6 @@ import com.hb.web.constant.AppConstant;
 import com.hb.web.util.LogUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;

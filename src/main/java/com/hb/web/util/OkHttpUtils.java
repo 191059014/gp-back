@@ -1,9 +1,9 @@
 package com.hb.web.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import okhttp3.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.security.SecureRandom;

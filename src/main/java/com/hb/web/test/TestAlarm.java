@@ -37,6 +37,7 @@ public class TestAlarm {
 
     private void testTraceId() {
         LOGGER.info("testTraceId-测试日志打印{}={}", "张三", "20");
+        LOGGER.info("hahaha");
     }
 
 }

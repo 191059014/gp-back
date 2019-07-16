@@ -5,6 +5,8 @@ import com.hb.web.api.IOrderService;
 import com.hb.web.api.IStockService;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;
@@ -13,8 +15,6 @@ import com.hb.web.vo.appvo.response.StockIndexQueryResponseVO;
 import com.hb.web.vo.appvo.response.StockQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

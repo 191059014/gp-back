@@ -1,9 +1,9 @@
 package com.hb.web.filter;
 
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.TraceIdUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

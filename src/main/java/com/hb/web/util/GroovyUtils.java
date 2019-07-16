@@ -1,11 +1,11 @@
 package com.hb.web.util;
 
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import groovy.lang.Binding;
 import groovy.lang.GroovyObject;
 import groovy.lang.GroovyShell;
 import groovy.util.GroovyScriptEngine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;

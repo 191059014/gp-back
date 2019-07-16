@@ -2,6 +2,8 @@ package com.hb.web.android.api.auth;
 
 import com.hb.web.api.IUserService;
 import com.hb.web.model.UserDO;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import com.hb.web.vo.appvo.request.BankCardRequestVO;
 import com.hb.web.util.LogUtils;
 import com.hb.web.android.api.noauth.LoginApp;
@@ -12,8 +14,6 @@ import com.hb.web.tool.TokenTools;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

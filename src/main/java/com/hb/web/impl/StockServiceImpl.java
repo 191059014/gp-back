@@ -3,12 +3,12 @@ package com.hb.web.impl;
 import com.hb.web.api.IStockService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.ExchangeTypeEnum;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;
 import com.hb.web.util.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
