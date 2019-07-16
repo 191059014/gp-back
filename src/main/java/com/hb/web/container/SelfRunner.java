@@ -45,7 +45,7 @@ public class SelfRunner implements CommandLineRunner {
         for (Object key : yml.keySet()) {
             Object value = yml.get(key);
             LOGGER.info("key : {}, value : {}", key, value);
-            redisTools.set((String) key, value, 0);
+            redisTools.set((String) key, value);
         }
         return "SUCCESS";
     }

@@ -57,10 +57,9 @@ public class SecurityFilter implements Filter {
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JSON.toJSONString(responseData));
             return;
-        } else {
-            redisTools.set(cacheKey, ++currentTimes, 1);
-            filterChain.doFilter(request, response);
         }
+        redisTools.set(cacheKey, ++currentTimes, 1);
+        filterChain.doFilter(request, response);
     }
 
     @Override
