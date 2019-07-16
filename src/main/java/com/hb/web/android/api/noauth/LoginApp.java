@@ -112,10 +112,7 @@ public class LoginApp extends BaseApp {
         String mobile = registerRequestVO.getMobile();
         String mobileVerifyCode = registerRequestVO.getMobileVerifyCode();
         String inviterMobile = registerRequestVO.getInviterMobile();
-        if (StringUtils.isBlank(password)
-                || StringUtils.isBlank(mobile)
-                || StringUtils.isBlank(mobileVerifyCode)
-                || StringUtils.isBlank(inviterMobile)) {
+        if (StringUtils.isAnyBlank(password, mobile, mobileVerifyCode, inviterMobile)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         if (!CheckTools.isMobile(mobile)) {

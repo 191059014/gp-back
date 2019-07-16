@@ -29,4 +29,17 @@ public class StringUtils {
         return zero.toString();
     }
 
+    /**
+     * ########## 转换null为空字符串 ##########
+     *
+     * @param obj 对象
+     * @return 字符串
+     */
+    public static String convertNull(Object obj) {
+        if (obj == null) {
+            return "";
+        }
+        return String.valueOf(obj);
+    }
+
 }

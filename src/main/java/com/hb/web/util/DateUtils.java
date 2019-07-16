@@ -32,7 +32,7 @@ public class DateUtils {
     /**
      * 只有年月日的日期格式
      */
-    public static final String YMD_FORMAT = "yyyy-MM-dd";
+    public static final String YYYYMMDD = "yyyyMMdd";
 
     /**
      * 默认的时区
@@ -50,14 +50,12 @@ public class DateUtils {
     }
 
     /**
-     * ########## 字符串转日期 ##########
+     * ########## 获取当前时间字符串 ##########
      *
-     * @param dateValue 日期字符串
-     * @return 日期
+     * @return 当前时间字符串
      */
-    public static Date str2date(String dateValue) throws ParseException {
-        SimpleDateFormat dateParser = DateFormatHolder.formatFor(DEFAULT_FORMAT);
-        return dateParser.parse(dateValue);
+    public static String getCurrentDateStr(String format) {
+        return date2str(new Date(), format);
     }
 
     /**
@@ -70,17 +68,6 @@ public class DateUtils {
     public static Date str2date(String dateValue, String dateFormat) throws ParseException {
         SimpleDateFormat dateParser = DateFormatHolder.formatFor(dateFormat);
         return dateParser.parse(dateValue);
-    }
-
-    /**
-     * ########## 日期转字符串 ##########
-     *
-     * @param date 日期
-     * @return 字符串
-     */
-    public static String date2str(Date date) {
-        SimpleDateFormat dateParser = DateFormatHolder.formatFor(DEFAULT_FORMAT);
-        return dateParser.format(date);
     }
 
     /**

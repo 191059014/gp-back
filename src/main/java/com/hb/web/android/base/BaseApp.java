@@ -1,14 +1,12 @@
 package com.hb.web.android.base;
 
+import com.hb.web.common.Alarm;
 import com.hb.web.constant.AppConstant;
 import com.hb.web.model.UserDO;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
+import com.hb.web.tool.*;
 import com.hb.web.util.LogUtils;
-import com.hb.web.tool.RedisTools;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
-import com.hb.web.tool.TokenTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -41,6 +39,9 @@ public class BaseApp {
     @Autowired
     public RedisTools redisTools;
 
+    @Autowired
+    private AlarmTools alarmTools;
+
     /**
      * ########## 处理request里面的参数 ##########
      *
@@ -72,6 +73,7 @@ public class BaseApp {
         if (LOGGER.isErrorEnabled()) {
             LOGGER.error(LogUtils.appLog("统一异常处理 => {}"), LogUtils.getStackTrace(exception));
         }
+        alarmTools.alert(new Alarm("APP", "统一异常处理", LogUtils.getStackTrace(exception)));
         return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
     }
 
