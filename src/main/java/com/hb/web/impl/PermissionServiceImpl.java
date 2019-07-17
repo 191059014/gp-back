@@ -1,12 +1,18 @@
 package com.hb.web.impl;
 
 import com.hb.web.api.IPermissionService;
+import com.hb.web.constant.enumutil.AgentLevelEnum;
+import com.hb.web.constant.enumutil.SourceTypeEnum;
 import com.hb.web.mapper.PermissionMapper;
 import com.hb.web.model.PermissionDO;
+import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ========== 权限 ==========
@@ -23,7 +29,7 @@ public class PermissionServiceImpl implements IPermissionService {
 
     @Override
     public List<PermissionDO> findPageList(PermissionDO permissionDO, Integer pageNum, Integer pageSize) {
-        return permissionMapper.findPageList(permissionDO, pageNum, pageSize);
+        return permissionMapper.findPageList(permissionDO, PageUtils.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
@@ -44,6 +50,18 @@ public class PermissionServiceImpl implements IPermissionService {
     @Override
     public int deleteByPrimaryKey(Integer permissionId) {
         return permissionMapper.deleteByPrimaryKey(permissionId);
+    }
+
+    @Override
+    public List<Map<String, Object>> getSourceTypeList() {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        for (SourceTypeEnum sourceTypeEnum : SourceTypeEnum.values()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("value", sourceTypeEnum.getValue());
+            map.put("name", sourceTypeEnum.getName());
+            resultList.add(map);
+        }
+        return resultList;
     }
 
 }

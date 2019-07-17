@@ -3,6 +3,7 @@ package com.hb.web.api;
 import com.hb.web.model.PermissionDO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ========== 权限 ==========
@@ -54,5 +55,7 @@ public interface IPermissionService {
      * @return 是否成功
      */
     int deleteByPrimaryKey(Integer permissionId);
+
+    List<Map<String,Object>> getSourceTypeList();
 
 }

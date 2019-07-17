@@ -15,7 +15,7 @@ public interface PermissionMapper {
 
     int updateByPrimaryKeySelective(PermissionDO record);
 
-    List<PermissionDO> findPageList(@Param("permissionDO") PermissionDO permissionDO, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+    List<PermissionDO> findPageList(@Param("permissionDO") PermissionDO permissionDO, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);
 
     Integer findCount(@Param("permissionDO") PermissionDO permissionDO);
 }

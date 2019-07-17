@@ -7,13 +7,11 @@ import com.hb.web.model.PermissionDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ========== 权限controller ==========
@@ -64,6 +62,12 @@ public class PermissionController {
             return ResponseData.generateResponseData(ResponseEnum.ERROR);
         }
         return ResponseData.generateResponseData(ResponseEnum.SUCCESS);
+    }
+
+    @GetMapping("/getSourceTypeCombobox")
+    public ResponseData<List<Map<String, Object>>> getSourceTypeCombobox() {
+        List<Map<String, Object>> result = iPermissionService.getSourceTypeList();
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, result);
     }
 
 }

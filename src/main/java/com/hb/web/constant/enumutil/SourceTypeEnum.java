@@ -15,11 +15,19 @@ public enum SourceTypeEnum {
     button(2, "按钮");
 
     private Integer value;
-    private String desc;
+    private String name;
 
-    SourceTypeEnum(Integer value, String desc) {
+    SourceTypeEnum(Integer value, String name) {
         this.value = value;
-        this.desc = desc;
+        this.name = name;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public String getName() {
+        return name;
     }
 
 }
