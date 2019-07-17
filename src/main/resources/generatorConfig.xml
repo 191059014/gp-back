@@ -27,27 +27,20 @@
                              targetProject="src/main/java" type="XMLMAPPER"/>
 
         <!-- 数据库表 以及是否生成example-->
-        <table tableName="t_user" domainObjectName="user"
+        <table tableName="t_role_permission" domainObjectName="RolePermission"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <!-- 设置别名 -->
-            <columnOverride column="userId" property="userId"/>
-            <columnOverride column="userName" property="userName"/>
-            <columnOverride column="password" property="password"/>
-            <columnOverride column="bankName" property="bankName"/>
-            <columnOverride column="bankNo" property="bankNo"/>
-            <columnOverride column="idCardNo" property="idCardNo"/>
-            <columnOverride column="realAuthStatus" property="realAuthStatus"/>
-            <columnOverride column="mobile" property="mobile"/>
-            <columnOverride column="inviterMobile" property="inviterMobile"/>
-            <columnOverride column="riskLevel" property="riskLevel"/>
-            <columnOverride column="riskScore" property="riskScore"/>
+            <columnOverride column="id" property="id"/>
+            <columnOverride column="roleId" property="roleId"/>
+            <columnOverride column="permissionId" property="permissionId"/>
             <columnOverride column="createTime" property="createTime"/>
             <columnOverride column="createUserId" property="createUserId"/>
             <columnOverride column="updateTime" property="updateTime"/>
             <columnOverride column="updateUserId" property="updateUserId"/>
             <columnOverride column="recordStatus" property="recordStatus"/>
             <columnOverride column="parentId" property="parentId"/>
+            <columnOverride column="unit" property="unit"/>
         </table>
     </context>
 </generatorConfiguration>

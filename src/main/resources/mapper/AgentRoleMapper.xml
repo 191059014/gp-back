@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hb.web.mapper.RoleMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.RoleDO">
-        <id column="roleId" property="roleId" jdbcType="INTEGER"/>
-        <result column="roleName" property="roleName" jdbcType="VARCHAR"/>
-        <result column="description" property="description" jdbcType="VARCHAR"/>
+<mapper namespace="com.hb.web.mapper.AgentRoleMapper">
+    <resultMap id="BaseResultMap" type="com.hb.web.model.AgentRoleDO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="agentId" property="agentId" jdbcType="VARCHAR"/>
+        <result column="roleId" property="roleId" jdbcType="INTEGER"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -14,30 +14,30 @@
         <result column="unit" property="unit" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
-    roleId, roleName, description, createTime, createUserId, updateTime, updateUserId, 
-    recordStatus, parentId, unit
+    id, agentId, roleId, createTime, createUserId, updateTime, updateUserId, recordStatus, 
+    parentId, unit
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
-        from t_role
-        where roleId = #{roleId,jdbcType=INTEGER}
+        from t_agent_role
+        where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    update t_role set recordStatus=0 where roleId = #{roleId,jdbcType=INTEGER}
+    update t_agent_role set recordStatus=0 where id = #{id,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.RoleDO">
-        insert into t_role
+    <insert id="insertSelective" parameterType="com.hb.web.model.AgentRoleDO">
+        insert into t_agent_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="agentId != null">
+                agentId,
+            </if>
             <if test="roleId != null">
                 roleId,
-            </if>
-            <if test="roleName != null">
-                roleName,
-            </if>
-            <if test="description != null">
-                description,
             </if>
             <if test="createTime != null">
                 createTime,
@@ -62,14 +62,14 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="agentId != null">
+                #{agentId,jdbcType=VARCHAR},
+            </if>
             <if test="roleId != null">
                 #{roleId,jdbcType=INTEGER},
-            </if>
-            <if test="roleName != null">
-                #{roleName,jdbcType=VARCHAR},
-            </if>
-            <if test="description != null">
-                #{description,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -94,15 +94,14 @@
             </if>
         </trim>
     </insert>
-
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.RoleDO">
-        update t_role
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.AgentRoleDO">
+        update t_agent_role
         <set>
-            <if test="roleName != null">
-                roleName = #{roleName,jdbcType=VARCHAR},
+            <if test="agentId != null">
+                agentId = #{agentId,jdbcType=VARCHAR},
             </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
+            <if test="roleId != null">
+                roleId = #{roleId,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 createTime = #{createTime,jdbcType=TIMESTAMP},
@@ -126,7 +125,7 @@
                 unit = #{unit,jdbcType=INTEGER},
             </if>
         </set>
-        where roleId = #{roleId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
     </update>
 
 </mapper>

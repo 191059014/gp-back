@@ -4,8 +4,12 @@ import com.hb.web.model.RoleDO;
 
 public interface RoleMapper {
 
-    int insert(RoleDO record);
+    int deleteByPrimaryKey(Integer roleId);
 
     int insertSelective(RoleDO record);
+
+    RoleDO selectByPrimaryKey(Integer roleId);
+
+    int updateByPrimaryKeySelective(RoleDO record);
 
 }
