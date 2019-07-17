@@ -99,7 +99,7 @@ public class OfflinePayController {
                 resultList.add(clone);
             }
         }
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, resultList, pageNum, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, resultList, count);
     }
 
     @ApiOperation(value = "添加线下审核信息")

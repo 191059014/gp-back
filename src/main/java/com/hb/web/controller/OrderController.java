@@ -56,7 +56,7 @@ public class OrderController {
                 resultList.add(clone);
             }
         }
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, resultList, pageNum, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, resultList, count);
     }
 
     @ApiOperation(value = "添加订单")

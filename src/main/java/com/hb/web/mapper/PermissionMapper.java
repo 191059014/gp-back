@@ -1,6 +1,9 @@
 package com.hb.web.mapper;
 
 import com.hb.web.model.PermissionDO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PermissionMapper {
 
@@ -12,4 +15,7 @@ public interface PermissionMapper {
 
     int updateByPrimaryKeySelective(PermissionDO record);
 
+    List<PermissionDO> findPageList(@Param("permissionDO") PermissionDO permissionDO, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+
+    Integer findCount(@Param("permissionDO") PermissionDO permissionDO);
 }

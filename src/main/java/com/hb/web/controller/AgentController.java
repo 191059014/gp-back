@@ -33,7 +33,7 @@ public class AgentController extends BaseController {
     public ResponseData<List<AgentDO>> getAgentListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody AgentDO agentDO) {
         List<AgentDO> agentList = iAgentService.findAgentList(agentDO, pageNum, pageSize);
         Integer count = iAgentService.findCount(agentDO);
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, agentList, pageNum, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, agentList, count);
     }
 
     @ApiOperation(value = "添加代理商")

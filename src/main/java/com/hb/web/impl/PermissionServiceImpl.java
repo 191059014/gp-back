@@ -23,12 +23,12 @@ public class PermissionServiceImpl implements IPermissionService {
 
     @Override
     public List<PermissionDO> findPageList(PermissionDO permissionDO, Integer pageNum, Integer pageSize) {
-        return null;
+        return permissionMapper.findPageList(permissionDO, pageNum, pageSize);
     }
 
     @Override
     public Integer findCount(PermissionDO permissionDO) {
-        return null;
+        return permissionMapper.findCount(permissionDO);
     }
 
     @Override

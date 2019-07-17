@@ -31,7 +31,7 @@ public class CustomerFundController {
     public ResponseData<List<CustomerFundDO>> getCustomerFundListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody CustomerFundDO customerFundDO) {
         List<CustomerFundDO> customerFundList = iCustomerFundService.findCustomerFundList(customerFundDO, pageNum, pageSize);
         Integer count = iCustomerFundService.findCount(customerFundDO);
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, customerFundList, pageNum, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, customerFundList, count);
     }
 
     @ApiOperation(value = "添加客户资金信息")

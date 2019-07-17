@@ -24,9 +24,34 @@
         from t_permission
         where permissionId = #{permissionId,jdbcType=INTEGER}
     </select>
+
+    <select id="findPageList" resultType="com.hb.web.model.PermissionDO">
+        select * from t_permission where 1=1
+        <include refid="sqlCondition"/>
+        order by createTime desc
+        <if test="pageSize != null and pageSize != 0">
+            <![CDATA[ limit #{startRow},#{pageSize} ]]>
+        </if>
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(1) from t_permission where 1=1
+        <include refid="sqlCondition"/>
+    </select>
+
+    <sql id="sqlCondition">
+        <if test="permissionDO.permissionName != null and permissionDO.permissionName !=''">
+            <![CDATA[ and permissionName = #{permissionDO.permissionName} ]]>
+        </if>
+        <if test="permissionDO.sourceType != null and permissionDO.sourceType !=''">
+            <![CDATA[ and sourceType = #{permissionDO.sourceType} ]]>
+        </if>
+        and recordStatus = 1
+    </sql>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    update t_permission set recordStatus=0 where permissionId = #{permissionId,jdbcType=INTEGER}
-  </delete>
+      update t_permission set recordStatus=0 where permissionId = #{permissionId,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insertSelective" parameterType="com.hb.web.model.PermissionDO">
         insert into t_permission

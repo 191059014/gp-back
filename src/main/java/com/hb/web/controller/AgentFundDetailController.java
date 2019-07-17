@@ -33,7 +33,7 @@ public class AgentFundDetailController {
     public ResponseData<List<AgentFundDeailDO>> getAgentFundDetailListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody AgentFundDetailRequestVO agentFundDetailRequestVO) {
         List<AgentFundDeailDO> agentFundDetailList = iAgentFundDetailService.findAgentFundDetailList(agentFundDetailRequestVO, pageNum, pageSize);
         Integer count = iAgentFundDetailService.findCount(agentFundDetailRequestVO);
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, agentFundDetailList, pageNum, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, agentFundDetailList, count);
     }
 
     @ApiOperation(value = "获取资金类型下拉框")

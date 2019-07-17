@@ -31,7 +31,7 @@ public class AgentFundController {
     public ResponseData<List<AgentFundDO>> getAgentFundListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody AgentFundDO agentFundDO) {
         List<AgentFundDO> agentFundList = iAgentFundService.findAgentFundList(agentFundDO, pageNum, pageSize);
         Integer count = iAgentFundService.findCount(agentFundDO);
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, agentFundList, pageNum, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, agentFundList, count);
     }
 
     @ApiOperation(value = "添加代理商资金信息")

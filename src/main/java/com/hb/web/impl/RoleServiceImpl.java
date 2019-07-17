@@ -3,6 +3,7 @@ package com.hb.web.impl;
 import com.hb.web.api.IRoleService;
 import com.hb.web.mapper.RoleMapper;
 import com.hb.web.model.RoleDO;
+import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,12 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public List<RoleDO> findPageList(RoleDO roleDO, Integer pageNum, Integer pageSize) {
-        return null;
+        return roleMapper.findPageList(roleDO, PageUtils.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(RoleDO roleDO) {
-        return null;
+        return roleMapper.findCount(roleDO);
     }
 
     @Override

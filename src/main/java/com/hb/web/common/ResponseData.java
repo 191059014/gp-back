@@ -83,7 +83,7 @@ public class ResponseData<T> implements Serializable {
      * @return 响应实体
      */
     public static <T> ResponseData<T> generateResponseData(ResponseEnum responseEnum) {
-        return generateResponseData(responseEnum.getCode(), responseEnum.getMsg(), null, null, null);
+        return generateResponseData(responseEnum.getCode(), responseEnum.getMsg(), null, null);
     }
 
     /**
@@ -94,7 +94,7 @@ public class ResponseData<T> implements Serializable {
      * @return 响应实体
      */
     public static <T> ResponseData<T> generateResponseData(ResponseEnum responseEnum, T t) {
-        return generateResponseData(responseEnum.getCode(), responseEnum.getMsg(), t, null, null);
+        return generateResponseData(responseEnum.getCode(), responseEnum.getMsg(), t, null);
     }
 
     /**
@@ -102,12 +102,11 @@ public class ResponseData<T> implements Serializable {
      *
      * @param responseEnum 响应码枚举对象
      * @param t            业务数据
-     * @param pageNum      当前页数
      * @param count        总条数
      * @return 响应实体
      */
-    public static <T> ResponseData<T> generateResponseData(ResponseEnum responseEnum, T t, Integer pageNum, Integer count) {
-        return generateResponseData(responseEnum.getCode(), responseEnum.getMsg(), t, pageNum, count);
+    public static <T> ResponseData<T> generateResponseData(ResponseEnum responseEnum, T t, Integer count) {
+        return generateResponseData(responseEnum.getCode(), responseEnum.getMsg(), t, count);
     }
 
     /**
@@ -115,11 +114,10 @@ public class ResponseData<T> implements Serializable {
      *
      * @param code    响应码
      * @param msg     响应信息
-     * @param pageNum 当前页数
      * @param total   总条数
      * @return 响应实体
      */
-    private static <T> ResponseData<T> generateResponseData(String code, String msg, T t, Integer pageNum, Integer total) {
+    private static <T> ResponseData<T> generateResponseData(String code, String msg, T t, Integer total) {
         ResponseData<T> response = new ResponseData<T>();
         response.setCode(code);
         response.setMsg(msg);
@@ -136,7 +134,7 @@ public class ResponseData<T> implements Serializable {
      * @return 响应实体
      */
     public static <T> ResponseData<T> generateResponseData(String code, String msg) {
-        return generateResponseData(code, msg, null, null, null);
+        return generateResponseData(code, msg, null, null);
     }
 
 }

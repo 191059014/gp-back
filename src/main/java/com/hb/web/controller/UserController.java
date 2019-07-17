@@ -33,7 +33,7 @@ public class UserController extends BaseController {
     public ResponseData<List<UserDO>> getUserListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody UserDO userDO) {
         List<UserDO> userList = iUserService.findUserList(userDO, pageNum, pageSize);
         Integer count = iUserService.findCount(userDO);
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, userList, pageNum, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, userList, count);
     }
 
     @ApiOperation(value = "添加用户")

@@ -31,7 +31,7 @@ public class CustomerFundDetailController {
     public ResponseData<List<CustomerFundDetailDO>> getCustomerFundDetailListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody CustomerFundDetailDO customerFundDetailDO) {
         List<CustomerFundDetailDO> customerFundDetailList = iCustomerFundDetailService.findListByCondition(customerFundDetailDO, pageNum, pageSize);
         Integer count = iCustomerFundDetailService.findCountByCondition(customerFundDetailDO);
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, customerFundDetailList, pageNum, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, customerFundDetailList, count);
     }
 
     @ApiOperation(value = "添加客户资金流水信息")

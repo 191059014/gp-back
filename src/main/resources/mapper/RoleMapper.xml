@@ -17,15 +17,38 @@
     roleId, roleName, description, createTime, createUserId, updateTime, updateUserId, 
     recordStatus, parentId, unit
   </sql>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from t_role
         where roleId = #{roleId,jdbcType=INTEGER}
     </select>
+
+    <select id="findPageList" resultType="com.hb.web.model.RoleDO">
+        select * from t_role where 1=1
+        <include refid="sqlCondition"/>
+        order by createTime desc
+        <if test="pageSize != null and pageSize != 0">
+            <![CDATA[ limit #{startRow},#{pageSize} ]]>
+        </if>
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(1) from t_role where 1=1
+        <include refid="sqlCondition"/>
+    </select>
+
+    <sql id="sqlCondition">
+        <if test="roleDO.roleName != null and roleDO.roleName !=''">
+            <![CDATA[ and roleName = #{roleDO.roleName} ]]>
+        </if>
+        and recordStatus = 1
+    </sql>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    update t_role set recordStatus=0 where roleId = #{roleId,jdbcType=INTEGER}
-  </delete>
+      update t_role set recordStatus=0 where roleId = #{roleId,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insertSelective" parameterType="com.hb.web.model.RoleDO">
         insert into t_role
