@@ -18,4 +18,5 @@ public interface RoleMapper {
     List<RoleDO> findPageList(@Param("roleDO") RoleDO roleDO, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);
 
     Integer findCount(@Param("roleDO") RoleDO roleDO);
+
 }

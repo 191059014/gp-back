@@ -3,6 +3,7 @@ package com.hb.web.mapper;
 import com.hb.web.model.RolePermissionDO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RolePermissionMapper {
 
@@ -17,4 +18,6 @@ public interface RolePermissionMapper {
     int batchInsert(List<RolePermissionDO> addList);
 
     int deleteByRoleId(Integer roleId);
+
+    Set<Integer> getPermissionIdSetByRoleIdSet(Set<Integer> roleIdSet);
 }

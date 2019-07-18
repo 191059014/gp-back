@@ -142,4 +142,11 @@
         </foreach>
     </insert>
 
+    <select id="getPermissionIdSetByRoleIdSet" resultType="java.lang.Integer">
+        select permissionId from t_role_permission where roleId in
+        <foreach collection="collection" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+    </select>
+
 </mapper>

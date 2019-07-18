@@ -1,6 +1,8 @@
 package com.hb.web.impl;
 
 import com.hb.web.api.IAgentService;
+import com.hb.web.api.IRolePermissionService;
+import com.hb.web.api.IRoleService;
 import com.hb.web.api.IUserService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.RealAuthStatusEnum;
@@ -30,6 +32,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IAgentService iAgentService;
+
+    @Autowired
+    private IRolePermissionService iRolePermissionService;
 
     @Override
     public List<UserDO> findUserList(UserDO userDO, Integer pageNum, Integer pageSize) {
@@ -92,5 +97,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<UserDO> getUserListByUserIdSet(Set<String> userIdSet) {
         return userMapper.getUserListByUserIdSet(userIdSet);
+    }
+
+    @Override
+    public Set<String> getUserPermissionList(String userId) {
+        return null;
     }
 }

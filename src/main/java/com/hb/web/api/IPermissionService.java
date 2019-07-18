@@ -4,6 +4,7 @@ import com.hb.web.model.PermissionDO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * ========== 权限 ==========
@@ -58,7 +59,26 @@ public interface IPermissionService {
      */
     int deleteByPrimaryKey(Integer permissionId);
 
-    List<Map<String,Object>> getSourceTypeList();
+    /**
+     * ########## 获取资源类型集合 ##########
+     *
+     * @return 资源类型集合
+     */
+    List<Map<String, Object>> getSourceTypeList();
 
+    /**
+     * ########## 批量新增权限 ##########
+     *
+     * @param permissionList 权限几何信息
+     * @return 是否成功
+     */
     boolean batchInsert(List<PermissionDO> permissionList);
+
+    /**
+     * ########## 根据权限ID集合查询权限集合 ##########
+     *
+     * @param permissionSet 权限ID集合
+     * @return 权限值集合
+     */
+    Set<String> getPermissionValueSetByPermissionIds(Set<Integer> permissionSet);
 }

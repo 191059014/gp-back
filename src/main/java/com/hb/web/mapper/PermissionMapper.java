@@ -4,6 +4,7 @@ import com.hb.web.model.PermissionDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PermissionMapper {
 
@@ -24,4 +25,6 @@ public interface PermissionMapper {
     int deleteAll();
 
     List<PermissionDO> findList(@Param("permissionDO") PermissionDO permissionDO);
+
+    Set<String> getPermissionValueSetByPermissionIds(Set<Integer> permissionSet);
 }

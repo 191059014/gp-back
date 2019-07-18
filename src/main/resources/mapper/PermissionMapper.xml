@@ -45,6 +45,13 @@
         order by createTime desc
     </select>
 
+    <select id="getPermissionValueSetByPermissionIds" resultType="java.lang.String">
+        select permissionValue from t_permission where permissionId in
+        <foreach collection="collection" item="permissionId" open="(" close=")" separator=",">
+            #{permissionId}
+        </foreach>
+    </select>
+
     <sql id="sqlCondition">
         <if test="permissionDO.permissionName != null and permissionDO.permissionName !=''">
             <![CDATA[ and permissionName = #{permissionDO.permissionName} ]]>
@@ -178,9 +185,9 @@
         INSERT INTO t_permission
         (permissionName, sourceType, permissionValue)
         VALUES
-        <foreach collection ="list" item="permission" separator =",">
+        <foreach collection="list" item="permission" separator=",">
             (#{permission.permissionName}, #{permission.sourceType}, #{permission.permissionValue})
-        </foreach >
+        </foreach>
     </insert>
 
 </mapper>

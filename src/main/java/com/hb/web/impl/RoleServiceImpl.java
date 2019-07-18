@@ -1,13 +1,18 @@
 package com.hb.web.impl;
 
+import com.hb.web.api.IPermissionService;
+import com.hb.web.api.IRolePermissionService;
 import com.hb.web.api.IRoleService;
 import com.hb.web.mapper.RoleMapper;
 import com.hb.web.model.RoleDO;
 import com.hb.web.util.PageUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * ========== 角色 ==========
@@ -21,6 +26,12 @@ public class RoleServiceImpl implements IRoleService {
 
     @Autowired
     private RoleMapper roleMapper;
+
+    @Autowired
+    private IRolePermissionService iRolePermissionService;
+
+    @Autowired
+    private IPermissionService iPermissionService;
 
     @Override
     public List<RoleDO> findPageList(RoleDO roleDO, Integer pageNum, Integer pageSize) {
@@ -45,6 +56,18 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public int deleteByPrimaryKey(Integer roleId) {
         return roleMapper.deleteByPrimaryKey(roleId);
+    }
+
+    @Override
+    public Set<String> getPermissionByRoleId(Integer roleId) {
+        Set<Integer> roleIdSet = new HashSet<>();
+        roleIdSet.add(roleId);
+        Set<Integer> permissionIdSet = iRolePermissionService.getPermissionIdSetByRoleIdSet(roleIdSet);
+        if (CollectionUtils.isEmpty(permissionIdSet)) {
+            return null;
+        }
+        Set<String> permissionValueSet = iPermissionService.getPermissionValueSetByPermissionIds(permissionIdSet);
+        return permissionValueSet;
     }
 
 }

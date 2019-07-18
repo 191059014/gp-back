@@ -1,12 +1,15 @@
 package com.hb.web.controller;
 
 
+import com.hb.web.api.IRolePermissionService;
 import com.hb.web.api.IRoleService;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
 import com.hb.web.model.RoleDO;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
+import com.hb.web.util.CloneUtils;
+import com.hb.web.vo.webvo.response.RoleQueryResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * ========== 角色controller ==========
@@ -34,10 +39,18 @@ public class RoleController {
     private IRoleService roleService;
 
     @RequestMapping("/getRoleListPage")
-    public ResponseData<List<RoleDO>> getRoleListPage(@RequestBody RoleDO roleDO, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+    public ResponseData<List<RoleQueryResponseVO>> getRoleListPage(@RequestBody RoleDO roleDO, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         List<RoleDO> pageList = roleService.findPageList(roleDO, pageNum, pageSize);
+        List<RoleQueryResponseVO> resultList = new ArrayList<>();
+        for (RoleDO aDo : pageList) {
+            RoleQueryResponseVO responseVO = CloneUtils.clone(aDo, RoleQueryResponseVO.class);
+            // 根据roleId查询角色对应的权限
+            Set<String> permissionSet = roleService.getPermissionByRoleId(aDo.getRoleId());
+            responseVO.setPermissionValueSet(permissionSet);
+            resultList.add(responseVO);
+        }
         Integer count = roleService.findCount(roleDO);
-        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, pageList, count);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, resultList, count);
     }
 
     @RequestMapping("/addRole")

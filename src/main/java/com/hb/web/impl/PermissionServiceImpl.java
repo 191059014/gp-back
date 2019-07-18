@@ -1,7 +1,6 @@
 package com.hb.web.impl;
 
 import com.hb.web.api.IPermissionService;
-import com.hb.web.constant.enumutil.AgentLevelEnum;
 import com.hb.web.constant.enumutil.SourceTypeEnum;
 import com.hb.web.mapper.PermissionMapper;
 import com.hb.web.model.PermissionDO;
@@ -11,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ========== 权限 ==========
@@ -77,6 +73,11 @@ public class PermissionServiceImpl implements IPermissionService {
         int deleteNum = permissionMapper.deleteAll();
         int insertNum = permissionMapper.batchInsert(permissionList);
         return true;
+    }
+
+    @Override
+    public Set<String> getPermissionValueSetByPermissionIds(Set<Integer> permissionSet) {
+        return permissionMapper.getPermissionValueSetByPermissionIds(permissionSet);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.hb.web.api;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * ========== 角色权限 ==========
@@ -12,4 +13,6 @@ import java.util.List;
 public interface IRolePermissionService {
 
     int batchInsert(List<String> permissionValueList, Integer roleId);
+
+    Set<Integer> getPermissionIdSetByRoleIdSet(Set<Integer> roleIdSet);
 }

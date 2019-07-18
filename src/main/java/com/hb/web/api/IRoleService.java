@@ -3,6 +3,7 @@ package com.hb.web.api;
 import com.hb.web.model.RoleDO;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * ========== 角色 ==========
@@ -55,4 +56,5 @@ public interface IRoleService {
      */
     int deleteByPrimaryKey(Integer roleId);
 
+    Set<String> getPermissionByRoleId(Integer roleId);
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * ========== 用户controller ==========
@@ -80,6 +81,13 @@ public class UserController extends BaseController {
     @GetMapping("/getRealAuthStatusCombobox")
     public ResponseData<List<Map<String, Object>>> getRealAuthStatusCombobox() {
         List<Map<String, Object>> result = iUserService.getRealAuthStatusList();
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, result);
+    }
+
+    @ApiOperation(value = "查询用户对应权限集合")
+    @GetMapping("/getUserPermissionList")
+    public ResponseData<Set<String>> getUserPermissionList(String userId) {
+        Set<String> result = iUserService.getUserPermissionList(userId);
         return ResponseData.generateResponseData(ResponseEnum.SUCCESS, result);
     }
 

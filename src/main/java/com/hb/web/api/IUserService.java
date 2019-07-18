@@ -84,4 +84,5 @@ public interface IUserService {
      */
     List<UserDO> getUserListByUserIdSet(Set<String> userIdSet);
 
+    Set<String> getUserPermissionList(String userId);
 }

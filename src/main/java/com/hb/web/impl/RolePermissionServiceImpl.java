@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +44,11 @@ public class RolePermissionServiceImpl implements IRolePermissionService {
         // 先删除角色对应的权限，再批量添加
         rolePermissionMapper.deleteByRoleId(roleId);
         return rolePermissionMapper.batchInsert(addList);
+    }
+
+    @Override
+    public Set<Integer> getPermissionIdSetByRoleIdSet(Set<Integer> roleIdSet) {
+        return rolePermissionMapper.getPermissionIdSetByRoleIdSet(roleIdSet);
     }
 
 }
