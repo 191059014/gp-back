@@ -1,6 +1,6 @@
 package com.hb.web.api;
 
-import com.hb.web.model.RolePermissionDO;
+import java.util.List;
 
 /**
  * ========== 角色权限 ==========
@@ -11,12 +11,5 @@ import com.hb.web.model.RolePermissionDO;
  */
 public interface IRolePermissionService {
 
-    /**
-     * ########## 添加角色权限关系 ##########
-     *
-     * @param rolePermissionDO 角色权限关系信息
-     * @return 是否成功
-     */
-    int addRolePermission(RolePermissionDO rolePermissionDO);
-
+    int batchInsert(List<String> permissionValueList, Integer roleId);
 }

@@ -8,6 +8,8 @@ import com.hb.web.model.PermissionDO;
 import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +40,11 @@ public class PermissionServiceImpl implements IPermissionService {
     }
 
     @Override
+    public List<PermissionDO> findList(PermissionDO permissionDO) {
+        return permissionMapper.findList(permissionDO);
+    }
+
+    @Override
     public int addPermission(PermissionDO permissionDO) {
         return permissionMapper.insertSelective(permissionDO);
     }
@@ -62,6 +69,14 @@ public class PermissionServiceImpl implements IPermissionService {
             resultList.add(map);
         }
         return resultList;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public boolean batchInsert(List<PermissionDO> permissionList) {
+        int deleteNum = permissionMapper.deleteAll();
+        int insertNum = permissionMapper.batchInsert(permissionList);
+        return true;
     }
 
 }

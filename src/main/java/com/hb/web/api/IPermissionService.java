@@ -32,6 +32,8 @@ public interface IPermissionService {
      */
     Integer findCount(PermissionDO permissionDO);
 
+    List<PermissionDO> findList(PermissionDO permissionDO);
+
     /**
      * ########## 添加权限 ##########
      *
@@ -58,4 +60,5 @@ public interface IPermissionService {
 
     List<Map<String,Object>> getSourceTypeList();
 
+    boolean batchInsert(List<PermissionDO> permissionList);
 }

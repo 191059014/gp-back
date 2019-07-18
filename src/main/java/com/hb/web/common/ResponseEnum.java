@@ -12,6 +12,7 @@ public enum ResponseEnum {
     UNKONW("00000", "不确定"),
 
     SUCCESS("10000", "操作成功"),
+    ERROR_PARAM_VERIFY("99996", "参数校验不通过"),
     REQUEST_IN_BLACKLIST("99997", "当前IP已纳入黑名单，禁止访问"),
     REQUEST_TOO_OFTEN("99998", "当前操作太过频繁，请稍后再试"),
     ERROR("99999", "操作失败，请稍后再试"),

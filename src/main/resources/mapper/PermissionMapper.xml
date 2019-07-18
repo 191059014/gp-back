@@ -39,6 +39,12 @@
         <include refid="sqlCondition"/>
     </select>
 
+    <select id="findList" resultType="com.hb.web.model.PermissionDO">
+        select * from t_permission where 1=1
+        <include refid="sqlCondition"/>
+        order by createTime desc
+    </select>
+
     <sql id="sqlCondition">
         <if test="permissionDO.permissionName != null and permissionDO.permissionName !=''">
             <![CDATA[ and permissionName = #{permissionDO.permissionName} ]]>
@@ -51,6 +57,10 @@
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
       update t_permission set recordStatus=0 where permissionId = #{permissionId,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteAll">
+        delete from t_permission;
     </delete>
 
     <insert id="insertSelective" parameterType="com.hb.web.model.PermissionDO">
@@ -163,5 +173,14 @@
         </set>
         where permissionId = #{permissionId,jdbcType=INTEGER}
     </update>
+
+    <insert id="batchInsert" parameterType="collection">
+        INSERT INTO t_permission
+        (permissionName, sourceType, permissionValue)
+        VALUES
+        <foreach collection ="list" item="permission" separator =",">
+            (#{permission.permissionName}, #{permission.sourceType}, #{permission.permissionValue})
+        </foreach >
+    </insert>
 
 </mapper>

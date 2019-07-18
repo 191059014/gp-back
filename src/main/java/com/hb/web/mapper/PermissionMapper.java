@@ -18,4 +18,10 @@ public interface PermissionMapper {
     List<PermissionDO> findPageList(@Param("permissionDO") PermissionDO permissionDO, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);
 
     Integer findCount(@Param("permissionDO") PermissionDO permissionDO);
+
+    int batchInsert(List<PermissionDO> permissionList);
+
+    int deleteAll();
+
+    List<PermissionDO> findList(@Param("permissionDO") PermissionDO permissionDO);
 }

@@ -23,9 +23,10 @@
         from t_role_permission
         where id = #{id,jdbcType=INTEGER}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    update t_role_permission set recordStatus=0 where id = #{id,jdbcType=INTEGER}
-  </delete>
+      update t_role_permission set recordStatus=0 where id = #{id,jdbcType=INTEGER}
+    </delete>
 
     <insert id="insertSelective" parameterType="com.hb.web.model.RolePermissionDO">
         insert into t_role_permission
@@ -127,5 +128,18 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <delete id="deleteByRoleId">
+      delete from t_role_permission where roleId = #{roleId}
+    </delete>
+
+    <insert id="batchInsert" parameterType="collection">
+        INSERT INTO t_role_permission
+        (roleId, permissionId)
+        VALUES
+        <foreach collection="list" item="rolePermission" separator=",">
+            (#{rolePermission.roleId}, #{rolePermission.permissionId})
+        </foreach>
+    </insert>
 
 </mapper>

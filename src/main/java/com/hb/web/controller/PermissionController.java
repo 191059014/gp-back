@@ -70,4 +70,10 @@ public class PermissionController {
         return ResponseData.generateResponseData(ResponseEnum.SUCCESS, result);
     }
 
+    @PostMapping("/batchInsert")
+    public ResponseData batchInsert(@RequestBody List<PermissionDO> permissionList){
+        boolean result = iPermissionService.batchInsert(permissionList);
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS);
+    }
+
 }
