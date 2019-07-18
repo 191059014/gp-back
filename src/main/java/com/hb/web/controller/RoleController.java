@@ -10,11 +10,9 @@ import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.CloneUtils;
 import com.hb.web.vo.webvo.response.RoleQueryResponseVO;
+import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
@@ -78,6 +76,12 @@ public class RoleController {
             return ResponseData.generateResponseData(ResponseEnum.ERROR);
         }
         return ResponseData.generateResponseData(ResponseEnum.SUCCESS);
+    }
+
+    @GetMapping("/findRoleTree")
+    public ResponseData<List<RoleTreeResponseVO>> findRoleTree() {
+        List<RoleTreeResponseVO> roleTreeList = roleService.findRoleTree();
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS, roleTreeList);
     }
 
 }

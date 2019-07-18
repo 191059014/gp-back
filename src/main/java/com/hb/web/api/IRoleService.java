@@ -1,6 +1,7 @@
 package com.hb.web.api;
 
 import com.hb.web.model.RoleDO;
+import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
 
 import java.util.List;
 import java.util.Set;
@@ -56,5 +57,19 @@ public interface IRoleService {
      */
     int deleteByPrimaryKey(Integer roleId);
 
+    /**
+     * ########## 通过roleId获取权限值集合 ##########
+     *
+     * @param roleId 角色ID
+     * @return 权限值集合
+     */
     Set<String> getPermissionByRoleId(Integer roleId);
+
+    /** 
+     * ##########  ##########
+     *
+     * @return
+     */
+    List<RoleTreeResponseVO> findRoleTree();
+
 }

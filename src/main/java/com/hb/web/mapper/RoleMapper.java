@@ -1,6 +1,7 @@
 package com.hb.web.mapper;
 
 import com.hb.web.model.RoleDO;
+import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface RoleMapper {
 
     Integer findCount(@Param("roleDO") RoleDO roleDO);
 
+    List<RoleTreeResponseVO> findRoleTree();
 }

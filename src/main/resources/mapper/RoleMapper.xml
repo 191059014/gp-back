@@ -39,6 +39,10 @@
         <include refid="sqlCondition"/>
     </select>
 
+    <select id="findRoleTree" resultType="com.hb.web.vo.webvo.response.RoleTreeResponseVO">
+      select roleId as id,roleName as label  from t_role where recordStatus = 1
+    </select>
+
     <sql id="sqlCondition">
         <if test="roleDO.roleName != null and roleDO.roleName !=''">
             <![CDATA[ and roleName = #{roleDO.roleName} ]]>

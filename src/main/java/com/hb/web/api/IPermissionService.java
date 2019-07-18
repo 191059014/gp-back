@@ -78,7 +78,8 @@ public interface IPermissionService {
      * ########## 根据权限ID集合查询权限集合 ##########
      *
      * @param permissionSet 权限ID集合
+     * @param sourceType
      * @return 权限值集合
      */
-    Set<String> getPermissionValueSetByPermissionIds(Set<Integer> permissionSet);
+    Set<String> getPermissionValueSetByPermissionIds(Set<Integer> permissionSet, Integer sourceType);
 }

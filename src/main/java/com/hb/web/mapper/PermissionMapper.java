@@ -26,5 +26,5 @@ public interface PermissionMapper {
 
     List<PermissionDO> findList(@Param("permissionDO") PermissionDO permissionDO);
 
-    Set<String> getPermissionValueSetByPermissionIds(Set<Integer> permissionSet);
+    Set<String> getPermissionValueSetByPermissionIds(@Param("permissionSet") Set<Integer> permissionSet, @Param("sourceType") Integer sourceType);
 }

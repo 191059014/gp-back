@@ -76,8 +76,8 @@ public class PermissionServiceImpl implements IPermissionService {
     }
 
     @Override
-    public Set<String> getPermissionValueSetByPermissionIds(Set<Integer> permissionSet) {
-        return permissionMapper.getPermissionValueSetByPermissionIds(permissionSet);
+    public Set<String> getPermissionValueSetByPermissionIds(Set<Integer> permissionSet, Integer sourceType) {
+        return permissionMapper.getPermissionValueSetByPermissionIds(permissionSet, sourceType);
     }
 
 }

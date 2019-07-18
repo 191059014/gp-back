@@ -2,6 +2,8 @@ package com.hb.web.api;
 
 import com.hb.web.model.AgentRoleDO;
 
+import java.util.Set;
+
 /**
  * ========== 代理商-角色 ==========
  *
@@ -19,4 +21,20 @@ public interface IAgentRoleService {
      */
     int addAgentRole(AgentRoleDO agentRoleDO);
 
+    /**
+     * ########## 批量新增代理商角色关系 ##########
+     *
+     * @param agentId   代理商ID
+     * @param roleIdSet 角色id集合
+     * @return 是否成功
+     */
+    boolean batchInsert(String agentId, Set<Integer> roleIdSet);
+
+    /**
+     * ########## 通过代理商id查询角色集合 ##########
+     *
+     * @param agentId 代理商ID
+     * @return 角色ID集合
+     */
+    Set<Integer> getRoleIdSetByAgentId(String agentId);
 }

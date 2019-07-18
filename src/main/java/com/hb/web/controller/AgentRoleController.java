@@ -1,12 +1,17 @@
 package com.hb.web.controller;
 
 import com.hb.web.api.IAgentRoleService;
+import com.hb.web.common.ResponseData;
+import com.hb.web.common.ResponseEnum;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.Set;
 
 /**
  * ========== 代理商角色controller ==========
@@ -24,5 +29,17 @@ public class AgentRoleController {
 
     @Autowired
     private IAgentRoleService iAgentRoleService;
+
+    @PostMapping("/batchInsert")
+    private ResponseData batchInsert(@RequestBody Set<Integer> roleIdSet, @RequestParam("agentId") String agentId) {
+        if (CollectionUtils.isEmpty(roleIdSet) || StringUtils.isBlank(agentId)) {
+            return ResponseData.generateResponseData(ResponseEnum.ERROR_PARAM_VERIFY);
+        }
+        boolean result = iAgentRoleService.batchInsert(agentId, roleIdSet);
+        if (!result) {
+            return ResponseData.generateResponseData(ResponseEnum.ERROR);
+        }
+        return ResponseData.generateResponseData(ResponseEnum.SUCCESS);
+    }
 
 }

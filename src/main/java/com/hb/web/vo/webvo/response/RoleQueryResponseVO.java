@@ -1,5 +1,8 @@
 package com.hb.web.vo.webvo.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hb.web.util.DateUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -16,7 +19,9 @@ public class RoleQueryResponseVO implements Serializable {
     private Integer roleId;
     private String roleName;
     private String description;
+    @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
     private Date createTime;
+    @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
     private Date updateTime;
 
     Set<String> permissionValueSet;

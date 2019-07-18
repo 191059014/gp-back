@@ -14,18 +14,28 @@
         <result column="unit" property="unit" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, agentId, roleId, createTime, createUserId, updateTime, updateUserId, recordStatus, 
-    parentId, unit
-  </sql>
+        id, agentId, roleId, createTime, createUserId, updateTime, updateUserId, recordStatus,
+        parentId, unit
+    </sql>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from t_agent_role
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="getRoleIdSetByAgentId" resultType="java.lang.Integer">
+        select roleId from t_agent_role where agentId=#{agentId}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     update t_agent_role set recordStatus=0 where id = #{id,jdbcType=INTEGER}
   </delete>
+
+    <delete id="deleteByAgentId">
+      delete from t_agent_role where agentId=#{agentId}
+    </delete>
 
     <insert id="insertSelective" parameterType="com.hb.web.model.AgentRoleDO">
         insert into t_agent_role
@@ -94,6 +104,16 @@
             </if>
         </trim>
     </insert>
+
+    <insert id="batchInsert">
+        INSERT INTO t_agent_role
+        (agentId, roleId)
+        VALUES
+        <foreach collection="list" item="agentRole" separator=",">
+            (#{agentRole.agentId}, #{agentRole.roleId})
+        </foreach>
+    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.AgentRoleDO">
         update t_agent_role
         <set>

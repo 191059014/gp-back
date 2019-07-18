@@ -6,6 +6,7 @@ import com.hb.web.api.IRoleService;
 import com.hb.web.mapper.RoleMapper;
 import com.hb.web.model.RoleDO;
 import com.hb.web.util.PageUtils;
+import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,8 +67,13 @@ public class RoleServiceImpl implements IRoleService {
         if (CollectionUtils.isEmpty(permissionIdSet)) {
             return null;
         }
-        Set<String> permissionValueSet = iPermissionService.getPermissionValueSetByPermissionIds(permissionIdSet);
+        Set<String> permissionValueSet = iPermissionService.getPermissionValueSetByPermissionIds(permissionIdSet, null);
         return permissionValueSet;
+    }
+
+    @Override
+    public List<RoleTreeResponseVO> findRoleTree() {
+        return roleMapper.findRoleTree();
     }
 
 }
