@@ -32,7 +32,7 @@ public class AgentRoleController {
 
     @PostMapping("/batchInsert")
     private ResponseData batchInsert(@RequestBody Set<Integer> roleIdSet, @RequestParam("agentId") String agentId) {
-        if (CollectionUtils.isEmpty(roleIdSet) || StringUtils.isBlank(agentId)) {
+        if (StringUtils.isBlank(agentId)) {
             return ResponseData.generateResponseData(ResponseEnum.ERROR_PARAM_VERIFY);
         }
         boolean result = iAgentRoleService.batchInsert(agentId, roleIdSet);

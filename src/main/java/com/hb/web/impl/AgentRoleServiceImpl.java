@@ -38,7 +38,9 @@ public class AgentRoleServiceImpl implements IAgentRoleService {
         for (Integer roleId : roleIdSet) {
             addList.add(new AgentRoleDO(agentId, roleId));
         }
-        int j = agentRoleMapper.batchInsert(addList);
+        if (addList.size() > 0) {
+            int j = agentRoleMapper.batchInsert(addList);
+        }
         return true;
     }
 
