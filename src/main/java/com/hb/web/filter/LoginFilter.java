@@ -28,7 +28,7 @@ public class LoginFilter implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginFilter.class);
 
-    private static boolean filterSwitch = false;
+    private static boolean filterSwitch = true;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

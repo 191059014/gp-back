@@ -53,6 +53,11 @@
         <if test="sourceType != null">
             and sourceType = #{sourceType}
         </if>
+        and recordStatus = 1
+    </select>
+
+    <select id="getAllPermissionValueSet" resultType="java.lang.String">
+        select permissionValue from t_permission where recordStatus = 1
     </select>
 
     <sql id="sqlCondition">

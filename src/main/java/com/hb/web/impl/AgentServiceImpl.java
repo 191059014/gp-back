@@ -1,22 +1,27 @@
 package com.hb.web.impl;
 
+import com.hb.web.api.IAgentRoleService;
 import com.hb.web.api.IAgentService;
+import com.hb.web.api.IPermissionService;
+import com.hb.web.api.IRolePermissionService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.AgentLevelEnum;
+import com.hb.web.constant.enumutil.SourceTypeEnum;
 import com.hb.web.model.AgentDO;
 import com.hb.web.mapper.AgentMapper;
+import com.hb.web.model.PermissionDO;
+import com.hb.web.tool.Logger;
+import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.DateUtils;
 import com.hb.web.util.EncryptUtils;
 import com.hb.web.util.PageUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ========== 代理商service实现类 ==========
@@ -28,11 +33,22 @@ import java.util.Map;
 @Service
 public class AgentServiceImpl implements IAgentService {
 
+    private Logger LOGGER = LoggerFactory.getLogger(AgentServiceImpl.class);
+
     @Autowired
     private AgentMapper agentMapper;
 
     @Value("${gpweb.unit}")
     private Integer unit;
+
+    @Autowired
+    private IAgentRoleService iAgentRoleService;
+
+    @Autowired
+    private IRolePermissionService iRolePermissionService;
+
+    @Autowired
+    private IPermissionService iPermissionService;
 
     @Override
     public List<Map<String, Object>> getAgentLevelList() {
@@ -94,5 +110,27 @@ public class AgentServiceImpl implements IAgentService {
     public Integer deleteAgentById(String agentId) {
         return agentMapper.deleteAgentById(agentId);
     }
+
+    @Override
+    public Set<String> getPermissionSet(String agentId) {
+        Set<String> permissionSet = null;
+        if (StringUtils.equals("1", agentId)) {
+            permissionSet = iPermissionService.getAllPermissionValueSet();
+        } else {
+            Set<Integer> roleIdSet = iAgentRoleService.getRoleIdSetByAgentId(agentId);
+            if (CollectionUtils.isEmpty(roleIdSet)) {
+                LOGGER.info("代理商[{}]，没有查询到角色", agentId);
+                return null;
+            }
+            Set<Integer> permissionIdSet = iRolePermissionService.getPermissionIdSetByRoleIdSet(roleIdSet);
+            if (CollectionUtils.isEmpty(permissionIdSet)) {
+                LOGGER.info("角色[{}]，没有查询到权限", roleIdSet);
+                return null;
+            }
+            permissionSet = iPermissionService.getPermissionValueSetByPermissionIds(permissionIdSet, null);
+        }
+        return permissionSet;
+    }
+
 
 }

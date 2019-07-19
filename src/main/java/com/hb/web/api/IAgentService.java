@@ -4,6 +4,7 @@ import com.hb.web.model.AgentDO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * ========== 代理商service接口 ==========
@@ -71,4 +72,12 @@ public interface IAgentService {
      * @return Integer
      */
     Integer deleteAgentById(String agentId);
+
+    /**
+     * ########## 查询代理商的权限 ##########
+     *
+     * @param agentId 代理商id
+     * @return 权限集合
+     */
+    Set<String> getPermissionSet(String agentId);
 }

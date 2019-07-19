@@ -80,4 +80,9 @@ public class PermissionServiceImpl implements IPermissionService {
         return permissionMapper.getPermissionValueSetByPermissionIds(permissionSet, sourceType);
     }
 
+    @Override
+    public Set<String> getAllPermissionValueSet() {
+        return permissionMapper.getAllPermissionValueSet();
+    }
+
 }
