@@ -59,6 +59,12 @@ public class OfflinePayChekDO extends BaseDO {
     private Integer payStatus;
 
     /**
+     * 资金类型
+     */
+    @SelfTableColumn(value = "fundType", length = 1, comment = "资金类型")
+    private Integer fundType;
+
+    /**
      * 备注
      */
     @SelfTableColumn(value = "remark", comment = "备注")
@@ -141,6 +147,14 @@ public class OfflinePayChekDO extends BaseDO {
         this.systemRemark = systemRemark;
     }
 
+    public Integer getFundType() {
+        return fundType;
+    }
+
+    public void setFundType(Integer fundType) {
+        this.fundType = fundType;
+    }
+
     @Override
     public String toString() {
         return "OfflinePayChekDO{" +
@@ -150,6 +164,7 @@ public class OfflinePayChekDO extends BaseDO {
                 ", payChannel='" + payChannel + '\'' +
                 ", checkStatus='" + checkStatus + '\'' +
                 ", payStatus='" + payStatus + '\'' +
+                ", fundType='" + fundType + '\'' +
                 ", remark='" + remark + '\'' +
                 ", systemRemark='" + systemRemark + '\'' +
                 '}' + super.toString();

@@ -188,6 +188,7 @@ public class CustomerFundApp extends BaseApp {
         add.setPayChannel(OfflinePayChannelEnum.ALIPAY.getValue());
         add.setCheckStatus(OfflineCheckStatusEnum.AUDITING.getValue());
         add.setPayStatus(OfflinePayStatusEnum.NOT_PAY.getValue());
+        add.setFundType(FundTypeEnum.DEPOSIT.getValue());
         iOfflinePayService.addOne(add);
         alarmTools.alert("APP", "客户资金", "提现", "用户【" + userCache.getUserName() + "】发起提现申请，金额【" + depositMoney + "】");
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);

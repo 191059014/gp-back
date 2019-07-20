@@ -5,6 +5,7 @@ import com.hb.web.constant.GeneralConst;
 import com.hb.web.common.ResponseEnum;
 import com.hb.web.container.SpringUtil;
 import com.hb.web.common.ResponseData;
+import com.hb.web.model.AgentDO;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
 import com.hb.web.tool.RedisTools;
@@ -60,6 +61,9 @@ public class LoginFilter implements Filter {
                     LOGGER.info("authorization from cache is null, return");
                     return;
                 }
+                // 追加用户过期时间
+                AgentDO agentCache = JSON.parseObject(agentCacheStr, AgentDO.class);
+                redisTools.set(GeneralConst.USER_SESSION_KEY + agentCache.getAgentId(), agentCache, GeneralConst.USER_SESSION_EXIRE_TIME);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);
