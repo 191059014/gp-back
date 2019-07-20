@@ -151,6 +151,7 @@ public class CustomerFundApp extends BaseApp {
                 LOGGER.info(LogUtils.appLog("添加充值流水失败：{}"), customerFundDetailDO);
                 throw new Exception("添加充值流水失败");
             }
+            alarmTools.alert(new Alarm("APP#用户资金", "充值", "用户【" + userCache.getUserName() + "】充值" + rechargeMoney + "成功"));
             return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
         } else {
             LOGGER.info(LogUtils.appLog("充值失败：{}"), addOrUpdate);
