@@ -48,17 +48,21 @@ public class SecurityFilter implements Filter {
             response.getWriter().write(JSON.toJSONString(responseData));
             return;
         }
-        String cacheKey = GeneralConst.REQUEST_IP_KEY + userRealIpAddress;
-        String currentTimesStr = redisTools.get(cacheKey);
-        int currentTimes = StringUtils.isBlank(currentTimesStr) ? 0 : Integer.parseInt(currentTimesStr);
-        if (currentTimes > 3) {
-            LOGGER.warn("current request is too often, ip:{}", userRealIpAddress);
-            ResponseData<Object> responseData = ResponseData.generateResponseData(ResponseEnum.REQUEST_TOO_OFTEN);
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(JSON.toJSONString(responseData));
-            return;
+        String requestURL = request.getRequestURL().toString();
+        if (!requestURL.contains("/app")) {
+            String cacheKey = GeneralConst.REQUEST_IP_KEY + userRealIpAddress;
+            String currentTimesStr = redisTools.get(cacheKey);
+            int currentTimes = StringUtils.isBlank(currentTimesStr) ? 0 : Integer.parseInt(currentTimesStr);
+            if (currentTimes > 3) {
+                LOGGER.warn("current request is too often, ip:{}", userRealIpAddress);
+                ResponseData<Object> responseData = ResponseData.generateResponseData(ResponseEnum.REQUEST_TOO_OFTEN);
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write(JSON.toJSONString(responseData));
+                return;
+            }
+            redisTools.set(cacheKey, ++currentTimes, 1);
         }
-        redisTools.set(cacheKey, ++currentTimes, 1);
+
         filterChain.doFilter(request, response);
     }
 
