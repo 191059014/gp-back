@@ -1,6 +1,5 @@
 package com.hb.web.test;
 
-import com.hb.web.common.Alarm;
 import com.hb.web.tool.AlarmTools;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
@@ -25,8 +24,7 @@ public class TestAlarm {
 
     @RequestMapping("/alert")
     public void alert() {
-        Alarm alarm = new Alarm("订单", "下单接口", "下单异常");
-        alarmTools.alert(alarm);
+        alarmTools.alert("测试", "测试", "测试", "测试");
     }
 
     @RequestMapping("/testLogger")

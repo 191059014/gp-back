@@ -49,6 +49,8 @@ public enum AppResponseCodeEnum {
     ERROR_PASSWORD_FORMAT(1013, "密码格式不正确"),
     // 邀请人手机号错误
     ERROR_INVITER_MOBILE(1014, "邀请人手机号错误"),
+    // 查询不到用户信息
+    NOT_EXIST_USER(1015, "查询不到用户信息"),
 
     /**
      * 用户资金

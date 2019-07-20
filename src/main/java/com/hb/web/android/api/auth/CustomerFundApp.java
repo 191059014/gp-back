@@ -1,24 +1,19 @@
 package com.hb.web.android.api.auth;
 
-import com.hb.web.api.IAgentService;
-import com.hb.web.api.ICustomerFundDetailService;
-import com.hb.web.api.ICustomerFundService;
-import com.hb.web.api.IOfflinePayService;
-import com.hb.web.common.Alarm;
-import com.hb.web.constant.enumutil.FundTypeEnum;
-import com.hb.web.constant.enumutil.OfflineCheckStatusEnum;
-import com.hb.web.constant.enumutil.OfflinePayStatusEnum;
+import com.hb.web.android.base.BaseApp;
+import com.hb.web.api.*;
+import com.hb.web.common.AppResponseCodeEnum;
+import com.hb.web.common.AppResultModel;
+import com.hb.web.constant.enumutil.*;
 import com.hb.web.model.*;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
-import com.hb.web.vo.appvo.request.DepositRequestVO;
-import com.hb.web.vo.appvo.request.RechargeRequestVO;
 import com.hb.web.util.BigDecimalUtils;
 import com.hb.web.util.DateUtils;
 import com.hb.web.util.LogUtils;
-import com.hb.web.android.base.BaseApp;
-import com.hb.web.common.AppResponseCodeEnum;
-import com.hb.web.common.AppResultModel;
+import com.hb.web.vo.appvo.request.DepositRequestVO;
+import com.hb.web.vo.appvo.request.RechargeRequestVO;
+import com.hb.web.vo.appvo.response.UserFundSubTotalResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * ========== 用户资金信息 ==========
@@ -60,6 +58,9 @@ public class CustomerFundApp extends BaseApp {
 
     @Autowired
     private IOfflinePayService iOfflinePayService;
+
+    @Autowired
+    private IOrderService iOrderService;
 
     @ApiOperation(value = "获取客户资金信息")
     @PostMapping("/getFundInfo")
@@ -151,7 +152,7 @@ public class CustomerFundApp extends BaseApp {
                 LOGGER.info(LogUtils.appLog("添加充值流水失败：{}"), customerFundDetailDO);
                 throw new Exception("添加充值流水失败");
             }
-            alarmTools.alert(new Alarm("APP#用户资金", "充值", "用户【" + userCache.getUserName() + "】充值" + rechargeMoney + "成功"));
+            alarmTools.alert("APP", "用户资金", "充值", "用户【" + userCache.getUserName() + "】充值【" + rechargeMoney + "元】成功");
             return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
         } else {
             LOGGER.info(LogUtils.appLog("充值失败：{}"), addOrUpdate);
@@ -161,6 +162,7 @@ public class CustomerFundApp extends BaseApp {
 
     @ApiOperation(value = "提现（暂时模拟，后面调用支付平台）")
     @PostMapping("/deposit")
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel deposit(@RequestBody DepositRequestVO depositRequestVO) {
         LOGGER.info(LogUtils.appLog("提现，入参：{}"), depositRequestVO);
         UserDO userCache = getUserCache();
@@ -170,17 +172,55 @@ public class CustomerFundApp extends BaseApp {
             LOGGER.info(LogUtils.appLog("查询不到用户的资金信息"));
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NO_FUND_INFO);
         }
+        BigDecimal depositMoney = depositRequestVO.getDepositMoney();
+        /**
+         * 更新用户资金信息
+         */
+        customerFund.setFreezeMoney(depositMoney);
+        BigDecimal newUseableMoney = BigDecimalUtils.subtract(customerFund.getUsableMoney(), depositMoney);
+        customerFund.setUsableMoney(newUseableMoney);
+        iCustomerFundService.updateByPrimaryKeySelective(customerFund);
         /**
          * 生成一条线下审批任务
          */
-        BigDecimal depositMoney = depositRequestVO.getDepositMoney();
         OfflinePayChekDO add = new OfflinePayChekDO(userCache.getUserId());
         add.setHappenMoney(depositMoney);
+        add.setPayChannel(OfflinePayChannelEnum.ALIPAY.getValue());
         add.setCheckStatus(OfflineCheckStatusEnum.AUDITING.getValue());
         add.setPayStatus(OfflinePayStatusEnum.NOT_PAY.getValue());
         iOfflinePayService.addOne(add);
-        alarmTools.alert(new Alarm("APP#客户资金", "提现", "用户" + userCache.getUserName() + "发起提现申请"));
+        alarmTools.alert("APP", "客户资金", "提现", "用户【" + userCache.getUserName() + "】发起提现申请，金额【" + depositMoney + "】");
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+    }
+
+    /**
+     * ########## 查询客户资金分类汇总 ##########
+     *
+     * @return 客户资金分类汇总信息
+     */
+    @ApiOperation(value = "查询客户资金分类汇总信息")
+    @PostMapping("/getUserFundSubTotal")
+    public AppResultModel<UserFundSubTotalResponseVO> getUserFundSubTotal() {
+        UserFundSubTotalResponseVO result = new UserFundSubTotalResponseVO();
+        UserDO userCache = this.getUserCache();
+        CustomerFundDO customerFund = this.iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
+        result.setAccountTotalMoney(customerFund.getAccountTotalMoney());
+        result.setUsableMoney(customerFund.getUsableMoney());
+        result.setTotalProfitAndLossMoney(customerFund.getTotalProfitAndLossMoney());
+        Set<Integer> orderStatuSet = new HashSet<>();
+        orderStatuSet.add(OrderStatusEnum.IN_THE_POSITION.getValue());
+        orderStatuSet.add(OrderStatusEnum.DELEGATION.getValue());
+        List<OrderDO> orderList = this.iOrderService.findByUserIdAndOrderStatus(userCache.getUserId(), orderStatuSet);
+        BigDecimal totalStrategyMoney = BigDecimal.ZERO;
+        BigDecimal totalStrategyOwnMoney = BigDecimal.ZERO;
+        for (OrderDO orderDO : orderList) {
+            totalStrategyMoney = BigDecimalUtils.add(totalStrategyMoney, orderDO.getStrategyMoney());
+            totalStrategyOwnMoney = BigDecimalUtils.add(totalStrategyOwnMoney, orderDO.getStrategyOwnMoney());
+        }
+        result.setTotalStrategyMoney(totalStrategyMoney);
+        result.setTotalStrategyOwnMoney(totalStrategyOwnMoney);
+        LOGGER.info(LogUtils.appLog("查询客户资金分类汇总，出参：{}"), result);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, result);
     }
 
 }

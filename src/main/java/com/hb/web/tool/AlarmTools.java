@@ -1,7 +1,6 @@
 package com.hb.web.tool;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hb.web.common.Alarm;
 import com.hb.web.common.AlarmContent;
 import com.hb.web.util.LogUtils;
 import com.hb.web.util.OkHttpUtils;
@@ -32,14 +31,19 @@ public class AlarmTools {
     /**
      * ########## 告警 ##########
      *
-     * @param alarm 告警信息
+     * @param source  消息产生的来源
+     * @param module  模块名
+     * @param apiDesc 接口描述
+     * @param message 展示信息
      */
-    public void alert(Alarm alarm) {
+    public void alert(String source, String module, String apiDesc, String message) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("msgtype", "text");
-        jsonObject.put("text", new AlarmContent(buildAlertMessage(alarm)));
+        String content = buildAlertMessage(source, module, apiDesc, message);
+        jsonObject.put("text", new AlarmContent(content));
         try {
-            OkHttpUtils.post(alarmUrl, jsonObject, null);
+            String bodyString = OkHttpUtils.post(alarmUrl, jsonObject, null);
+            LOGGER.info("invoke alarm resurn: {}", bodyString);
         } catch (Exception e) {
             LOGGER.error("alarm occur exception : {}", LogUtils.getStackTrace(e));
         }
@@ -48,19 +52,23 @@ public class AlarmTools {
     /**
      * ########## 组装告警信息 ##########
      *
-     * @param alarm 告警信息实体
+     * @param source  消息产生的来源
+     * @param module  模块名
+     * @param apiDesc 接口描述
+     * @param message 展示信息
      * @return 告警信息
      */
-    private String buildAlertMessage(Alarm alarm) {
+    private String buildAlertMessage(String source, String module, String apiDesc, String message) {
         StringBuilder sb = new StringBuilder();
         sb.append("【");
         sb.append("代理商").append(unit);
-        sb.append("#").append(alarm.getModuleName());
-        sb.append("#").append(alarm.getApiDesc());
+        sb.append("#").append(source);
+        sb.append("#").append(module);
+        sb.append("#").append(apiDesc);
         sb.append("】");
-        sb.append(alarm.getMessage());
+        sb.append(message);
         sb.append("，请及时处理！");
-        sb.append("[traceId:").append(TraceIdUtils.getTraceId()).append("]");
+        sb.append("【traceId:").append(TraceIdUtils.getTraceId()).append("】");
         return sb.toString();
     }
 

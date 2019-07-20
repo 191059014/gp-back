@@ -1,12 +1,11 @@
 package com.hb.web.android.base;
 
-import com.hb.web.common.Alarm;
+import com.hb.web.common.AppResponseCodeEnum;
+import com.hb.web.common.AppResultModel;
 import com.hb.web.constant.AppConstant;
 import com.hb.web.model.UserDO;
 import com.hb.web.tool.*;
 import com.hb.web.util.LogUtils;
-import com.hb.web.common.AppResponseCodeEnum;
-import com.hb.web.common.AppResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -73,7 +72,7 @@ public class BaseApp {
         if (LOGGER.isErrorEnabled()) {
             LOGGER.error(LogUtils.appLog("统一异常处理 => {}"), LogUtils.getStackTrace(exception));
         }
-        alarmTools.alert(new Alarm("APP", "统一异常处理", LogUtils.getStackTrace(exception)));
+        alarmTools.alert("APP", "统一异常处理", "系统异常", exception.getMessage());
         return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
     }
 

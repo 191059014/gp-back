@@ -1,7 +1,6 @@
 package com.hb.web.base;
 
 import com.alibaba.fastjson.JSON;
-import com.hb.web.common.Alarm;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
 import com.hb.web.constant.GeneralConst;
@@ -56,7 +55,7 @@ public class BaseController {
         if (LOGGER.isErrorEnabled()) {
             LOGGER.error("【web】统一异常处理 => {}", LogUtils.getStackTrace(exception));
         }
-        alarmTools.alert(new Alarm("WEB", "统一异常处理", LogUtils.getStackTrace(exception)));
+        alarmTools.alert("WEB", "统一异常处理", "系统异常", exception.getMessage());
         return ResponseData.generateResponseData(ResponseEnum.ERROR);
     }
 

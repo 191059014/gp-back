@@ -42,7 +42,7 @@ public class OrderController {
     @PostMapping("/getOrderListPage")
     public ResponseData<List<OrderQueryResponseVO>> getOrderListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody OrderDO orderDO) {
         List<OrderQueryResponseVO> resultList = new ArrayList<>();
-        List<OrderDO> orderList = iOrderService.findList(orderDO, pageNum, pageSize);
+        List<OrderDO> orderList = iOrderService.findAppPageList(orderDO, pageNum, pageSize);
         Integer count = iOrderService.findCount(orderDO);
         if (CollectionUtils.isNotEmpty(orderList)) {
             Set<String> userIdSet = orderList.stream().map(OrderDO::getUserId).collect(Collectors.toSet());

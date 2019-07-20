@@ -3,10 +3,8 @@ package com.hb.web.android.api.noauth;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IOrderService;
 import com.hb.web.api.IStockService;
-import com.hb.web.common.Alarm;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
-import com.hb.web.tool.AlarmTools;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.LogUtils;
@@ -19,7 +17,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
@@ -56,7 +57,7 @@ public class StockApp extends BaseApp {
         } catch (Exception e) {
             String stackTrace = LogUtils.getStackTrace(e);
             LOGGER.error(LogUtils.appLog("根据股票代码获取股票信息,系统异常：{}"), stackTrace);
-            alarmTools.alert(new Alarm("APP#股票", "根据股票代码获取股票信息", "系统异常"));
+            alarmTools.alert("APP", "股票", "根据股票代码获取股票信息", e.getMessage());
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
         LOGGER.info(LogUtils.appLog("根据股票代码获取股票信息，出参：{}"), stockModels);
@@ -79,7 +80,7 @@ public class StockApp extends BaseApp {
         } catch (Exception e) {
             String stackTrace = LogUtils.getStackTrace(e);
             LOGGER.error(LogUtils.appLog("根据指数代码获取指数信息,系统异常：{}"), stackTrace);
-            alarmTools.alert(new Alarm("APP#股票", "根据指数代码获取指数信息", "系统异常"));
+            alarmTools.alert("APP", "股票", "根据指数代码获取指数信息", e.getMessage());
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
         if (CollectionUtils.isNotEmpty(stockIndexModels)) {
@@ -103,7 +104,7 @@ public class StockApp extends BaseApp {
         } catch (Exception e) {
             String stackTrace = LogUtils.getStackTrace(e);
             LOGGER.error(LogUtils.appLog("查询热门股票,系统异常：{}"), stackTrace);
-            alarmTools.alert(new Alarm("APP#股票", "查询热门股票", "系统异常"));
+            alarmTools.alert("APP", "股票", "查询热门股票", e.getMessage());
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
         LOGGER.info(LogUtils.appLog("查询热门股票，出参：{}"), stockModelList);

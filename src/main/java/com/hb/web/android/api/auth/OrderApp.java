@@ -2,10 +2,9 @@ package com.hb.web.android.api.auth;
 
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IOrderService;
-import com.hb.web.common.Alarm;
-import com.hb.web.constant.enumutil.OrderStatusEnum;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
+import com.hb.web.constant.enumutil.OrderStatusEnum;
 import com.hb.web.model.OrderDO;
 import com.hb.web.model.UserDO;
 import com.hb.web.tool.Logger;
@@ -18,7 +17,10 @@ import com.hb.web.vo.appvo.response.OrderQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class OrderApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
         LOGGER.info(LogUtils.appLog("股票下单成功"));
-        alarmTools.alert(new Alarm("APP#订单", "下单接口", "用户" + userCache.getUserName() + "下单成功，订单号：" + clone.getOrderId()));
+        alarmTools.alert("APP", "订单", "下单接口", "用户【" + userCache.getUserName() + "】下单成功，订单号：" + clone.getOrderId());
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 

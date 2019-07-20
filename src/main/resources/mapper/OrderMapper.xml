@@ -308,6 +308,14 @@
         select COUNT(1) as totalNum,stockCode as stockCode from t_order GROUP BY stockCode ORDER BY COUNT(1) DESC
     </select>
 
+    <select id="findByUserIdAndOrderStatus" resultType="com.hb.web.model.OrderDO">
+        select * from t_order where userId=#{userId} and orderStatus in
+        <foreach collection="orderStatuSet" item="orderStatus" open="(" close=")" separator=",">
+            #{orderStatus}
+        </foreach>
+        and recordStatus=1
+    </select>
+
     <sql id="selectByConditionSql">
         <if test="orderDO.orderId != null and orderDO.orderId != ''">
             and orderId=#{orderDO.orderId}
@@ -324,7 +332,7 @@
         <if test="orderDO.unit != null and orderDO.unit != ''">
             and unit=#{orderDO.unit}
         </if>
-        and recordStatus='1'
+        and recordStatus=1
     </sql>
 
 </mapper>

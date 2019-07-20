@@ -47,6 +47,9 @@ public class UserApp extends BaseApp {
     public AppResultModel<UserDO> getUser() {
         UserDO userCache = getUserCache();
         UserDO result = iUserService.findUser(new UserDO(userCache.getUserId()));
+        if (result == null) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_EXIST_USER);
+        }
         result.setPassword("XXXX");
         LOGGER.info(LogUtils.appLog("获取用户信息，响应结果：{}"), result);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, result);

@@ -9,6 +9,8 @@ import com.hb.web.tool.KeyGenerator;
 import com.hb.web.util.DateUtils;
 import com.hb.web.util.PageUtils;
 import com.hb.web.vo.appvo.HotStockVO;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,13 +57,21 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public List<OrderDO> findList(OrderDO orderDO, Integer pageNum, Integer pageSize) {
+    public List<OrderDO> findAppPageList(OrderDO orderDO, Integer pageNum, Integer pageSize) {
         return orderMapper.findList(orderDO, PageUtils.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public List<OrderDO> findListPages(OrderDO orderDO, Integer startRow, Integer pageSize) {
         return orderMapper.findList(orderDO, startRow, pageSize);
+    }
+
+    @Override
+    public List<OrderDO> findByUserIdAndOrderStatus(String userId, Set<Integer> orderStatuSet) {
+        if (StringUtils.isBlank(userId) || CollectionUtils.isEmpty(orderStatuSet)) {
+            return null;
+        }
+        return orderMapper.findByUserIdAndOrderStatus(userId, orderStatuSet);
     }
 
     @Override

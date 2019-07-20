@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface OrderMapper {
 
@@ -27,4 +28,6 @@ public interface OrderMapper {
      * @return 股票代码集合
      */
     List<HotStockVO> getHotStockList();
+
+    List<OrderDO> findByUserIdAndOrderStatus(@Param("userId") String userId, @Param("orderStatuSet") Set<Integer> orderStatuSet);
 }
