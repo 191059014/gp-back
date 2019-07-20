@@ -40,7 +40,7 @@ public class BaseApp {
     public RedisTools redisTools;
 
     @Autowired
-    private AlarmTools alarmTools;
+    public AlarmTools alarmTools;
 
     /**
      * ########## 处理request里面的参数 ##########

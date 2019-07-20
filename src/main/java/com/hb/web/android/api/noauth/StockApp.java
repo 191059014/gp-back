@@ -3,8 +3,10 @@ package com.hb.web.android.api.noauth;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IOrderService;
 import com.hb.web.api.IStockService;
+import com.hb.web.common.Alarm;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
+import com.hb.web.tool.AlarmTools;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.LogUtils;
@@ -15,6 +17,7 @@ import com.hb.web.vo.appvo.response.StockIndexQueryResponseVO;
 import com.hb.web.vo.appvo.response.StockQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +49,17 @@ public class StockApp extends BaseApp {
     @ApiOperation(value = "根据股票代码获取股票信息")
     @PostMapping("/queryStockList")
     public AppResultModel<StockQueryResponseVO> queryStockList(@RequestBody StockQueryRequestVO stockQueryRequestVO) {
-        List<StockModel> stockModels = iStockService.queryStockList(stockQueryRequestVO.getStockCodeSet());
+        LOGGER.info(LogUtils.appLog("根据股票代码获取股票信息，入参：{}"), stockQueryRequestVO);
+        List<StockModel> stockModels = null;
+        try {
+            stockModels = iStockService.queryStockList(stockQueryRequestVO.getStockCodeSet());
+        } catch (Exception e) {
+            String stackTrace = LogUtils.getStackTrace(e);
+            LOGGER.error(LogUtils.appLog("根据股票代码获取股票信息,系统异常：{}"), stackTrace);
+            alarmTools.alert(new Alarm("APP#股票", "根据股票代码获取股票信息", "系统异常"));
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        LOGGER.info(LogUtils.appLog("根据股票代码获取股票信息，出参：{}"), stockModels);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, new StockQueryResponseVO(stockModels));
     }
 
@@ -60,22 +73,40 @@ public class StockApp extends BaseApp {
         stockCodeSet.add("399001");
         // 创业板指
         stockCodeSet.add("399006");
-        List<StockIndexModel> stockIndexModels = iStockService.queryStockIndexList(stockCodeSet);
-        Collections.sort(stockIndexModels, Comparator.comparing(StockIndexModel::getIndexCode));
+        List<StockIndexModel> stockIndexModels = null;
+        try {
+            stockIndexModels = iStockService.queryStockIndexList(stockCodeSet);
+        } catch (Exception e) {
+            String stackTrace = LogUtils.getStackTrace(e);
+            LOGGER.error(LogUtils.appLog("根据指数代码获取指数信息,系统异常：{}"), stackTrace);
+            alarmTools.alert(new Alarm("APP#股票", "根据指数代码获取指数信息", "系统异常"));
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        if (CollectionUtils.isNotEmpty(stockIndexModels)) {
+            Collections.sort(stockIndexModels, Comparator.comparing(StockIndexModel::getIndexCode));
+        }
+        LOGGER.info(LogUtils.appLog("根据指数代码获取指数信息，出参：{}"), stockIndexModels);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, new StockIndexQueryResponseVO(stockIndexModels));
     }
 
     @ApiOperation(value = "查询热门股票")
     @PostMapping("/getHotStockList")
     public AppResultModel<StockQueryResponseVO> getHotStockList() {
-        LOGGER.info(LogUtils.appLog("查询热门股票"));
         // 获取订单中最热门的前几个股票代码
         int number = 9;
-        Set<String> stockSet = iOrderService.getHotStockSet(number);
-        LOGGER.info(LogUtils.appLog("查询热门股票，股票代码：{}"), stockSet);
-        // 根据股票代码查询信息
-        List<StockModel> stockModelList = iStockService.queryStockList(stockSet);
-        LOGGER.info(LogUtils.appLog("查询热门股票，返回结果：{}"), stockModelList);
+        List<StockModel> stockModelList = null;
+        try {
+            Set<String> stockSet = iOrderService.getHotStockSet(number);
+            LOGGER.info(LogUtils.appLog("查询热门股票，股票代码：{}"), stockSet);
+            // 根据股票代码查询信息
+            stockModelList = iStockService.queryStockList(stockSet);
+        } catch (Exception e) {
+            String stackTrace = LogUtils.getStackTrace(e);
+            LOGGER.error(LogUtils.appLog("查询热门股票,系统异常：{}"), stackTrace);
+            alarmTools.alert(new Alarm("APP#股票", "查询热门股票", "系统异常"));
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        LOGGER.info(LogUtils.appLog("查询热门股票，出参：{}"), stockModelList);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, new StockQueryResponseVO(stockModelList));
     }
 

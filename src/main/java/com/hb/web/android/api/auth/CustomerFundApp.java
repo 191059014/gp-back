@@ -4,6 +4,7 @@ import com.hb.web.api.IAgentService;
 import com.hb.web.api.ICustomerFundDetailService;
 import com.hb.web.api.ICustomerFundService;
 import com.hb.web.api.IOfflinePayService;
+import com.hb.web.common.Alarm;
 import com.hb.web.constant.enumutil.FundTypeEnum;
 import com.hb.web.constant.enumutil.OfflineCheckStatusEnum;
 import com.hb.web.constant.enumutil.OfflinePayStatusEnum;
@@ -177,7 +178,7 @@ public class CustomerFundApp extends BaseApp {
         add.setCheckStatus(OfflineCheckStatusEnum.AUDITING.getValue());
         add.setPayStatus(OfflinePayStatusEnum.NOT_PAY.getValue());
         iOfflinePayService.addOne(add);
-
+        alarmTools.alert(new Alarm("APP#客户资金", "提现", "用户" + userCache.getUserName() + "发起提现申请"));
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 

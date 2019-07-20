@@ -1,10 +1,11 @@
 package com.hb.web.mapper;
 
 import com.hb.web.model.OrderDO;
+import com.hb.web.vo.appvo.HotStockVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public interface OrderMapper {
 
@@ -23,8 +24,7 @@ public interface OrderMapper {
     /**
      * ########## 获取热门股票 ##########
      *
-     * @param number 多少个热门股票
      * @return 股票代码集合
      */
-    Set<String> getHotStockSet(int number);
+    List<HotStockVO> getHotStockList();
 }

@@ -21,7 +21,7 @@ public class KeyGenerator {
     /**
      * slf4j log
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(RedisTools.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyGenerator.class);
 
     private static final String FORMAT_MS = "yyMMddHHmmssSSS";
     private static final int SEQUENCE_LENGTH = 5;

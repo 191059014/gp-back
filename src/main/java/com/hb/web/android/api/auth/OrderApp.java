@@ -2,6 +2,7 @@ package com.hb.web.android.api.auth;
 
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IOrderService;
+import com.hb.web.common.Alarm;
 import com.hb.web.constant.enumutil.OrderStatusEnum;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
@@ -45,11 +46,9 @@ public class OrderApp extends BaseApp {
     @PostMapping("/order")
     public AppResultModel order(@RequestBody OrderRequestVO orderRequestVO) {
         LOGGER.info(LogUtils.appLog("股票下单，入参：{}"), orderRequestVO);
-//        UserDO userCache = getUserCache();
-        UserDO userCache = new UserDO();
+        UserDO userCache = getUserCache();
         OrderDO clone = CloneUtils.clone(orderRequestVO, OrderDO.class);
-//        clone.setUserId(userCache.getUserId());
-        clone.setUserId("A001");
+        clone.setUserId(userCache.getUserId());
         clone.setUserName(userCache.getUserName());
         clone.setOrderStatus(OrderStatusEnum.IN_THE_POSITION.getValue());
         clone.setUnit(userCache.getUnit());
@@ -59,6 +58,7 @@ public class OrderApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
         LOGGER.info(LogUtils.appLog("股票下单成功"));
+        alarmTools.alert(new Alarm("APP#订单", "下单接口", "用户" + userCache.getUserName() + "下单成功，订单号：" + clone.getOrderId()));
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 

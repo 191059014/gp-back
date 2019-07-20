@@ -304,22 +304,8 @@
         <include refid="selectByConditionSql"/>
     </select>
 
-    <select id="getHotStockSet" resultType="java.lang.String">
-        <![CDATA[
-
-
-
-        select tt.stockCode from
-        (
-          select @rownum:=@rownum+1 as rownum,t1.stockCode,t1.totalNum from
-            (select stockCode,COUNT(1) as totalNum from t_order GROUP BY stockCode ORDER BY COUNT(1) DESC) t1,
-            (select @rownum:=0) t2
-        )
-        tt where tt.rownum<=#{number}
-
-
-
-        ]]>
+    <select id="getHotStockList" resultType="com.hb.web.vo.appvo.HotStockVO">
+        select COUNT(1) as totalNum,stockCode as stockCode from t_order GROUP BY stockCode ORDER BY COUNT(1) DESC
     </select>
 
     <sql id="selectByConditionSql">

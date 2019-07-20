@@ -5,6 +5,7 @@ import com.hb.web.common.Alarm;
 import com.hb.web.common.AlarmContent;
 import com.hb.web.util.LogUtils;
 import com.hb.web.util.OkHttpUtils;
+import com.hb.web.util.TraceIdUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -59,6 +60,7 @@ public class AlarmTools {
         sb.append("】");
         sb.append(alarm.getMessage());
         sb.append("，请及时处理！");
+        sb.append("[traceId:").append(TraceIdUtils.getTraceId()).append("]");
         return sb.toString();
     }
 
