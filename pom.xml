@@ -157,6 +157,12 @@
             <version>3.17</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>5.1</version>
+        </dependency>
+
     </dependencies>
 
     <!-- 配置远程发布到私服，mvn deploy -->

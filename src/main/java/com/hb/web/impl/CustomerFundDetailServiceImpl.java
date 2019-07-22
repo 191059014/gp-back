@@ -28,6 +28,11 @@ public class CustomerFundDetailServiceImpl implements ICustomerFundDetailService
     }
 
     @Override
+    public List<CustomerFundDetailDO> findAppPageList(CustomerFundDetailDO customerFundDetailDO, Integer startRow, Integer pageSize) {
+        return customerFundDetailMapper.findListByCondition(customerFundDetailDO, startRow, pageSize);
+    }
+
+    @Override
     public Integer findCountByCondition(CustomerFundDetailDO customerFundDetailDO) {
         return customerFundDetailMapper.findCountByCondition(customerFundDetailDO);
     }
