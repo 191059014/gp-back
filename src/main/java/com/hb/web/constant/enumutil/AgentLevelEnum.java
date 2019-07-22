@@ -28,4 +28,16 @@ public enum AgentLevelEnum {
         return name;
     }
 
+    public static String stateOf(Integer value) {
+        if (value == null) {
+            return null;
+        }
+        for (AgentLevelEnum agentLevelEnum : AgentLevelEnum.values()) {
+            if (agentLevelEnum.value.compareTo(value) == 0) {
+                return agentLevelEnum.getName();
+            }
+        }
+        return null;
+    }
+
 }

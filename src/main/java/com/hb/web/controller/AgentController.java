@@ -39,6 +39,7 @@ public class AgentController extends BaseController {
 
     @ApiOperation(value = "分页条件查询代理商列表")
     @PostMapping("/getAgentListPage")
+    @CrossOrigin
     public ResponseData<List<AgentQueryResponseVO>> getAgentListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody AgentDO agentDO) {
         List<AgentDO> agentList = iAgentService.findAgentList(agentDO, pageNum, pageSize);
         Integer count = iAgentService.findCount(agentDO);

@@ -28,4 +28,16 @@ public enum RealAuthStatusEnum {
         return name;
     }
 
+    public static String stateOf(Integer value) {
+        if (value == null) {
+            return null;
+        }
+        for (RealAuthStatusEnum realAuthStatusEnum : RealAuthStatusEnum.values()) {
+            if (realAuthStatusEnum.value.compareTo(value) == 0) {
+                return realAuthStatusEnum.getName();
+            }
+        }
+        return null;
+    }
+
 }

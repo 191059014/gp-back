@@ -24,7 +24,7 @@ public class HolddingReportServiceImpl extends AbstractExportExcelService implem
     }
 
     @Override
-    public List<List<Object>> fillData(Object... parameter) {
+    public List<List<Object>> fillData(Object queryResult) {
         return null;
     }
 

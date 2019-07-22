@@ -63,7 +63,7 @@ public class AgentDO extends BaseDO {
      * 实名认证状态
      */
     @SelfTableColumn(value = "realAuthStatus", length = 1, defaultValue = "0", comment = "实名认证状态")
-    private String realAuthStatus;
+    private Integer realAuthStatus;
 
     /**
      * 手机号
@@ -134,11 +134,11 @@ public class AgentDO extends BaseDO {
         this.idCardNo = idCardNo;
     }
 
-    public String getRealAuthStatus() {
+    public Integer getRealAuthStatus() {
         return realAuthStatus;
     }
 
-    public void setRealAuthStatus(String realAuthStatus) {
+    public void setRealAuthStatus(Integer realAuthStatus) {
         this.realAuthStatus = realAuthStatus;
     }
 

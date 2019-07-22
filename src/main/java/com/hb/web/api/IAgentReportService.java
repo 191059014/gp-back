@@ -14,9 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 public interface IAgentReportService {
     /**
      * ########## 导出excel ##########
-     *
-     * @param response 响应对象
+     *  @param response 响应对象
      * @param agentDO  查询条件
+     * @param pageNum
+     * @param pageSize
      */
-    void exportExcel(HttpServletResponse response, AgentDO agentDO);
+    void exportExcel(HttpServletResponse response, AgentDO agentDO, Integer pageNum, Integer pageSize);
 }

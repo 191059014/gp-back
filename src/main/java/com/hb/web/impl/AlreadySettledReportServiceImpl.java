@@ -24,7 +24,7 @@ public class AlreadySettledReportServiceImpl extends AbstractExportExcelService 
     }
 
     @Override
-    public List<List<Object>> fillData(Object... parameter) {
+    public List<List<Object>> fillData(Object queryResult) {
         return null;
     }
 

@@ -14,10 +14,10 @@ public interface IExportExcelService {
     /**
      * ########## 填充数据 ##########
      *
-     * @param parameter 查询条件
+     * @param queryResult 查询数据库的结果
      * @return 组装后的数据
      */
-    List<List<Object>> fillData(Object... parameter);
+    List<List<Object>> fillData(Object queryResult);
 
     /**
      * ########## 获取sheetName ##########

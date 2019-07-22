@@ -1,11 +1,19 @@
 package com.hb.web.impl;
 
 import com.hb.web.api.IAgentReportService;
+import com.hb.web.api.IAgentService;
 import com.hb.web.api.IExportExcelService;
+import com.hb.web.constant.enumutil.AgentLevelEnum;
+import com.hb.web.constant.enumutil.RealAuthStatusEnum;
 import com.hb.web.model.AgentDO;
+import com.hb.web.util.DateUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,14 +26,36 @@ import java.util.List;
 @Service
 public class AgentReportServiceImpl extends AbstractExportExcelService implements IExportExcelService, IAgentReportService {
 
+    @Autowired
+    private IAgentService iAgentService;
+
     @Override
-    public void exportExcel(HttpServletResponse response, AgentDO agentDO) {
-        doExport(response, agentDO);
+    public void exportExcel(HttpServletResponse response, AgentDO agentDO, Integer pageNum, Integer pageSize) {
+        List<AgentDO> agentList = iAgentService.findAgentList(agentDO, pageNum, pageSize);
+        doExport(response, agentList);
     }
 
     @Override
-    public List<List<Object>> fillData(Object... parameter) {
-        return null;
+    public List<List<Object>> fillData(Object queryResult) {
+        List<AgentDO> agentList = queryResult == null ? null : (List<AgentDO>) queryResult;
+        if (CollectionUtils.isEmpty(agentList)) {
+            return null;
+        }
+        List<List<Object>> dataList = new ArrayList<>();
+        for (AgentDO agentDO : agentList) {
+            List<Object> list = new ArrayList<>();
+            list.add(agentDO.getAgentId());
+            list.add(agentDO.getAgentName());
+            list.add(AgentLevelEnum.stateOf(agentDO.getAgentLevel()));
+            list.add(agentDO.getBankName());
+            list.add(agentDO.getBankNo());
+            list.add(agentDO.getIdCardNo());
+            list.add(RealAuthStatusEnum.stateOf(agentDO.getRealAuthStatus()));
+            list.add(agentDO.getMobile());
+            list.add(DateUtils.date2str(agentDO.getCreateTime(), DateUtils.DEFAULT_FORMAT));
+            dataList.add(list);
+        }
+        return dataList;
     }
 
     @Override
@@ -40,6 +70,7 @@ public class AgentReportServiceImpl extends AbstractExportExcelService implement
 
     @Override
     public List<String> getTitles() {
-        return null;
+        List<String> titleList = Arrays.asList("代理商ID", "代理商名称", "代理商等级", "银行名称", "银行卡号", "身份证号", "实名认证状态", "手机号", "创建时间");
+        return titleList;
     }
 }
