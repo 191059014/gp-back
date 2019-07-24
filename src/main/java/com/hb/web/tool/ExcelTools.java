@@ -1,7 +1,10 @@
 package com.hb.web.tool;
 
 import com.hb.web.util.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -33,11 +36,15 @@ public class ExcelTools {
         }
         // 生成一个表格
         Sheet sheet = workbook.createSheet(sheetName);
-        // 设置表格默认列宽度为15个字节
-        sheet.setDefaultColumnWidth((short) 36);
+        // 设置表格默认列宽
+        sheet.setDefaultColumnWidth((short) 20);
         // 设置标题样式
         CellStyle headerCellStyle = workbook.createCellStyle();
         headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+        Font font = workbook.createFont();
+        font.setFontName("黑体");
+        font.setFontHeightInPoints((short) 14);
+        headerCellStyle.setFont(font);
         /*
          * 创建标题行
          */
