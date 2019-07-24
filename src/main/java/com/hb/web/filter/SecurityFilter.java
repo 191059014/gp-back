@@ -40,9 +40,9 @@ public class SecurityFilter implements Filter {
         SelfRunner selfRunner = SpringUtil.getBean(SelfRunner.class);
         String blacklist = selfRunner.getProperty("gp.ip.blacklist");
         String userRealIpAddress = getUserIpAddress(request);
-        LOGGER.info("the real ip address of request : {}", userRealIpAddress);
+        LOGGER.info("the real ip address of request: {}", userRealIpAddress);
         if (blacklist != null && blacklist.contains(userRealIpAddress)) {
-            LOGGER.warn("current ip is in blacklist, ip:{}", userRealIpAddress);
+            LOGGER.warn("current ip is in blacklist, ip: {}", userRealIpAddress);
             ResponseData<Object> responseData = ResponseData.generateResponseData(ResponseEnum.REQUEST_IN_BLACKLIST);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JSON.toJSONString(responseData));
@@ -54,7 +54,7 @@ public class SecurityFilter implements Filter {
             String currentTimesStr = redisTools.get(cacheKey);
             int currentTimes = StringUtils.isBlank(currentTimesStr) ? 0 : Integer.parseInt(currentTimesStr);
             if (currentTimes > 3) {
-                LOGGER.warn("current request is too often, ip:{}", userRealIpAddress);
+                LOGGER.warn("current request is too often, ip: {}", userRealIpAddress);
                 ResponseData<Object> responseData = ResponseData.generateResponseData(ResponseEnum.REQUEST_TOO_OFTEN);
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write(JSON.toJSONString(responseData));

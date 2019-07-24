@@ -32,9 +32,9 @@ public class CorsFilter implements Filter {
             TraceIdUtils.setTraceId(UUID.randomUUID().toString());
             HttpServletResponse response = (HttpServletResponse) servletResponse;
             HttpServletRequest request = (HttpServletRequest) servletRequest;
-            String originUrl = request.getHeader("origin");
-            String requestURL = request.getRequestURL().toString();
-            LOGGER.info("cors filter src: {}，target: {}", originUrl, requestURL);
+            String originUrl = request.getRemoteAddr();
+            String requestUri = request.getRequestURI();
+            LOGGER.info("cors filter src: {}，target: {}", originUrl, requestUri);
             filterChain.doFilter(servletRequest, servletResponse);
         } finally {
             TraceIdUtils.removeTraceId();
