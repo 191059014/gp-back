@@ -1,6 +1,6 @@
 package com.hb.web.config;
 
-import com.hb.web.filter.CrossFilter;
+import com.hb.web.filter.CorsFilter;
 import com.hb.web.filter.LoginFilter;
 import com.hb.web.filter.SecurityFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -18,11 +18,11 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean buildCrossFilter() {
+    public FilterRegistrationBean buildCorsFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(1);
-        filterRegistrationBean.setFilter(new CrossFilter());
-        filterRegistrationBean.setName("crossFilter");
+        filterRegistrationBean.setFilter(new CorsFilter());
+        filterRegistrationBean.setName("corsFilter");
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }

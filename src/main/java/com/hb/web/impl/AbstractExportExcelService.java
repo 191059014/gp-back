@@ -45,7 +45,7 @@ public abstract class AbstractExportExcelService implements IExportExcelService 
          */
         response.reset();
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        String dataStr = DateUtils.getCurrentDateStr(DateUtils.YYYYMMDD);
+        String dataStr = DateUtils.getCurrentDateStr(DateUtils.YYYYMMDDHHMMSS);
         response.setHeader("Content-Disposition", "attachment;filename=" + dataStr + "_report.xls");
         try {
             Workbook workbook = ExcelTools.generateWorkbook(sheetName, excelType, titles, dataList);

@@ -30,9 +30,14 @@ public class DateUtils {
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * 只有年月日的日期格式
+     * 年月日
      */
     public static final String YYYYMMDD = "yyyyMMdd";
+
+    /**
+     * 年月日时分秒
+     */
+    public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
 
     /**
      * 默认的时区

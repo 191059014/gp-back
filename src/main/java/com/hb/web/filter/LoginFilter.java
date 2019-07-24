@@ -1,10 +1,10 @@
 package com.hb.web.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.hb.web.constant.GeneralConst;
-import com.hb.web.common.ResponseEnum;
-import com.hb.web.container.SpringUtil;
 import com.hb.web.common.ResponseData;
+import com.hb.web.common.ResponseEnum;
+import com.hb.web.constant.GeneralConst;
+import com.hb.web.container.SpringUtil;
 import com.hb.web.model.AgentDO;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
@@ -41,7 +41,6 @@ public class LoginFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String requestURI = request.getRequestURI();
-        LOGGER.info("requestURI:{}", requestURI);
         if (filterSwitch) {
             if (needLogin(requestURI)) {
                 String authorization = request.getHeader("Authorization");

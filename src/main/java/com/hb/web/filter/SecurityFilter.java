@@ -40,7 +40,7 @@ public class SecurityFilter implements Filter {
         SelfRunner selfRunner = SpringUtil.getBean(SelfRunner.class);
         String blacklist = selfRunner.getProperty("gp.ip.blacklist");
         String userRealIpAddress = getUserIpAddress(request);
-        LOGGER.info("userRealIpAddress : {}", userRealIpAddress);
+        LOGGER.info("the real ip address of request : {}", userRealIpAddress);
         if (blacklist != null && blacklist.contains(userRealIpAddress)) {
             LOGGER.warn("current ip is in blacklist, ip:{}", userRealIpAddress);
             ResponseData<Object> responseData = ResponseData.generateResponseData(ResponseEnum.REQUEST_IN_BLACKLIST);
