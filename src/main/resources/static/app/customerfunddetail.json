@@ -1,0 +1,81 @@
+{
+  "code": 200,
+  "message": "成功",
+  "data": {
+    "fundDetailList": [
+      {
+        "createTime": "2019-07-20 17:49:29",
+        "createUserId": "U1",
+        "updateTime": "2019-07-20 17:49:29",
+        "updateUserId": "U1",
+        "recordStatus": 1,
+        "detailId": "U1_2",
+        "userId": "U1",
+        "agentId": "1",
+        "agentName": "系统管理员",
+        "happenMoney": 250,
+        "afterHappenMoney": 250,
+        "fundType": 3
+      },
+      {
+        "createTime": "2019-07-20 17:49:04",
+        "createUserId": "U1",
+        "updateTime": "2019-07-20 17:49:04",
+        "updateUserId": "U1",
+        "recordStatus": 1,
+        "detailId": "U1_1",
+        "userId": "U1",
+        "agentId": "1",
+        "agentName": "系统管理员",
+        "happenMoney": 100,
+        "afterHappenMoney": 100,
+        "fundType": 3
+      },
+      {
+        "createTime": "2019-07-20 16:48:01",
+        "createUserId": "U1561184974125",
+        "updateTime": "2019-07-20 16:48:01",
+        "updateUserId": "U1561184974125",
+        "recordStatus": 1,
+        "detailId": "U1561184974125_3",
+        "userId": "U1561184974125",
+        "userName": "黄彪",
+        "agentId": "A001",
+        "agentName": "黄彪",
+        "happenMoney": 100,
+        "afterHappenMoney": 100,
+        "fundType": 3
+      },
+      {
+        "createTime": "2019-07-20 16:11:01",
+        "createUserId": "U1561184974125",
+        "updateTime": "2019-07-20 16:11:01",
+        "updateUserId": "U1561184974125",
+        "recordStatus": 1,
+        "detailId": "U1561184974125_2",
+        "userId": "U1561184974125",
+        "userName": "黄彪",
+        "agentId": "A001",
+        "agentName": "黄彪",
+        "happenMoney": 3999,
+        "afterHappenMoney": 3999,
+        "fundType": 3
+      },
+      {
+        "createTime": "2019-07-20 16:03:47",
+        "createUserId": "U1561184974125",
+        "updateTime": "2019-07-20 16:03:47",
+        "updateUserId": "U1561184974125",
+        "recordStatus": 1,
+        "detailId": "U1561184974125_1",
+        "userId": "U1561184974125",
+        "userName": "黄彪",
+        "agentId": "A001",
+        "agentName": "黄彪",
+        "happenMoney": 111,
+        "afterHappenMoney": 111,
+        "fundType": 3
+      }
+    ]
+  }
+}

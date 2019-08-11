@@ -32,8 +32,6 @@ public class AppLoginFilter implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppLoginFilter.class);
 
-    private static boolean filterSwitch = true;
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         LOGGER.info("app login filter init");
@@ -46,7 +44,7 @@ public class AppLoginFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String requestUrl = request.getRequestURL().toString();
         HttpServletRequestWrapper wrapper = null;
-        if (filterSwitch) {
+        if (true) {
             // 排除登陆操作，其他的要经过登录认证
             String token = request.getHeader(AppConstant.TOKEN);
             UserDO userDO = TokenTools.get(token, SpringUtil.getBean(RedisTools.class));
@@ -76,7 +74,7 @@ public class AppLoginFilter implements Filter {
             }
         }
         LOGGER.info(LogUtils.appLog("app login filter end"));
-        filterChain.doFilter(wrapper, response);
+        filterChain.doFilter(request, response);
     }
 
     @Override
