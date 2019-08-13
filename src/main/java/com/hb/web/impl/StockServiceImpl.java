@@ -1,5 +1,6 @@
 package com.hb.web.impl;
 
+import com.hb.web.api.IStockListService;
 import com.hb.web.api.IStockService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.ExchangeTypeEnum;
@@ -9,6 +10,7 @@ import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;
 import com.hb.web.util.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +29,9 @@ import java.util.*;
 public class StockServiceImpl implements IStockService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StockServiceImpl.class);
+
+    @Autowired
+    private IStockListService stockListService;
 
     @RequestMapping("/queryStockInfoByStockCode")
     @Override
