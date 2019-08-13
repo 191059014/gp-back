@@ -64,6 +64,29 @@ public class AppResultModel<T> implements Serializable {
     /**
      * ########## 根据AppResponseCodeEnum生成响应对象 ##########
      *
+     * @param code    响应码
+     * @param message 响应码信息
+     * @return 响应实体
+     */
+    public static <T> AppResultModel<T> generateResponseData(Integer code, String message) {
+        return generateResponseData(code, message, null);
+    }
+
+    /**
+     * ########## 根据AppResponseCodeEnum生成响应对象 ##########
+     *
+     * @param code    响应码
+     * @param message 响应码信息
+     * @param t       业务参数
+     * @return 响应实体
+     */
+    public static <T> AppResultModel<T> generateResponseData(Integer code, String message, T t) {
+        return new AppResultModel<T>(code, message, t);
+    }
+
+    /**
+     * ########## 根据AppResponseCodeEnum生成响应对象 ##########
+     *
      * @param appResponseCodeEnum 响应码枚举对象
      * @return 响应实体
      */
@@ -79,7 +102,7 @@ public class AppResultModel<T> implements Serializable {
      * @return 响应实体
      */
     public static <T> AppResultModel<T> generateResponseData(AppResponseCodeEnum appResponseCodeEnum, T t) {
-        return new AppResultModel<>(appResponseCodeEnum.getCode(), appResponseCodeEnum.getMessage(), t);
+        return generateResponseData(appResponseCodeEnum.getCode(), appResponseCodeEnum.getMessage(), t);
     }
 
     @Override

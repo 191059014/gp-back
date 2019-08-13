@@ -1,20 +1,25 @@
 package com.hb.web.android.api.noauth;
 
+import com.hb.web.aliyun.constant.SMSTemplate;
+import com.hb.web.aliyun.constant.enumutil.SMSResEnum;
+import com.hb.web.aliyun.model.SMSSendResult;
+import com.hb.web.aliyun.service.ISMS;
+import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IAgentService;
 import com.hb.web.api.IUserService;
+import com.hb.web.common.AppResponseCodeEnum;
+import com.hb.web.common.AppResultModel;
+import com.hb.web.common.RedisKeyFactory;
 import com.hb.web.constant.AppConstant;
 import com.hb.web.model.AgentDO;
 import com.hb.web.model.UserDO;
 import com.hb.web.tool.*;
+import com.hb.web.util.EncryptUtils;
+import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.LoginRequestVO;
 import com.hb.web.vo.appvo.request.MobileVerifyRequestVO;
 import com.hb.web.vo.appvo.request.RegisterRequestVO;
 import com.hb.web.vo.appvo.response.LoginResponseVO;
-import com.hb.web.util.EncryptUtils;
-import com.hb.web.util.LogUtils;
-import com.hb.web.android.base.BaseApp;
-import com.hb.web.common.AppResponseCodeEnum;
-import com.hb.web.common.AppResultModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +53,9 @@ public class LoginApp extends BaseApp {
 
     @Autowired
     private IAgentService iAgentService;
+
+    @Autowired
+    private ISMS sms_106;
 
     /**
      * ########## app登陆 ##########
@@ -123,7 +131,7 @@ public class LoginApp extends BaseApp {
             LOGGER.info(LogUtils.appLog("注册用户，密码格式不正确"));
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PASSWORD_FORMAT);
         }
-        String mobileVerifyCodeCache = redisTools.get(AppConstant.MOBILE_VERIFYCODE_CACHE_KEY + mobile);
+        String mobileVerifyCodeCache = redisTools.get(RedisKeyFactory.getMobileVerifyKey(mobile));
         LOGGER.info(LogUtils.appLog("注册用户，查询缓存中的手机验证码：{}"), mobileVerifyCodeCache);
         if (StringUtils.isBlank(mobileVerifyCodeCache) || !StringUtils.equals(mobileVerifyCode, mobileVerifyCodeCache)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.INVALID_MOBILE_VERIFYCODE);
@@ -171,12 +179,19 @@ public class LoginApp extends BaseApp {
     @PostMapping("/getMobileVerifyCode")
     public AppResultModel<String> getMobileVerifyCode(@RequestBody MobileVerifyRequestVO mobileVerifyRequestVO) {
         LOGGER.info(LogUtils.appLog("获取手机验证码，入参：{}"), mobileVerifyRequestVO);
-        if (mobileVerifyRequestVO == null || StringUtils.isBlank(mobileVerifyRequestVO.getMobile())) {
+        String mobile = mobileVerifyRequestVO == null ? "" : mobileVerifyRequestVO.getMobile();
+        if (StringUtils.isBlank(mobile)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
+
         Integer mobileVerifyCode = VerifyCodeTools.generateMobileVerifyCode();
+        SMSSendResult smsSendResult = sms_106.send(mobile, mobileVerifyCode, SMSTemplate.template_1, AppConstant.MOBILE_VERIFYCODE_EXPIRE_TIME);
+        if (!StringUtils.equals(SMSResEnum.success.getCode(), smsSendResult.getCode())) {
+            alarmTools.alert("APP", "注册", "发送短信验证码", "失败：" + mobile + "：" + smsSendResult.getMessage());
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
         // 将手机验证码放入缓存，默认时间
-        redisTools.set(AppConstant.MOBILE_VERIFYCODE_CACHE_KEY + mobileVerifyRequestVO.getMobile(), mobileVerifyCode, AppConstant.MOBILE_VERIFYCODE_EXPIRE_TIME);
+        redisTools.set(RedisKeyFactory.getMobileVerifyKey(mobile), mobileVerifyCode, AppConstant.MOBILE_VERIFYCODE_EXPIRE_TIME * 60);
         LOGGER.info(LogUtils.appLog("获取手机验证码并将其放入缓存成功：{}"), mobileVerifyCode);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }

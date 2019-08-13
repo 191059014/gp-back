@@ -24,7 +24,7 @@ public class TestSMS {
 
     @GetMapping("/test")
     public void test() {
-        SMSSendResult send = ISMS_106.send("18310673016", 1234, SMSTemplate.template_1, 5L);
+        SMSSendResult send = ISMS_106.send("18310673016", 1234, SMSTemplate.template_1, 3L);
         System.out.println(send);
     }
 

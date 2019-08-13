@@ -1,16 +1,25 @@
 package com.hb.web.android.api.auth;
 
+import com.hb.web.aliyun.constant.enumutil.BankCardAuthResEnum;
+import com.hb.web.aliyun.constant.enumutil.IdCardAuthResEnum;
+import com.hb.web.aliyun.model.BankCardAuthResult;
+import com.hb.web.aliyun.model.IdCardAuthResult;
+import com.hb.web.aliyun.service.IRealNameAuth;
+import com.hb.web.android.api.noauth.LoginApp;
+import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IUserService;
+import com.hb.web.common.AppResponseCodeEnum;
+import com.hb.web.common.AppResultModel;
+import com.hb.web.constant.enumutil.RealAuthStatusEnum;
 import com.hb.web.model.UserDO;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
-import com.hb.web.vo.appvo.request.BankCardRequestVO;
-import com.hb.web.util.LogUtils;
-import com.hb.web.android.api.noauth.LoginApp;
-import com.hb.web.android.base.BaseApp;
-import com.hb.web.common.AppResponseCodeEnum;
-import com.hb.web.common.AppResultModel;
 import com.hb.web.tool.TokenTools;
+import com.hb.web.util.LogUtils;
+import com.hb.web.vo.appvo.request.BankCardRealNameAuthRequestVO;
+import com.hb.web.vo.appvo.request.BankCardRequestVO;
+import com.hb.web.vo.appvo.request.IdCardRealNameAuthRequestVO;
+import com.hb.web.vo.appvo.response.BankCardRealNameAuthResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +50,9 @@ public class UserApp extends BaseApp {
 
     @Autowired
     private IUserService iUserService;
+
+    @Autowired
+    private IRealNameAuth realNameAuth;
 
     @ApiOperation(value = "获取用户信息")
     @PostMapping("/getUser")
@@ -80,6 +92,47 @@ public class UserApp extends BaseApp {
             LOGGER.info(LogUtils.appLog("绑定银行卡失败"));
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
+    }
+
+    @ApiOperation(value = "身份证实名认证")
+    @PostMapping("/idCardRealNameAuth")
+    public AppResultModel idCardRealNameAuth(@RequestBody IdCardRealNameAuthRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("身份证实名认证，入参：{}"), String.valueOf(requestVO));
+        UserDO userCache = getUserCache();
+        IdCardAuthResult idCardAuthResult = realNameAuth.idCardAuth(requestVO.getCardNo(), userCache.getUserName());
+        if (idCardAuthResult == null || idCardAuthResult.getResult() == null) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        if (!StringUtils.equals(IdCardAuthResEnum.success.getCode(), idCardAuthResult.getCode())
+                || !idCardAuthResult.getResult().getResult().getIsok()) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        // 实名认证通过
+        UserDO update = new UserDO();
+        update.setRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
+        boolean success = iUserService.updateUserById(userCache.getUserId(), update);
+        LOGGER.info(LogUtils.appLog("身份证实名认证，更新实名认证状态：{}"), success);
+        if (!success) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+    }
+
+    @ApiOperation(value = "银行卡实名认证")
+    @PostMapping("/bankCardRealNameAuth")
+    public AppResultModel<BankCardRealNameAuthResponseVO> bankCardRealNameAuth(@RequestBody BankCardRealNameAuthRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("银行卡实名认证，入参：{}"), String.valueOf(requestVO));
+        UserDO userCache = getUserCache();
+        BankCardAuthResult bankCardAuthResult = realNameAuth.bankCardAuth(requestVO.getBankNo(), userCache.getIdCardNo(), userCache.getUserName());
+        if (bankCardAuthResult == null || bankCardAuthResult.getResult() == null) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        if (!StringUtils.equals(BankCardAuthResEnum.success.getCode(), bankCardAuthResult.getCode())) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL.getCode(), bankCardAuthResult.getMessage());
+        }
+        // 实名认证通过
+        BankCardRealNameAuthResponseVO responseVO = new BankCardRealNameAuthResponseVO(bankCardAuthResult.getResult().getBank());
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);
     }
 
 }

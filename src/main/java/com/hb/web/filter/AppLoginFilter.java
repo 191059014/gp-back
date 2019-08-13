@@ -44,37 +44,35 @@ public class AppLoginFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String requestUrl = request.getRequestURL().toString();
         HttpServletRequestWrapper wrapper = null;
-        if (true) {
-            // 排除登陆操作，其他的要经过登录认证
-            String token = request.getHeader(AppConstant.TOKEN);
-            UserDO userDO = TokenTools.get(token, SpringUtil.getBean(RedisTools.class));
-            if (userDO == null) {
-                // token失效
-                LOGGER.info(LogUtils.appLog("token[{}] is expired"), token);
-                AppResultModel<Object> appResultModel = AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_TOKEN);
-                response.setContentType("application/json;charset=UTF-8");
-                response.getWriter().write(JSON.toJSONString(appResultModel));
-                LOGGER.info(LogUtils.appLog("app login filter end"));
-                return;
-            }
-            String secret = request.getHeader(AppConstant.SECRET);
-            String signature = request.getHeader(AppConstant.SIGNATURE);
-            wrapper = new BodyReaderHttpServletRequestWrapper(request);
-            String bodyString = ((BodyReaderHttpServletRequestWrapper) wrapper).getBody();
-            String message = new StringBuilder().append(requestUrl).append(bodyString).append(secret).toString();
-            String encode = EncryptUtils.encode(message);
-            if (StringUtils.equals(signature, encode)) {
-                // 签名错误
-                LOGGER.info(LogUtils.appLog("signature is error, source is {}, target is {}"), signature, encode);
-                AppResultModel<Object> appResultModel = AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_SIGNATURE);
-                response.setContentType("application/json;charset=UTF-8");
-                response.getWriter().write(JSON.toJSONString(appResultModel));
-                LOGGER.info(LogUtils.appLog("app login filter end"));
-                return;
-            }
+        // 排除登陆操作，其他的要经过登录认证
+        String token = request.getHeader(AppConstant.TOKEN);
+        UserDO userDO = TokenTools.get(token, SpringUtil.getBean(RedisTools.class));
+        if (userDO == null) {
+            // token失效
+            LOGGER.info(LogUtils.appLog("token[{}] is expired"), token);
+            AppResultModel<Object> appResultModel = AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_TOKEN);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(JSON.toJSONString(appResultModel));
+            LOGGER.info(LogUtils.appLog("app login filter end"));
+            return;
+        }
+        String secret = request.getHeader(AppConstant.SECRET);
+        String signature = request.getHeader(AppConstant.SIGNATURE);
+        wrapper = new BodyReaderHttpServletRequestWrapper(request);
+        String bodyString = ((BodyReaderHttpServletRequestWrapper) wrapper).getBody();
+        String message = new StringBuilder().append(requestUrl).append(bodyString).append(secret).toString();
+        String encode = EncryptUtils.encode(message);
+        if (StringUtils.equals(signature, encode)) {
+            // 签名错误
+            LOGGER.info(LogUtils.appLog("signature is error, source is {}, target is {}"), signature, encode);
+            AppResultModel<Object> appResultModel = AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_SIGNATURE);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(JSON.toJSONString(appResultModel));
+            LOGGER.info(LogUtils.appLog("app login filter end"));
+            return;
         }
         LOGGER.info(LogUtils.appLog("app login filter end"));
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(wrapper, response);
     }
 
     @Override

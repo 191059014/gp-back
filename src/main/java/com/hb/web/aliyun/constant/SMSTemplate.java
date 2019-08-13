@@ -9,6 +9,6 @@ package com.hb.web.aliyun.constant;
  */
 public class SMSTemplate {
 
-    public static final String template_1 = "【xxxx】您的验证码是{verifyCode}，此验证码{expireTime}分钟内有效，如非本人操作，请忽略此内容。";
+    public static final String template_1 = "【创信】你的验证码是：{verifyCode}，{expireTime}分钟内有效！";
 
 }

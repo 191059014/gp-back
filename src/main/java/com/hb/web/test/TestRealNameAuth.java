@@ -33,7 +33,7 @@ public class TestRealNameAuth {
 
     @GetMapping("/testIDCardAuth")
     public IdCardAuthResult testIDCardAuth() {
-        IdCardAuthResult idCardAuthResult = realNameAuth.idCardAuth("421127199303041738", "黄彪");
+        IdCardAuthResult idCardAuthResult = realNameAuth.idCardAuth("421127199303041736", "黄彪");
         return idCardAuthResult;
     }
 
