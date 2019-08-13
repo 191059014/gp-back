@@ -14,4 +14,4 @@ tail -f nohup.out
 # 解决办法：
 # vim restart.sh
 # :set ff 查看sh脚本格式
-# :set ff=unix 设置脚本格式为unix
+# :set ff=unix 设置脚本格式为unix，回车，保存
