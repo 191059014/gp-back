@@ -1,6 +1,7 @@
 package com.hb.web.mapper;
 
 import com.hb.web.model.StockListDO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -20,5 +21,7 @@ public interface StockListMapper {
     int updateByPrimaryKey(StockListDO record);
 
     List<StockListDO> getStockListByStockCodeSet(Set<String> stockCodeSet);
+
+    List<StockListDO> findPageList(@Param("stockCode") String stockCode, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);
 
 }

@@ -46,12 +46,10 @@ public enum ExchangeTypeEnum {
      * @return 封装好的查询参数
      */
     public static String commonRule(String code) {
-        if (code.startsWith("6")) {
-            return shang_hai.name + code;
-        } else if (code.startsWith("3")) {
-            return shen_zhen.name + code;
+        if (code.startsWith("sz")) {
+            return code.replace("sz", shen_zhen.name);
         }
-        return null;
+        return code;
     }
 
     /**

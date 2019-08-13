@@ -5,17 +5,20 @@ import com.hb.web.api.IOrderService;
 import com.hb.web.api.IStockService;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
+import com.hb.web.model.StockListDO;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;
+import com.hb.web.vo.appvo.request.StockQueryPageRequestVO;
 import com.hb.web.vo.appvo.request.StockQueryRequestVO;
 import com.hb.web.vo.appvo.response.StockIndexQueryResponseVO;
 import com.hb.web.vo.appvo.response.StockQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -109,6 +112,24 @@ public class StockApp extends BaseApp {
         }
         LOGGER.info(LogUtils.appLog("查询热门股票，出参：{}"), stockModelList);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, new StockQueryResponseVO(stockModelList));
+    }
+
+    @ApiOperation(value = "根据股票代码模糊搜索股票信息")
+    @PostMapping("/findPageList")
+    public AppResultModel<List<StockListDO>> findPageList(@RequestBody StockQueryPageRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("根据股票代码模糊搜索股票信息，入参：{}"), requestVO);
+        String stockCode = requestVO.getStockCode();
+        if (StringUtils.isBlank(stockCode)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        Integer pageSize = requestVO.getPageSize();
+        if (pageSize == null || pageSize == 0) {
+            pageSize = 100;
+        }
+        Integer startRow = requestVO.getStartRow() == null ? 0 : requestVO.getStartRow();
+        List<StockListDO> pageList = iStockService.findPageList(stockCode, startRow, pageSize);
+        LOGGER.info(LogUtils.appLog("根据股票代码模糊搜索股票信息，出参：{}"), pageList);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, pageList);
     }
 
 }

@@ -23,6 +23,14 @@
             #{stockCode}
         </foreach>
     </select>
+
+    <select id="findPageList" resultType="com.hb.web.model.StockListDO">
+        select * from stock_list where code like CONCAT(#{stockCode},"%") order by code
+        <if test="pageSize != null and pageSize != 0">
+            <![CDATA[ limit #{startRow},#{pageSize} ]]>
+        </if>
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from stock_list
     where id = #{id,jdbcType=INTEGER}

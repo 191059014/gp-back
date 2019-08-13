@@ -1,18 +1,19 @@
 package com.hb.web.impl;
 
-import com.hb.web.api.IStockListService;
 import com.hb.web.api.IStockService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.ExchangeTypeEnum;
+import com.hb.web.mapper.StockListMapper;
+import com.hb.web.model.StockListDO;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
+import com.hb.web.util.HttpUtils;
 import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;
-import com.hb.web.util.HttpUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -24,16 +25,14 @@ import java.util.*;
  * @version com.hb.web.api.impl.StockServiceImpl.java, v1.0
  * @date 2019年05月31日 11时06分
  */
-@RestController
-@RequestMapping("/service/stock")
+@Service
 public class StockServiceImpl implements IStockService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StockServiceImpl.class);
 
     @Autowired
-    private IStockListService stockListService;
+    private StockListMapper stockListMapper;
 
-    @RequestMapping("/queryStockInfoByStockCode")
     @Override
     public List<StockModel> queryStockList(Set<String> stockCodeSet) {
         LOGGER.info("查询股票信息入参：{}", stockCodeSet);
@@ -111,6 +110,24 @@ public class StockServiceImpl implements IStockService {
         }
         LOGGER.info("查询股票信息返回结果：{}", resultList);
         return resultList;
+    }
+
+    @Override
+    public StockListDO getStockByCode(String stockCode) {
+        Set<String> querys = new HashSet<>();
+        querys.add(stockCode);
+        List<StockListDO> list = stockListMapper.getStockListByStockCodeSet(querys);
+        return CollectionUtils.isEmpty(list) ? null : list.get(0);
+    }
+
+    @Override
+    public List<StockListDO> getStockListBySet(Set<String> stockCodeSet) {
+        return stockListMapper.getStockListByStockCodeSet(stockCodeSet);
+    }
+
+    @Override
+    public List<StockListDO> findPageList(String stockCode, Integer startRow, Integer pageSize) {
+        return stockListMapper.findPageList(stockCode, startRow, pageSize);
     }
 
     /**
@@ -204,13 +221,23 @@ public class StockServiceImpl implements IStockService {
     private String builderParameter(Set<String> codeSet, int flag) {
         LOGGER.info("组装请求参数值，入参：{}=={}", codeSet, flag);
         StringBuilder sb = new StringBuilder();
+        Set<String> stockCodeSet = null;
+        if (flag == 1) {
+            List<StockListDO> stockList = getStockListBySet(codeSet);
+            stockCodeSet = new HashSet<>();
+            for (StockListDO stockListDO : stockList) {
+                stockCodeSet.add(stockListDO.getFull_code());
+            }
+        } else {
+            stockCodeSet = codeSet;
+        }
         int i = 0;
-        for (String code : codeSet) {
+        for (String code : stockCodeSet) {
             String queryString = flag == 1 ? ExchangeTypeEnum.commonRule(code)
                     : flag == 2 ? ExchangeTypeEnum.specialRule(code)
                     : "";
             sb.append(queryString);
-            if (i != codeSet.size() - 1) {
+            if (i != stockCodeSet.size() - 1) {
                 sb.append(",");
             }
             i++;

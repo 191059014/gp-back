@@ -1,5 +1,6 @@
 package com.hb.web.api;
 
+import com.hb.web.model.StockListDO;
 import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;
 
@@ -30,4 +31,10 @@ public interface IStockService {
      * @return 指数信息
      */
     List<StockIndexModel> queryStockIndexList(Set<String> indexCodeSet);
+
+    StockListDO getStockByCode(String stockCode);
+
+    List<StockListDO> getStockListBySet(Set<String> stockCodeSet);
+
+    List<StockListDO> findPageList(String stockCode, Integer startRow, Integer pageSize);
 }
