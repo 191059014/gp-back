@@ -173,11 +173,16 @@ public class CustomerFundApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NO_FUND_INFO);
         }
         BigDecimal depositMoney = depositRequestVO.getDepositMoney();
+        BigDecimal usableMoney = customerFund.getUsableMoney();
+        if (depositMoney.compareTo(usableMoney) > 0) {
+            LOGGER.info(LogUtils.appLog("提现金额大于可用余额"));
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_USEABLE_MONEY);
+        }
         /**
          * 更新用户资金信息
          */
         customerFund.setFreezeMoney(depositMoney);
-        BigDecimal newUseableMoney = BigDecimalUtils.subtract(customerFund.getUsableMoney(), depositMoney);
+        BigDecimal newUseableMoney = BigDecimalUtils.subtract(usableMoney, depositMoney);
         customerFund.setUsableMoney(newUseableMoney);
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
         /**

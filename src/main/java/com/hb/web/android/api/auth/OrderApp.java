@@ -1,14 +1,18 @@
 package com.hb.web.android.api.auth;
 
 import com.hb.web.android.base.BaseApp;
+import com.hb.web.api.ICustomerFundService;
+import com.hb.web.api.ICustomerReportService;
 import com.hb.web.api.IOrderService;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
 import com.hb.web.constant.enumutil.OrderStatusEnum;
+import com.hb.web.model.CustomerFundDO;
 import com.hb.web.model.OrderDO;
 import com.hb.web.model.UserDO;
 import com.hb.web.tool.Logger;
 import com.hb.web.tool.LoggerFactory;
+import com.hb.web.util.BigDecimalUtils;
 import com.hb.web.util.CloneUtils;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.OrderRequestVO;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -44,12 +49,23 @@ public class OrderApp extends BaseApp {
     @Autowired
     private IOrderService iOrderService;
 
+    @Autowired
+    private ICustomerFundService iCustomerFundService;
+
     @ApiOperation(value = "股票下单")
     @PostMapping("/order")
-    public AppResultModel order(@RequestBody OrderRequestVO orderRequestVO) {
-        LOGGER.info(LogUtils.appLog("股票下单，入参：{}"), orderRequestVO);
+    public AppResultModel order(@RequestBody OrderRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("股票下单，入参：{}"), requestVO);
         UserDO userCache = getUserCache();
-        OrderDO clone = CloneUtils.clone(orderRequestVO, OrderDO.class);
+        CustomerFundDO query = new CustomerFundDO(userCache.getUserId());
+        CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(query);
+        BigDecimal strategyOwnMoney = requestVO.getStrategyOwnMoney();
+        BigDecimal usableMoney = customerFund.getUsableMoney();
+        if (strategyOwnMoney.compareTo(usableMoney) > 0) {
+            // 余额不足
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_MONEY);
+        }
+        OrderDO clone = CloneUtils.clone(requestVO, OrderDO.class);
         clone.setUserId(userCache.getUserId());
         clone.setUserName(userCache.getUserName());
         clone.setOrderStatus(OrderStatusEnum.IN_THE_POSITION.getValue());
@@ -60,6 +76,22 @@ public class OrderApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
         LOGGER.info(LogUtils.appLog("股票下单成功"));
+
+        /**
+         * 更新账户信息
+         *
+         * 1.总金额不变
+         * 2.冻结金额增加
+         * 3.可用余额减少
+         */
+        CustomerFundDO updateCustomerFund = new CustomerFundDO(customerFund.getUserId());
+        BigDecimal newFreezeMoney = BigDecimalUtils.add(customerFund.getFreezeMoney(), requestVO.getStrategyOwnMoney());
+        BigDecimal newUsableMoney = BigDecimalUtils.subtract(customerFund.getUsableMoney(), requestVO.getStrategyOwnMoney());
+        updateCustomerFund.setFreezeMoney(newFreezeMoney);
+        updateCustomerFund.setUsableMoney(newUsableMoney);
+        iCustomerFundService.updateByPrimaryKeySelective(updateCustomerFund);
+        LOGGER.info(LogUtils.appLog("股票下单成功后更新账户信息成功"));
+
         alarmTools.alert("APP", "订单", "下单接口", "用户【" + userCache.getUserName() + "】下单成功，订单号：" + clone.getOrderId());
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }

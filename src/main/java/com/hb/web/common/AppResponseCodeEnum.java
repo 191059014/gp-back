@@ -56,7 +56,9 @@ public enum AppResponseCodeEnum {
      * 用户资金
      */
     // 查询不到用户的资金信息
-    NO_FUND_INFO(2000, "查询不到用户的资金信息");
+    NO_FUND_INFO(2000, "查询不到用户的资金信息"),
+    NOT_ENOUGH_MONEY(2001, "您的账户余额不足，请及时充值"),
+    NOT_ENOUGH_USEABLE_MONEY(2002, "您的账户余额不足，无法提现");
 
     /**
      * 响应码
