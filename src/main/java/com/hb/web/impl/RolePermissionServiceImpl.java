@@ -1,10 +1,10 @@
 package com.hb.web.impl;
 
+import com.hb.entity.PermissionDO;
 import com.hb.web.api.IPermissionService;
 import com.hb.web.api.IRolePermissionService;
 import com.hb.web.mapper.RolePermissionMapper;
-import com.hb.web.model.PermissionDO;
-import com.hb.web.model.RolePermissionDO;
+import com.hb.entity.RolePermissionDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

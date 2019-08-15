@@ -1,6 +1,6 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.RolePermissionDO;
+import com.hb.entity.RolePermissionDO;
 
 import java.util.List;
 import java.util.Set;

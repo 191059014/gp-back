@@ -1,6 +1,6 @@
 package com.hb.web.vo.appvo.request;
 
-import com.hb.web.model.CustomerFundDetailDO;
+import com.hb.entity.CustomerFundDetailDO;
 
 import java.io.Serializable;
 import java.util.List;

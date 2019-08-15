@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.CustomerFundMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.CustomerFundDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.CustomerFundDO">
         <id column="userId" property="userId" jdbcType="VARCHAR"/>
         <result column="agentId" property="agentId" jdbcType="VARCHAR"/>
         <result column="userName" property="userName" jdbcType="VARCHAR"/>
@@ -27,7 +27,7 @@
     select * from t_customer_fund where userId = #{userId,jdbcType=VARCHAR}
   </select>
 
-    <select id="findCustomerFundList" resultType="com.hb.web.model.CustomerFundDO">
+    <select id="findCustomerFundList" resultType="com.hb.entity.CustomerFundDO">
         select * from t_customer_fund where 1=1
         <include refid="sqlCondition"/>
         order by createTime desc
@@ -41,7 +41,7 @@
         <include refid="sqlCondition"/>
     </select>
 
-    <select id="findCustomerFund" resultType="com.hb.web.model.CustomerFundDO">
+    <select id="findCustomerFund" resultType="com.hb.entity.CustomerFundDO">
         select * from t_customer_fund where 1=1
         <include refid="sqlCondition"/>
     </select>
@@ -108,7 +108,7 @@
     update t_customer_fund set recordStatus=0 where userId=#{userId}
   </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.CustomerFundDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.CustomerFundDO">
         insert into t_customer_fund
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -230,7 +230,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.CustomerFundDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.entity.CustomerFundDO">
         update t_customer_fund
         <set>
             <if test="userName != null">

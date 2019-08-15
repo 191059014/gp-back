@@ -1,7 +1,7 @@
 package com.hb.web.impl;
 
 import com.hb.web.api.IAgentFundService;
-import com.hb.web.model.AgentFundDO;
+import com.hb.entity.AgentFundDO;
 import com.hb.web.mapper.AgentFundMapper;
 import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;

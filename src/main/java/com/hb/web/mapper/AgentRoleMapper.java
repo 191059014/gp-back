@@ -1,6 +1,6 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.AgentRoleDO;
+import com.hb.entity.AgentRoleDO;
 
 import java.util.List;
 import java.util.Set;

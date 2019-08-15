@@ -1,6 +1,6 @@
 package com.hb.web.api;
 
-import com.hb.web.model.OfflinePayChekDO;
+import com.hb.entity.OfflinePayChekDO;
 
 import java.util.List;
 import java.util.Map;

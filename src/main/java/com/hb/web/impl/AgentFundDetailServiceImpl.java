@@ -2,7 +2,7 @@ package com.hb.web.impl;
 
 import com.hb.web.api.IAgentFundDetailService;
 import com.hb.web.constant.enumutil.FundTypeEnum;
-import com.hb.web.model.AgentFundDeailDO;
+import com.hb.entity.AgentFundDeailDO;
 import com.hb.web.vo.webvo.request.AgentFundDetailRequestVO;
 import com.hb.web.mapper.AgentFundDetailMapper;
 import com.hb.web.util.PageUtils;

@@ -1,6 +1,6 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.StockListDO;
+import com.hb.entity.StockListDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

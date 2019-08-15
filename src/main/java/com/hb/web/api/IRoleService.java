@@ -1,6 +1,6 @@
 package com.hb.web.api;
 
-import com.hb.web.model.RoleDO;
+import com.hb.entity.RoleDO;
 import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
 
 import java.util.List;

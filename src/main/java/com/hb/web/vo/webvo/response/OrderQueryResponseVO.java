@@ -1,6 +1,6 @@
 package com.hb.web.vo.webvo.response;
 
-import com.hb.web.model.OrderDO;
+import com.hb.entity.OrderDO;
 
 /**
  * ========== 订单查询响应VO ==========

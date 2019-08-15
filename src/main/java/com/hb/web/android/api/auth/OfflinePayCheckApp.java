@@ -5,7 +5,7 @@ import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.api.IOfflinePayService;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
-import com.hb.web.model.OfflinePayChekDO;
+import com.hb.entity.OfflinePayChekDO;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.QueryOfflinePayCheckRequestVO;
 import com.hb.web.vo.appvo.response.OfflinePayQueryResponseVO;

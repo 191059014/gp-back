@@ -1,6 +1,6 @@
 package com.hb.web.api;
 
-import com.hb.web.model.OrderDO;
+import com.hb.entity.OrderDO;
 
 import java.util.List;
 import java.util.Map;

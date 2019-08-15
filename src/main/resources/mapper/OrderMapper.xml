@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.OrderMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.OrderDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.OrderDO">
         <id column="orderId" property="orderId" jdbcType="VARCHAR"/>
         <result column="userId" property="userId" jdbcType="VARCHAR"/>
         <result column="userName" property="userName" jdbcType="VARCHAR"/>
@@ -48,7 +48,7 @@
     set recordStatus = "0"
   </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.OrderDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.OrderDO">
         insert into t_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -208,7 +208,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.OrderDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.entity.OrderDO">
         update t_order
         <set>
             <if test="userId != null">
@@ -290,7 +290,7 @@
         where orderId = #{orderId,jdbcType=VARCHAR}
     </update>
 
-    <select id="findList" resultType="com.hb.web.model.OrderDO">
+    <select id="findList" resultType="com.hb.entity.OrderDO">
         select * from t_order where 1=1
         <include refid="selectByConditionSql"/>
         order by createtime desc
@@ -308,7 +308,7 @@
         select COUNT(1) as totalNum,stockCode as stockCode from t_order GROUP BY stockCode ORDER BY COUNT(1) DESC
     </select>
 
-    <select id="findByUserIdAndOrderStatus" resultType="com.hb.web.model.OrderDO">
+    <select id="findByUserIdAndOrderStatus" resultType="com.hb.entity.OrderDO">
         select * from t_order where userId=#{userId} and orderStatus in
         <foreach collection="orderStatuSet" item="orderStatus" open="(" close=")" separator=",">
             #{orderStatus}

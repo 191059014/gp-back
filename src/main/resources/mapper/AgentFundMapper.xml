@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.AgentFundMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.AgentFundDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.AgentFundDO">
         <result column="agentId" property="agentId" jdbcType="VARCHAR"/>
         <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
         <result column="accountTotalMoney" property="accountTotalMoney" jdbcType="DECIMAL"/>
@@ -17,7 +17,7 @@
         <result column="unit" property="unit" jdbcType="INTEGER"/>
     </resultMap>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.AgentFundDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.AgentFundDO">
         insert into t_agent_fund
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="agentId != null">
@@ -103,7 +103,7 @@
         </trim>
     </insert>
 
-    <select id="findAgentFundList" resultType="com.hb.web.model.AgentFundDO">
+    <select id="findAgentFundList" resultType="com.hb.entity.AgentFundDO">
         select * from t_agent_fund where 1=1
         <include refid="selectConditionSql"/>
         order by createTime desc

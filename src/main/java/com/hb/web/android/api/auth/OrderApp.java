@@ -1,5 +1,6 @@
 package com.hb.web.android.api.auth;
 
+import com.hb.entity.UserDO;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.BigDecimalUtils;
@@ -10,9 +11,8 @@ import com.hb.web.api.IOrderService;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
 import com.hb.web.constant.enumutil.OrderStatusEnum;
-import com.hb.web.model.CustomerFundDO;
-import com.hb.web.model.OrderDO;
-import com.hb.web.model.UserDO;
+import com.hb.entity.CustomerFundDO;
+import com.hb.entity.OrderDO;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.OrderRequestVO;
 import com.hb.web.vo.appvo.request.QueryOrderRequestVO;

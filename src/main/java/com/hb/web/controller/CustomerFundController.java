@@ -2,7 +2,7 @@ package com.hb.web.controller;
 
 import com.hb.web.api.ICustomerFundService;
 import com.hb.web.common.ResponseEnum;
-import com.hb.web.model.CustomerFundDO;
+import com.hb.entity.CustomerFundDO;
 import com.hb.web.common.ResponseData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

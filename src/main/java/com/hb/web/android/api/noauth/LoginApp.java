@@ -1,5 +1,6 @@
 package com.hb.web.android.api.noauth;
 
+import com.hb.entity.UserDO;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.EncryptUtils;
@@ -14,8 +15,7 @@ import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
 import com.hb.web.common.RedisKeyFactory;
 import com.hb.web.constant.AppConstant;
-import com.hb.web.model.AgentDO;
-import com.hb.web.model.UserDO;
+import com.hb.entity.AgentDO;
 import com.hb.web.tool.*;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.LoginRequestVO;

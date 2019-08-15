@@ -2,7 +2,7 @@ package com.hb.web.impl;
 
 import com.hb.web.api.ICustomerReportService;
 import com.hb.web.api.IExportExcelService;
-import com.hb.web.model.AgentDO;
+import com.hb.entity.AgentDO;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;

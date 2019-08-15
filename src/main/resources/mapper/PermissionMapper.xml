@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.PermissionMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.PermissionDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.PermissionDO">
         <id column="permissionId" property="permissionId" jdbcType="INTEGER"/>
         <result column="permissionName" property="permissionName" jdbcType="VARCHAR"/>
         <result column="sourceType" property="sourceType" jdbcType="INTEGER"/>
@@ -25,7 +25,7 @@
         where permissionId = #{permissionId,jdbcType=INTEGER}
     </select>
 
-    <select id="findPageList" resultType="com.hb.web.model.PermissionDO">
+    <select id="findPageList" resultType="com.hb.entity.PermissionDO">
         select * from t_permission where 1=1
         <include refid="sqlCondition"/>
         order by createTime desc
@@ -39,7 +39,7 @@
         <include refid="sqlCondition"/>
     </select>
 
-    <select id="findList" resultType="com.hb.web.model.PermissionDO">
+    <select id="findList" resultType="com.hb.entity.PermissionDO">
         select * from t_permission where 1=1
         <include refid="sqlCondition"/>
         order by createTime desc
@@ -78,7 +78,7 @@
         delete from t_permission;
     </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.PermissionDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.PermissionDO">
         insert into t_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="permissionId != null">
@@ -152,7 +152,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.PermissionDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.entity.PermissionDO">
         update t_permission
         <set>
             <if test="permissionName != null">

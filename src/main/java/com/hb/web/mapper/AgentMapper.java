@@ -1,6 +1,6 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.AgentDO;
+import com.hb.entity.AgentDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

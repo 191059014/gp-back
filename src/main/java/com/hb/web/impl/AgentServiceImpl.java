@@ -10,7 +10,7 @@ import com.hb.web.api.IPermissionService;
 import com.hb.web.api.IRolePermissionService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.AgentLevelEnum;
-import com.hb.web.model.AgentDO;
+import com.hb.entity.AgentDO;
 import com.hb.web.mapper.AgentMapper;
 import com.hb.web.util.PageUtils;
 import org.apache.commons.collections4.CollectionUtils;

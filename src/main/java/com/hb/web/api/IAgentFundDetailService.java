@@ -1,7 +1,7 @@
 package com.hb.web.api;
 
 
-import com.hb.web.model.AgentFundDeailDO;
+import com.hb.entity.AgentFundDeailDO;
 import com.hb.web.vo.webvo.request.AgentFundDetailRequestVO;
 
 import java.util.List;

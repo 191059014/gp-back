@@ -2,7 +2,7 @@ package com.hb.web.impl;
 
 import com.hb.web.api.ICustomerFundDetailService;
 import com.hb.web.mapper.CustomerFundDetailMapper;
-import com.hb.web.model.CustomerFundDetailDO;
+import com.hb.entity.CustomerFundDetailDO;
 import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

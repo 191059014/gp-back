@@ -6,7 +6,7 @@ import com.hb.web.api.IStockService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.ExchangeTypeEnum;
 import com.hb.web.mapper.StockListMapper;
-import com.hb.web.model.StockListDO;
+import com.hb.entity.StockListDO;
 import com.hb.web.util.HttpUtils;
 import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;

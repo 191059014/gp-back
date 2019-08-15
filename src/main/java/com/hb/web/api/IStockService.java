@@ -1,6 +1,6 @@
 package com.hb.web.api;
 
-import com.hb.web.model.StockListDO;
+import com.hb.entity.StockListDO;
 import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;
 

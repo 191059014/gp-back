@@ -6,7 +6,7 @@ import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.ICustomerFundDetailService;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
-import com.hb.web.model.CustomerFundDetailDO;
+import com.hb.entity.CustomerFundDetailDO;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.QueryCustomerFundDetailRequestVO;
 import com.hb.web.vo.appvo.request.QueryCustomerFundDetailResponseVO;

@@ -7,7 +7,7 @@ import com.hb.web.api.IOrderService;
 import com.hb.web.api.IStockService;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
-import com.hb.web.model.StockListDO;
+import com.hb.entity.StockListDO;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.StockIndexModel;
 import com.hb.web.vo.StockModel;

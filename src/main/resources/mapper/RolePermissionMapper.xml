@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.RolePermissionMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.RolePermissionDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.RolePermissionDO">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="roleId" property="roleId" jdbcType="INTEGER"/>
         <result column="permissionId" property="permissionId" jdbcType="INTEGER"/>
@@ -28,7 +28,7 @@
       update t_role_permission set recordStatus=0 where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.RolePermissionDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.RolePermissionDO">
         insert into t_role_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -95,7 +95,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.RolePermissionDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.entity.RolePermissionDO">
         update t_role_permission
         <set>
             <if test="roleId != null">

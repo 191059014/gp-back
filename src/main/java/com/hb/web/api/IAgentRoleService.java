@@ -1,6 +1,6 @@
 package com.hb.web.api;
 
-import com.hb.web.model.AgentRoleDO;
+import com.hb.entity.AgentRoleDO;
 
 import java.util.Set;
 

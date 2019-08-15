@@ -1,6 +1,6 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.CustomerFundDetailDO;
+import com.hb.entity.CustomerFundDetailDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

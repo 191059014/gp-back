@@ -1,7 +1,7 @@
 package com.hb.web.impl;
 
 import com.hb.web.api.ICustomerFundService;
-import com.hb.web.model.CustomerFundDO;
+import com.hb.entity.CustomerFundDO;
 import com.hb.web.mapper.CustomerFundMapper;
 import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;

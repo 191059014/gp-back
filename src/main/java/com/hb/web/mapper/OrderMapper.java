@@ -1,11 +1,10 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.OrderDO;
+import com.hb.entity.OrderDO;
 import com.hb.web.vo.appvo.HotStockVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface OrderMapper {

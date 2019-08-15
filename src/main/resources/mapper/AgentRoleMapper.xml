@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.AgentRoleMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.AgentRoleDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.AgentRoleDO">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="agentId" property="agentId" jdbcType="VARCHAR"/>
         <result column="roleId" property="roleId" jdbcType="INTEGER"/>
@@ -37,7 +37,7 @@
       delete from t_agent_role where agentId=#{agentId}
     </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.AgentRoleDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.AgentRoleDO">
         insert into t_agent_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -114,7 +114,7 @@
         </foreach>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.AgentRoleDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.entity.AgentRoleDO">
         update t_agent_role
         <set>
             <if test="agentId != null">

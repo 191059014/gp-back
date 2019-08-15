@@ -7,7 +7,7 @@ import com.hb.unic.util.util.CloneUtils;
 import com.hb.web.api.IRoleService;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
-import com.hb.web.model.RoleDO;
+import com.hb.entity.RoleDO;
 import com.hb.web.vo.webvo.response.RoleQueryResponseVO;
 import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;

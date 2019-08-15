@@ -5,7 +5,7 @@ import com.hb.web.api.IOrderService;
 import com.hb.web.constant.enumutil.OrderStatusEnum;
 import com.hb.web.constant.enumutil.TableEnum;
 import com.hb.web.mapper.OrderMapper;
-import com.hb.web.model.OrderDO;
+import com.hb.entity.OrderDO;
 import com.hb.web.tool.KeyGenerator;
 import com.hb.web.util.PageUtils;
 import com.hb.web.vo.appvo.HotStockVO;

@@ -1,6 +1,6 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.AgentFundDeailDO;
+import com.hb.entity.AgentFundDeailDO;
 import com.hb.web.vo.webvo.request.AgentFundDetailRequestVO;
 import org.apache.ibatis.annotations.Param;
 

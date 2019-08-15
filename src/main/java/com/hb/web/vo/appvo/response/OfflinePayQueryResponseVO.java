@@ -1,6 +1,6 @@
 package com.hb.web.vo.appvo.response;
 
-import com.hb.web.model.OfflinePayChekDO;
+import com.hb.entity.OfflinePayChekDO;
 
 import java.io.Serializable;
 import java.util.List;

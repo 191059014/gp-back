@@ -1,8 +1,8 @@
 package com.hb.web.tool;
 
 import com.alibaba.fastjson.JSON;
+import com.hb.entity.UserDO;
 import com.hb.unic.util.util.EncryptUtils;
-import com.hb.web.model.UserDO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Random;

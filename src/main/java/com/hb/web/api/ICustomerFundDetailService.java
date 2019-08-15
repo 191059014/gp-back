@@ -1,6 +1,6 @@
 package com.hb.web.api;
 
-import com.hb.web.model.CustomerFundDetailDO;
+import com.hb.entity.CustomerFundDetailDO;
 
 import java.util.List;
 

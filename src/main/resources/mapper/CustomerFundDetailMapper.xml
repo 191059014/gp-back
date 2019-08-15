@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.CustomerFundDetailMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.CustomerFundDetailDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.CustomerFundDetailDO">
         <id column="detailId" property="detailId" jdbcType="VARCHAR"/>
         <result column="userId" property="userId" jdbcType="VARCHAR"/>
         <result column="userName" property="userName" jdbcType="VARCHAR"/>
@@ -24,7 +24,7 @@
     select * from t_customer_fund_detail where detailId = #{detailId,jdbcType=VARCHAR}
   </select>
 
-    <select id="findListByCondition" resultType="com.hb.web.model.CustomerFundDetailDO">
+    <select id="findListByCondition" resultType="com.hb.entity.CustomerFundDetailDO">
         select * from t_customer_fund_detail where 1=1
         <include refid="sqlCondition"/>
         order by createTime desc
@@ -38,7 +38,7 @@
         <include refid="sqlCondition"/>
     </select>
 
-    <select id="findOne" resultType="com.hb.web.model.CustomerFundDetailDO">
+    <select id="findOne" resultType="com.hb.entity.CustomerFundDetailDO">
         select * from t_customer_fund_detail where 1=1
         <include refid="sqlCondition"/>
     </select>
@@ -84,7 +84,7 @@
     update t_customer_fund_detail set recordStatus=0 where detailId=#{detailId}
   </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.CustomerFundDetailDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.CustomerFundDetailDO">
         <selectKey keyProperty="detailId" resultType="string" order="BEFORE">
             SELECT CONCAT(#{userId},'_',count(*)+1) from t_customer_fund_detail where userId=#{userId};
         </selectKey>
@@ -187,7 +187,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.CustomerFundDetailDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.entity.CustomerFundDetailDO">
         update t_customer_fund_detail
         <set>
             <if test="userId != null">

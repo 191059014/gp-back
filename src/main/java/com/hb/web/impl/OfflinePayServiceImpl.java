@@ -4,7 +4,7 @@ import com.hb.web.api.IOfflinePayService;
 import com.hb.web.constant.enumutil.OfflineCheckStatusEnum;
 import com.hb.web.constant.enumutil.OfflinePayChannelEnum;
 import com.hb.web.constant.enumutil.OfflinePayStatusEnum;
-import com.hb.web.model.OfflinePayChekDO;
+import com.hb.entity.OfflinePayChekDO;
 import com.hb.web.mapper.OfflinePayCheckMapper;
 import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;

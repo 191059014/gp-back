@@ -1,6 +1,6 @@
 package com.hb.web.vo.webvo.response;
 
-import com.hb.web.model.AgentDO;
+import com.hb.entity.AgentDO;
 
 import java.util.Set;
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.OfflinePayCheckMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.OfflinePayChekDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.OfflinePayChekDO">
         <id column="checkId" property="checkId" jdbcType="INTEGER"/>
         <result column="userId" property="userId" jdbcType="VARCHAR"/>
         <result column="happenMoney" property="happenMoney" jdbcType="DECIMAL"/>
@@ -35,7 +35,7 @@
     where checkId = #{checkId,jdbcType=INTEGER}
   </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.OfflinePayChekDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.OfflinePayChekDO">
         insert into t_offline_pay_check
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -127,7 +127,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.OfflinePayChekDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.entity.OfflinePayChekDO">
         update t_offline_pay_check
         <set>
             <if test="userId != null">
@@ -176,7 +176,7 @@
         where checkId = #{checkId,jdbcType=INTEGER}
     </update>
 
-    <select id="findList" resultType="com.hb.web.model.OfflinePayChekDO">
+    <select id="findList" resultType="com.hb.entity.OfflinePayChekDO">
         select * from t_offline_pay_check where 1=1
         <include refid="selectByConditionSql"/>
         order by createtime desc
@@ -190,7 +190,7 @@
         <include refid="selectByConditionSql"/>
     </select>
 
-    <select id="findOne" resultType="com.hb.web.model.OfflinePayChekDO">
+    <select id="findOne" resultType="com.hb.entity.OfflinePayChekDO">
         select * from t_offline_pay_check where 1=1
         <include refid="selectByConditionSql"/>
     </select>

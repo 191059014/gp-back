@@ -1,11 +1,11 @@
 package com.hb.web.android.base;
 
+import com.hb.entity.UserDO;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
 import com.hb.web.constant.AppConstant;
-import com.hb.web.model.UserDO;
 import com.hb.web.tool.*;
 import com.hb.web.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;

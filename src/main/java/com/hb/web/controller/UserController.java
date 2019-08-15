@@ -1,10 +1,10 @@
 package com.hb.web.controller;
 
+import com.hb.entity.UserDO;
 import com.hb.web.api.IUserService;
 import com.hb.web.base.BaseController;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
-import com.hb.web.model.UserDO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

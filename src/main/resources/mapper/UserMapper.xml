@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hb.web.mapper.UserMapper">
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.UserDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.UserDO">
         <selectKey keyProperty="userId" resultType="string" order="BEFORE">
             SELECT CONCAT('U',count(*)+1) from t_user;
         </selectKey>
@@ -174,7 +174,7 @@
         update t_user set recordStatus=0 where userId=#{userId}
     </delete>
 
-    <select id="findUserPageList" resultType="com.hb.web.model.UserDO">
+    <select id="findUserPageList" resultType="com.hb.entity.UserDO">
         select * from t_user where 1=1
         <include refid="sqlCondition"/>
         order by createTime desc
@@ -188,12 +188,12 @@
         <include refid="sqlCondition"/>
     </select>
 
-    <select id="findUser" resultType="com.hb.web.model.UserDO">
+    <select id="findUser" resultType="com.hb.entity.UserDO">
         select * from t_user where 1=1
         <include refid="sqlCondition"/>
     </select>
 
-    <select id="getUserListByUserIdSet" resultType="com.hb.web.model.UserDO">
+    <select id="getUserListByUserIdSet" resultType="com.hb.entity.UserDO">
         select * from t_user WHERE userId IN
         <foreach collection="userIdSet" item="userId" index="index" open="(" close=")" separator=",">
             #{userId}

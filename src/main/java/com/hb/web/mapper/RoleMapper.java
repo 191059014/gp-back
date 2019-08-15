@@ -1,6 +1,6 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.RoleDO;
+import com.hb.entity.RoleDO;
 import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
 import org.apache.ibatis.annotations.Param;
 

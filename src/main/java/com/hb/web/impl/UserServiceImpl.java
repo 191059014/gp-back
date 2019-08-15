@@ -1,5 +1,6 @@
 package com.hb.web.impl;
 
+import com.hb.entity.UserDO;
 import com.hb.unic.util.util.DateUtils;
 import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.api.IAgentService;
@@ -7,7 +8,6 @@ import com.hb.web.api.IRolePermissionService;
 import com.hb.web.api.IUserService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.RealAuthStatusEnum;
-import com.hb.web.model.UserDO;
 import com.hb.web.mapper.UserMapper;
 import com.hb.web.util.PageUtils;
 import org.apache.commons.lang3.StringUtils;

@@ -1,9 +1,9 @@
 package com.hb.web.impl;
 
+import com.hb.entity.PermissionDO;
 import com.hb.web.api.IPermissionService;
 import com.hb.web.constant.enumutil.SourceTypeEnum;
 import com.hb.web.mapper.PermissionMapper;
-import com.hb.web.model.PermissionDO;
 import com.hb.web.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

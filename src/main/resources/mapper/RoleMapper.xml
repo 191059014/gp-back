@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hb.web.mapper.RoleMapper">
-    <resultMap id="BaseResultMap" type="com.hb.web.model.RoleDO">
+    <resultMap id="BaseResultMap" type="com.hb.entity.RoleDO">
         <id column="roleId" property="roleId" jdbcType="INTEGER"/>
         <result column="roleName" property="roleName" jdbcType="VARCHAR"/>
         <result column="description" property="description" jdbcType="VARCHAR"/>
@@ -25,7 +25,7 @@
         where roleId = #{roleId,jdbcType=INTEGER}
     </select>
 
-    <select id="findPageList" resultType="com.hb.web.model.RoleDO">
+    <select id="findPageList" resultType="com.hb.entity.RoleDO">
         select * from t_role where 1=1
         <include refid="sqlCondition"/>
         order by createTime desc
@@ -54,7 +54,7 @@
       update t_role set recordStatus=0 where roleId = #{roleId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insertSelective" parameterType="com.hb.web.model.RoleDO">
+    <insert id="insertSelective" parameterType="com.hb.entity.RoleDO">
         insert into t_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="roleId != null">
@@ -122,7 +122,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hb.web.model.RoleDO">
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.entity.RoleDO">
         update t_role
         <set>
             <if test="roleName != null">

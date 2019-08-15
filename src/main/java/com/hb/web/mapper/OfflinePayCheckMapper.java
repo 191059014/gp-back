@@ -1,6 +1,6 @@
 package com.hb.web.mapper;
 
-import com.hb.web.model.OfflinePayChekDO;
+import com.hb.entity.OfflinePayChekDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import com.hb.web.api.IPermissionService;
 import com.hb.web.api.IRolePermissionService;
 import com.hb.web.api.IRoleService;
 import com.hb.web.mapper.RoleMapper;
-import com.hb.web.model.RoleDO;
+import com.hb.entity.RoleDO;
 import com.hb.web.util.PageUtils;
 import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
 import org.apache.commons.collections4.CollectionUtils;

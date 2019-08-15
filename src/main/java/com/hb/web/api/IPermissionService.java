@@ -1,6 +1,6 @@
 package com.hb.web.api;
 
-import com.hb.web.model.PermissionDO;
+import com.hb.entity.PermissionDO;
 
 import java.util.List;
 import java.util.Map;

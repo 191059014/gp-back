@@ -2,7 +2,7 @@ package com.hb.web.controller;
 
 import com.hb.web.api.IAgentFundDetailService;
 import com.hb.web.common.ResponseEnum;
-import com.hb.web.model.AgentFundDeailDO;
+import com.hb.entity.AgentFundDeailDO;
 import com.hb.web.common.ResponseData;
 import com.hb.web.vo.webvo.request.AgentFundDetailRequestVO;
 import io.swagger.annotations.Api;

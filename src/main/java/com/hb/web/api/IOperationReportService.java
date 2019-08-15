@@ -1,6 +1,7 @@
 package com.hb.web.api;
 
-import com.hb.web.model.AgentDO;
+
+import com.hb.entity.AgentDO;
 
 import javax.servlet.http.HttpServletResponse;
 

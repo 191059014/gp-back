@@ -1,7 +1,7 @@
 package com.hb.web.api;
 
 
-import com.hb.web.model.UserDO;
+import com.hb.entity.UserDO;
 
 import java.util.List;
 import java.util.Map;

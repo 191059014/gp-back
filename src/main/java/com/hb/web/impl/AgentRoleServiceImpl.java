@@ -2,7 +2,7 @@ package com.hb.web.impl;
 
 import com.hb.web.api.IAgentRoleService;
 import com.hb.web.mapper.AgentRoleMapper;
-import com.hb.web.model.AgentRoleDO;
+import com.hb.entity.AgentRoleDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

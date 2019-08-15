@@ -6,7 +6,7 @@ import com.hb.web.api.IAgentService;
 import com.hb.web.base.BaseController;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
-import com.hb.web.model.AgentDO;
+import com.hb.entity.AgentDO;
 import com.hb.web.vo.webvo.response.AgentQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

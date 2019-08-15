@@ -1,6 +1,6 @@
 package com.hb.web.vo.webvo.response;
 
-import com.hb.web.model.OfflinePayChekDO;
+import com.hb.entity.OfflinePayChekDO;
 
 /**
  * ========== 审核信息-请求vo ==========

@@ -1,6 +1,6 @@
 package com.hb.web.vo.appvo.response;
 
-import com.hb.web.model.OrderDO;
+import com.hb.entity.OrderDO;
 
 import java.io.Serializable;
 import java.util.List;

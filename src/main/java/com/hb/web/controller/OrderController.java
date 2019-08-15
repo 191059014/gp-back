@@ -1,12 +1,12 @@
 package com.hb.web.controller;
 
+import com.hb.entity.UserDO;
 import com.hb.unic.util.util.CloneUtils;
 import com.hb.web.api.IOrderService;
 import com.hb.web.api.IUserService;
-import com.hb.web.model.OrderDO;
+import com.hb.entity.OrderDO;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
-import com.hb.web.model.UserDO;
 import com.hb.web.vo.webvo.response.OrderQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
