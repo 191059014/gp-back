@@ -1,10 +1,12 @@
 package com.hb.web.tool;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
+import com.hb.unic.logger.TraceIdUtils;
+import com.hb.unic.util.util.OkHttpUtils;
 import com.hb.web.common.AlarmContent;
 import com.hb.web.util.LogUtils;
-import com.hb.web.util.OkHttpUtils;
-import com.hb.web.util.TraceIdUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Component;
  * ========== 告警 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.tool.AlarmTools.java, v1.0
+ * @version com.hb.web.helper.AlarmTools.java, v1.0
  * @date 2019年07月15日 20时04分
  */
 @Component

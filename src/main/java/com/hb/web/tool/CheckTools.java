@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * ========== 所有校验 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.tool.CheckTools.java, v1.0
+ * @version com.hb.web.helper.CheckTools.java, v1.0
  * @date 2019年06月22日 14时47分
  */
 public class CheckTools {

@@ -1,5 +1,7 @@
 package com.hb.web.android.base;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
 import com.hb.web.constant.AppConstant;

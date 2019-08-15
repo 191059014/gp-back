@@ -1,12 +1,12 @@
 package com.hb.web.controller;
 
+import com.hb.unic.util.util.CloneUtils;
 import com.hb.web.api.IAgentRoleService;
 import com.hb.web.api.IAgentService;
 import com.hb.web.base.BaseController;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
 import com.hb.web.model.AgentDO;
-import com.hb.web.util.CloneUtils;
 import com.hb.web.vo.webvo.response.AgentQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

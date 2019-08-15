@@ -1,11 +1,10 @@
 package com.hb.web.controller;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.api.IAgentRoleService;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

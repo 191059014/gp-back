@@ -1,13 +1,12 @@
 package com.hb.web.android.api.noauth;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.ResourceRequestVO;
-import com.hb.web.vo.appvo.response.ResourceResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.core.io.ClassPathResource;

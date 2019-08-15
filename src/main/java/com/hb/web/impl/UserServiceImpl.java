@@ -1,15 +1,14 @@
 package com.hb.web.impl;
 
+import com.hb.unic.util.util.DateUtils;
+import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.api.IAgentService;
 import com.hb.web.api.IRolePermissionService;
-import com.hb.web.api.IRoleService;
 import com.hb.web.api.IUserService;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.constant.enumutil.RealAuthStatusEnum;
 import com.hb.web.model.UserDO;
 import com.hb.web.mapper.UserMapper;
-import com.hb.web.util.DateUtils;
-import com.hb.web.util.EncryptUtils;
 import com.hb.web.util.PageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

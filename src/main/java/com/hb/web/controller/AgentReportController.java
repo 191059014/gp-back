@@ -1,10 +1,10 @@
 package com.hb.web.controller;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.api.IAgentReportService;
 import com.hb.web.base.BaseController;
 import com.hb.web.model.AgentDO;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

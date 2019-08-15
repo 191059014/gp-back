@@ -1,8 +1,10 @@
 package com.hb.web.tool;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
+import com.hb.unic.util.util.DateUtils;
+import com.hb.unic.util.util.StringUtils;
 import com.hb.web.constant.enumutil.TableEnum;
-import com.hb.web.util.DateUtils;
-import com.hb.web.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,7 @@ import java.util.UUID;
  * ========== ID生成器 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.tool.KeyGenerator.java, v1.0
+ * @version com.hb.web.helper.KeyGenerator.java, v1.0
  * @date 2019年06月11日 15时25分
  */
 @Component

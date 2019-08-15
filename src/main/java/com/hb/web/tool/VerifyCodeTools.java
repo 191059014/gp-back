@@ -6,7 +6,7 @@ import java.util.Random;
  * ========== 验证码工具类 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.tool.VerifyCodeTools.java, v1.0
+ * @version com.hb.web.helper.VerifyCodeTools.java, v1.0
  * @date 2019年06月16日 07时35分
  */
 public class VerifyCodeTools {

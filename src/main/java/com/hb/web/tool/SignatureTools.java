@@ -1,12 +1,12 @@
 package com.hb.web.tool;
 
-import com.hb.web.util.EncryptUtils;
+import com.hb.unic.util.util.EncryptUtils;
 
 /**
  * ========== 签名工具类 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.app.tool.SignatureTools.java, v1.0
+ * @version com.hb.web.app.helper.SignatureTools.java, v1.0
  * @date 2019年06月13日 22时53分
  */
 public class SignatureTools {

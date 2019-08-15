@@ -1,7 +1,7 @@
 package com.hb.web.vo;
 
+import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.web.constant.GeneralConst;
-import com.hb.web.util.BigDecimalUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

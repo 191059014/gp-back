@@ -1,6 +1,8 @@
 package com.hb.web.aliyun.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.aliyun.constant.enumutil.BankCardAuthResEnum;
 import com.hb.web.aliyun.constant.enumutil.IdCardAuthResEnum;
 import com.hb.web.aliyun.model.BankCardAuthResult;
@@ -10,8 +12,6 @@ import com.hb.web.aliyun.model.out.IdCardOutRes;
 import com.hb.web.aliyun.service.IRealNameAuth;
 import com.hb.web.aliyun.util.HttpUtils;
 import com.hb.web.tool.AlarmTools;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.LogUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;

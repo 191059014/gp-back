@@ -1,15 +1,15 @@
 package com.hb.web.controller;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
+import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.api.IAgentService;
 import com.hb.web.base.BaseController;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
 import com.hb.web.constant.GeneralConst;
 import com.hb.web.model.AgentDO;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
 import com.hb.web.tool.RedisTools;
-import com.hb.web.util.EncryptUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

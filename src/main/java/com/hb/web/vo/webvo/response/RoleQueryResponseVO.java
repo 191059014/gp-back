@@ -1,7 +1,7 @@
 package com.hb.web.vo.webvo.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.hb.web.util.DateUtils;
+import com.hb.unic.util.util.DateUtils;
 
 import java.io.Serializable;
 import java.util.Date;

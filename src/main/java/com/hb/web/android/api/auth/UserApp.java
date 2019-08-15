@@ -1,5 +1,7 @@
 package com.hb.web.android.api.auth;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.aliyun.constant.enumutil.BankCardAuthResEnum;
 import com.hb.web.aliyun.constant.enumutil.IdCardAuthResEnum;
 import com.hb.web.aliyun.model.BankCardAuthResult;
@@ -12,8 +14,6 @@ import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
 import com.hb.web.constant.enumutil.RealAuthStatusEnum;
 import com.hb.web.model.UserDO;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
 import com.hb.web.tool.TokenTools;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.BankCardRealNameAuthRequestVO;

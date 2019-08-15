@@ -1,12 +1,12 @@
 package com.hb.web.impl;
 
+import com.hb.unic.util.util.DateUtils;
 import com.hb.web.api.IAgentReportService;
 import com.hb.web.api.IAgentService;
 import com.hb.web.api.IExportExcelService;
 import com.hb.web.constant.enumutil.AgentLevelEnum;
 import com.hb.web.constant.enumutil.RealAuthStatusEnum;
 import com.hb.web.model.AgentDO;
-import com.hb.web.util.DateUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

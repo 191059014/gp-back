@@ -1,10 +1,7 @@
 package com.hb.web.tool;
 
-import com.hb.web.util.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
+import com.hb.unic.util.util.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -14,7 +11,7 @@ import java.util.List;
  * ========== excel工具类 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.tool.ExcelTools.java, v1.0
+ * @version com.hb.web.helper.ExcelTools.java, v1.0
  * @date 2019年07月16日 20时55分
  */
 public class ExcelTools {

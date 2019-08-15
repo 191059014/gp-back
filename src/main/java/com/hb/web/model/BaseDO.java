@@ -2,8 +2,8 @@ package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.hb.web.annotation.SelfTableColumn;
-import com.hb.web.util.DateUtils;
+import com.hb.unic.base.annotation.SelfTableColumn;
+import com.hb.unic.util.util.DateUtils;
 
 import java.io.Serializable;
 import java.util.Date;

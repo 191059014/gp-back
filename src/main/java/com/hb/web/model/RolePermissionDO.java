@@ -1,8 +1,8 @@
 package com.hb.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.hb.web.annotation.SelfTableClass;
-import com.hb.web.annotation.SelfTableColumn;
+import com.hb.unic.base.annotation.SelfTableClass;
+import com.hb.unic.base.annotation.SelfTableColumn;
 
 /**
  * ========== 角色-权限 关联表 ==========

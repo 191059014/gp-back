@@ -1,7 +1,7 @@
 package com.hb.web.interceptor;
 
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

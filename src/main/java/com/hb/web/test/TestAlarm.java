@@ -1,8 +1,8 @@
 package com.hb.web.test;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.tool.AlarmTools;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

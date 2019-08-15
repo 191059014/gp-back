@@ -1,20 +1,17 @@
 package com.hb.web.android.api.auth;
 
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.ICustomerFundDetailService;
 import com.hb.web.common.AppResponseCodeEnum;
 import com.hb.web.common.AppResultModel;
 import com.hb.web.model.CustomerFundDetailDO;
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
 import com.hb.web.util.LogUtils;
 import com.hb.web.vo.appvo.request.QueryCustomerFundDetailRequestVO;
 import com.hb.web.vo.appvo.request.QueryCustomerFundDetailResponseVO;
-import com.hb.web.vo.appvo.request.QueryOrderRequestVO;
-import com.hb.web.vo.appvo.response.OrderQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

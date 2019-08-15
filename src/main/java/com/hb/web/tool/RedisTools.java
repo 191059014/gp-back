@@ -1,6 +1,8 @@
 package com.hb.web.tool;
 
 import com.alibaba.fastjson.JSON;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * ========== redis工具类 ==========
  *
  * @author Mr.huang
- * @version com.hb.web.tool.RedisTools.java, v1.0
+ * @version com.hb.web.helper.RedisTools.java, v1.0
  * @date 2019年06月11日 00时19分
  */
 @Component

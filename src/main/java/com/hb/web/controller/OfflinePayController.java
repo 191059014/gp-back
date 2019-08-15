@@ -1,12 +1,12 @@
 package com.hb.web.controller;
 
+import com.hb.unic.util.util.CloneUtils;
 import com.hb.web.api.IOfflinePayService;
 import com.hb.web.api.IUserService;
 import com.hb.web.model.OfflinePayChekDO;
 import com.hb.web.common.ResponseData;
 import com.hb.web.common.ResponseEnum;
 import com.hb.web.model.UserDO;
-import com.hb.web.util.CloneUtils;
 import com.hb.web.vo.webvo.response.OfflinePayCheckResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

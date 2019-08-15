@@ -1,7 +1,7 @@
 package com.hb.web.util;
 
-import com.hb.web.tool.Logger;
-import com.hb.web.tool.LoggerFactory;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;

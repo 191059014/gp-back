@@ -1,6 +1,6 @@
 package com.hb.web.model;
 
-import com.hb.web.annotation.SelfTableClass;
+import com.hb.unic.base.annotation.SelfTableClass;
 
 import java.util.Date;
 
