@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hb.web.mapper.OfflinePayCheckMapper">
+    <resultMap id="BaseResultMap" type="com.hb.facade.entity.OfflinePayChekDO">
+        <id column="checkId" property="checkId" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <result column="happenMoney" property="happenMoney" jdbcType="DECIMAL"/>
+        <result column="payChannel" property="payChannel" jdbcType="INTEGER"/>
+        <result column="checkStatus" property="checkStatus" jdbcType="INTEGER"/>
+        <result column="payStatus" property="payStatus" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="systemRemark" property="systemRemark" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="updateUserId" property="updateUserId" jdbcType="VARCHAR"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="INTEGER"/>
+        <result column="parentId" property="parentId" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    checkId, userId, happenMoney, payChannel, checkStatus, payStatus, remark, systemRemark, 
+    createTime, createUserId, updateTime, updateUserId, recordStatus, parentId, unit
+  </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_offline_pay_check
+        where checkId = #{checkId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update t_offline_pay_check set recordStatus='0'
+    where checkId = #{checkId,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.hb.facade.entity.OfflinePayChekDO">
+        insert into t_offline_pay_check
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="happenMoney != null">
+                happenMoney,
+            </if>
+            <if test="payChannel != null">
+                payChannel,
+            </if>
+            <if test="checkStatus != null">
+                checkStatus,
+            </if>
+            <if test="payStatus != null">
+                payStatus,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="systemRemark != null">
+                systemRemark,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="createUserId != null">
+                createUserId,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="updateUserId != null">
+                updateUserId,
+            </if>
+            <if test="recordStatus != null">
+                recordStatus,
+            </if>
+            <if test="parentId != null">
+                parentId,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="happenMoney != null">
+                #{happenMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="payChannel != null">
+                #{payChannel,jdbcType=INTEGER},
+            </if>
+            <if test="checkStatus != null">
+                #{checkStatus,jdbcType=INTEGER},
+            </if>
+            <if test="payStatus != null">
+                #{payStatus,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="systemRemark != null">
+                #{systemRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserId != null">
+                #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordStatus != null">
+                #{recordStatus,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.facade.entity.OfflinePayChekDO">
+        update t_offline_pay_check
+        <set>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="happenMoney != null">
+                happenMoney = #{happenMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="payChannel != null">
+                payChannel = #{payChannel,jdbcType=INTEGER},
+            </if>
+            <if test="checkStatus != null">
+                checkStatus = #{checkStatus,jdbcType=INTEGER},
+            </if>
+            <if test="payStatus != null">
+                payStatus = #{payStatus,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="systemRemark != null">
+                systemRemark = #{systemRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                createUserId = #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserId != null">
+                updateUserId = #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordStatus != null">
+                recordStatus = #{recordStatus,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parentId = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=INTEGER},
+            </if>
+        </set>
+        where checkId = #{checkId,jdbcType=INTEGER}
+    </update>
+
+    <select id="findList" resultType="com.hb.facade.entity.OfflinePayChekDO">
+        select * from t_offline_pay_check where 1=1
+        <include refid="selectByConditionSql"/>
+        order by createtime desc
+        <if test="pageSize != null and pageSize != 0">
+            limit #{startRow},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(1) from t_offline_pay_check where 1=1
+        <include refid="selectByConditionSql"/>
+    </select>
+
+    <select id="findOne" resultType="com.hb.facade.entity.OfflinePayChekDO">
+        select * from t_offline_pay_check where 1=1
+        <include refid="selectByConditionSql"/>
+    </select>
+
+    <sql id="selectByConditionSql">
+        <if test="offlinePayChekDO.checkId != null and offlinePayChekDO.checkId != ''">
+            and checkId=#{offlinePayChekDO.checkId}
+        </if>
+        <if test="offlinePayChekDO.payStatus != null and offlinePayChekDO.payStatus != ''">
+            and payStatus=#{offlinePayChekDO.payStatus}
+        </if>
+        <if test="offlinePayChekDO.checkStatus != null and offlinePayChekDO.checkStatus != ''">
+            and checkStatus=#{offlinePayChekDO.checkStatus}
+        </if>
+        <if test="offlinePayChekDO.payChannel != null and offlinePayChekDO.payChannel != ''">
+            and payChannel=#{offlinePayChekDO.payChannel}
+        </if>
+        <if test="offlinePayChekDO.unit != null and offlinePayChekDO.unit != ''">
+            and unit=#{offlinePayChekDO.unit}
+        </if>
+        and recordStatus='1'
+    </sql>
+
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hb.web.mapper.AgentFundMapper">
+    <resultMap id="BaseResultMap" type="com.hb.facade.entity.AgentFundDO">
+        <result column="agentId" property="agentId" jdbcType="VARCHAR"/>
+        <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
+        <result column="accountTotalMoney" property="accountTotalMoney" jdbcType="DECIMAL"/>
+        <result column="freezeMoney" property="freezeMoney" jdbcType="DECIMAL"/>
+        <result column="usableMoney" property="usableMoney" jdbcType="DECIMAL"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="updateUserId" property="updateUserId" jdbcType="VARCHAR"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="INTEGER"/>
+        <result column="parentId" property="parentId" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="insertSelective" parameterType="com.hb.facade.entity.AgentFundDO">
+        insert into t_agent_fund
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">
+                agentId,
+            </if>
+            <if test="agentName != null">
+                agentName,
+            </if>
+            <if test="accountTotalMoney != null">
+                accountTotalMoney,
+            </if>
+            <if test="freezeMoney != null">
+                freezeMoney,
+            </if>
+            <if test="usableMoney != null">
+                usableMoney,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="createUserId != null">
+                createUserId,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="updateUserId != null">
+                updateUserId,
+            </if>
+            <if test="recordStatus != null">
+                recordStatus,
+            </if>
+            <if test="parentId != null">
+                parentId,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="agentId != null">
+                #{agentId,jdbcType=VARCHAR},
+            </if>
+            <if test="agentName != null">
+                #{agentName,jdbcType=VARCHAR},
+            </if>
+            <if test="accountTotalMoney != null">
+                #{accountTotalMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="freezeMoney != null">
+                #{freezeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="usableMoney != null">
+                #{usableMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserId != null">
+                #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordStatus != null">
+                #{recordStatus,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findAgentFundList" resultType="com.hb.facade.entity.AgentFundDO">
+        select * from t_agent_fund where 1=1
+        <include refid="selectConditionSql"/>
+        order by createTime desc
+        <if test="pageSize != null and pageSize != 0">
+            <![CDATA[ limit #{startRow},#{pageSize} ]]>
+        </if>
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(1) from t_agent_fund where 1=1
+        <include refid="selectConditionSql"/>
+    </select>
+
+    <sql id="selectConditionSql">
+        <if test="agentFundDO.agentId != null and agentFundDO.agentId!=''">
+            and agentId=#{agentFundDO.agentId}
+        </if>
+        <if test="agentFundDO.agentName != null and agentFundDO.agentName!=''">
+            and agentName=#{agentFundDO.agentName}
+        </if>
+        <if test="agentFundDO.unit != null and agentFundDO.unit!=''">
+            and unit=#{agentFundDO.unit}
+        </if>
+    </sql>
+
+</mapper>

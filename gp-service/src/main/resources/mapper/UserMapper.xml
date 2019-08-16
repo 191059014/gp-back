@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hb.web.mapper.UserMapper">
+
+    <insert id="insertSelective" parameterType="com.hb.facade.entity.UserDO">
+        <selectKey keyProperty="userId" resultType="string" order="BEFORE">
+            SELECT CONCAT('U',count(*)+1) from t_user;
+        </selectKey>
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            userId,
+            <if test="userName != null">
+                userName,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="bankName != null">
+                bankName,
+            </if>
+            <if test="bankNo != null">
+                bankNo,
+            </if>
+            <if test="idCardNo != null">
+                idCardNo,
+            </if>
+            <if test="realAuthStatus != null">
+                realAuthStatus,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="inviterMobile != null">
+                inviterMobile,
+            </if>
+            <if test="riskLevel != null">
+                riskLevel,
+            </if>
+            <if test="riskScore != null">
+                riskScore,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="createUserId != null">
+                createUserId,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="updateUserId != null">
+                updateUserId,
+            </if>
+            <if test="recordStatus != null">
+                recordStatus,
+            </if>
+            <if test="parentId != null">
+                parentId,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{userId,jdbcType=VARCHAR},
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="bankName != null">
+                #{bankName,jdbcType=VARCHAR},
+            </if>
+            <if test="bankNo != null">
+                #{bankNo,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardNo != null">
+                #{idCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="realAuthStatus != null">
+                #{realAuthStatus,jdbcType=INTEGER},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="inviterMobile != null">
+                #{inviterMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="riskLevel != null">
+                #{riskLevel,jdbcType=INTEGER},
+            </if>
+            <if test="riskScore != null">
+                #{riskScore,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserId != null">
+                #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordStatus != null">
+                #{recordStatus,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUserById">
+        update t_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userDO.userName != null and userDO.userName !=''">
+                userName=#{userDO.userName},
+            </if>
+            <if test="userDO.password != null and userDO.password !=''">
+                password=#{userDO.password},
+            </if>
+            <if test="userDO.bankName != null and userDO.bankName !=''">
+                bankName=#{userDO.bankName},
+            </if>
+            <if test="userDO.bankNo != null and userDO.bankNo !=''">
+                bankNo=#{userDO.bankNo},
+            </if>
+            <if test="userDO.idCardNo != null and userDO.idCardNo !=''">
+                idCardNo=#{userDO.idCardNo},
+            </if>
+            <if test="userDO.realAuthStatus != null and userDO.realAuthStatus !=''">
+                realAuthStatus=#{userDO.realAuthStatus},
+            </if>
+            <if test="userDO.mobile != null and userDO.mobile !=''">
+                mobile=#{userDO.mobile},
+            </if>
+            <if test="userDO.inviterMobile != null and userDO.inviterMobile !=''">
+                inviterMobile=#{userDO.inviterMobile},
+            </if>
+            <if test="userDO.riskLevel != null and userDO.riskLevel !=''">
+                riskLevel=#{userDO.riskLevel},
+            </if>
+            <if test="userDO.riskScore != null and userDO.riskScore !=''">
+                riskScore=#{userDO.riskScore},
+            </if>
+            <if test="userDO.createTime != null">
+                createTime=#{userDO.createTime},
+            </if>
+            <if test="userDO.createUserId != null and userDO.createUserId !=''">
+                createUserId=#{userDO.createUserId},
+            </if>
+            <if test="userDO.updateTime != null">
+                updateTime=#{userDO.updateTime},
+            </if>
+            <if test="userDO.updateUserId != null and userDO.updateUserId !=''">
+                updateUserId=#{userDO.updateUserId},
+            </if>
+            <if test="userDO.recordStatus != null and userDO.recordStatus !=''">
+                recordStatus=#{recordStatus},
+            </if>
+        </trim>
+        where userId=#{userId}
+    </update>
+
+    <delete id="deleteUserById">
+        update t_user set recordStatus=0 where userId=#{userId}
+    </delete>
+
+    <select id="findUserPageList" resultType="com.hb.facade.entity.UserDO">
+        select * from t_user where 1=1
+        <include refid="sqlCondition"/>
+        order by createTime desc
+        <if test="pageSize != null and pageSize != 0">
+            <![CDATA[ limit #{startRow},#{pageSize} ]]>
+        </if>
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(1) from t_user where 1=1
+        <include refid="sqlCondition"/>
+    </select>
+
+    <select id="findUser" resultType="com.hb.facade.entity.UserDO">
+        select * from t_user where 1=1
+        <include refid="sqlCondition"/>
+    </select>
+
+    <select id="getUserListByUserIdSet" resultType="com.hb.facade.entity.UserDO">
+        select * from t_user WHERE userId IN
+        <foreach collection="userIdSet" item="userId" index="index" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </select>
+
+    <sql id="sqlCondition">
+        <if test="userDO.userId != null and userDO.userId !=''">
+            <![CDATA[ and userId = #{userDO.userId} ]]>
+        </if>
+        <if test="userDO.userName != null and userDO.userName !=''">
+            <![CDATA[ and userName = #{userDO.userName} ]]>
+        </if>
+        <if test="userDO.password != null and userDO.password !=''">
+            <![CDATA[ and password = #{userDO.password} ]]>
+        </if>
+        <if test="userDO.bankName != null and userDO.bankName !=''">
+            <![CDATA[ and bankName = #{userDO.bankName} ]]>
+        </if>
+        <if test="userDO.bankNo != null and userDO.bankNo !=''">
+            <![CDATA[ and bankNo = #{userDO.bankNo} ]]>
+        </if>
+        <if test="userDO.idCardNo != null and userDO.idCardNo !=''">
+            <![CDATA[ and idCardNo = #{userDO.idCardNo} ]]>
+        </if>
+        <if test="userDO.realAuthStatus != null and userDO.realAuthStatus !=''">
+            <![CDATA[ and realAuthStatus = #{userDO.realAuthStatus} ]]>
+        </if>
+        <if test="userDO.mobile != null and userDO.mobile !=''">
+            <![CDATA[ and mobile = #{userDO.mobile} ]]>
+        </if>
+        <if test="userDO.inviterMobile != null and userDO.inviterMobile !=''">
+            <![CDATA[ and inviterMobile = #{userDO.inviterMobile} ]]>
+        </if>
+        <if test="userDO.riskLevel != null and userDO.riskLevel !=''">
+            <![CDATA[ and riskLevel = #{userDO.riskLevel} ]]>
+        </if>
+        <if test="userDO.riskScore != null and userDO.riskScore !=''">
+            <![CDATA[ and riskScore = #{userDO.riskScore} ]]>
+        </if>
+        <if test="userDO.createTime != null">
+            <![CDATA[ and createTime = #{userDO.createTime} ]]>
+        </if>
+        <if test="userDO.createUserId != null and userDO.createUserId !=''">
+            <![CDATA[ and createUserId = #{userDO.createUserId} ]]>
+        </if>
+        <if test="userDO.updateTime != null">
+            <![CDATA[ and updateTime = #{userDO.updateTime} ]]>
+        </if>
+        <if test="userDO.updateUserId != null and userDO.updateUserId !=''">
+            <![CDATA[ and updateUserId = #{userDO.updateUserId} ]]>
+        </if>
+        <if test="userDO.parentId != null and userDO.parentId !=''">
+            <![CDATA[ and parentId = #{userDO.parentId} ]]>
+        </if>
+        <if test="userDO.unit != null and userDO.unit !=''">
+            <![CDATA[ and unit = #{userDO.unit} ]]>
+        </if>
+        and recordStatus = "1"
+    </sql>
+
+</mapper>

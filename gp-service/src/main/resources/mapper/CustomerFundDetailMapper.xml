@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hb.web.mapper.CustomerFundDetailMapper">
+    <resultMap id="BaseResultMap" type="com.hb.facade.entity.CustomerFundDetailDO">
+        <id column="detailId" property="detailId" jdbcType="VARCHAR"/>
+        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <result column="userName" property="userName" jdbcType="VARCHAR"/>
+        <result column="agentId" property="agentId" jdbcType="VARCHAR"/>
+        <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
+        <result column="happenMoney" property="happenMoney" jdbcType="DECIMAL"/>
+        <result column="afterHappenMoney" property="afterHappenMoney" jdbcType="DECIMAL"/>
+        <result column="fundType" property="fundType" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="createUserId" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="updateUserId" property="updateUserId" jdbcType="VARCHAR"/>
+        <result column="recordStatus" property="recordStatus" jdbcType="INTEGER"/>
+        <result column="parentId" property="parentId" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from t_customer_fund_detail where detailId = #{detailId,jdbcType=VARCHAR}
+  </select>
+
+    <select id="findListByCondition" resultType="com.hb.facade.entity.CustomerFundDetailDO">
+        select * from t_customer_fund_detail where 1=1
+        <include refid="sqlCondition"/>
+        order by createTime desc
+        <if test="pageSize != null and pageSize != 0">
+            <![CDATA[ limit #{startRow},#{pageSize} ]]>
+        </if>
+    </select>
+
+    <select id="findCountByCondition" resultType="java.lang.Integer">
+        select count(1) from t_customer_fund_detail where 1=1
+        <include refid="sqlCondition"/>
+    </select>
+
+    <select id="findOne" resultType="com.hb.facade.entity.CustomerFundDetailDO">
+        select * from t_customer_fund_detail where 1=1
+        <include refid="sqlCondition"/>
+    </select>
+
+    <sql id="sqlCondition">
+        <if test="customerFundDetailDO.detailId != null and customerFundDetailDO.detailId !=''">
+            <![CDATA[ and detailId = #{customerFundDetailDO.detailId} ]]>
+        </if>
+        <if test="customerFundDetailDO.userId != null and customerFundDetailDO.userId !=''">
+            <![CDATA[ and userId = #{customerFundDetailDO.userId} ]]>
+        </if>
+        <if test="customerFundDetailDO.userName != null and customerFundDetailDO.userName !=''">
+            <![CDATA[ and userName = #{customerFundDetailDO.userName} ]]>
+        </if>
+        <if test="customerFundDetailDO.agentId != null and customerFundDetailDO.agentId !=''">
+            <![CDATA[ and agentId = #{customerFundDetailDO.agentId} ]]>
+        </if>
+        <if test="customerFundDetailDO.agentName != null and customerFundDetailDO.agentName !=''">
+            <![CDATA[ and agentName = #{customerFundDetailDO.agentName} ]]>
+        </if>
+        <if test="customerFundDetailDO.fundType != null and customerFundDetailDO.fundType !=''">
+            <![CDATA[ and fundType = #{customerFundDetailDO.fundType} ]]>
+        </if>
+        <if test="customerFundDetailDO.createTime != null">
+            <![CDATA[ and createTime = #{customerFundDetailDO.createTime} ]]>
+        </if>
+        <if test="customerFundDetailDO.createUserId != null and customerFundDetailDO.createUserId !=''">
+            <![CDATA[ and createUserId = #{customerFundDetailDO.createUserId} ]]>
+        </if>
+        <if test="customerFundDetailDO.updateTime != null">
+            <![CDATA[ and updateTime = #{customerFundDetailDO.updateTime} ]]>
+        </if>
+        <if test="customerFundDetailDO.updateUserId != null and customerFundDetailDO.updateUserId !=''">
+            <![CDATA[ and updateUserId = #{customerFundDetailDO.updateUserId} ]]>
+        </if>
+        <if test="customerFundDetailDO.parentId != null and customerFundDetailDO.parentId !=''">
+            <![CDATA[ and parentId = #{customerFundDetailDO.parentId} ]]>
+        </if>
+        and recordStatus = "1"
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update t_customer_fund_detail set recordStatus=0 where detailId=#{detailId}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.hb.facade.entity.CustomerFundDetailDO">
+        <selectKey keyProperty="detailId" resultType="string" order="BEFORE">
+            SELECT CONCAT(#{userId},'_',count(*)+1) from t_customer_fund_detail where userId=#{userId};
+        </selectKey>
+        insert into t_customer_fund_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            detailId,
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="userName != null">
+                userName,
+            </if>
+            <if test="agentId != null">
+                agentId,
+            </if>
+            <if test="agentName != null">
+                agentName,
+            </if>
+            <if test="happenMoney != null">
+                happenMoney,
+            </if>
+            <if test="afterHappenMoney != null">
+                afterHappenMoney,
+            </if>
+            <if test="fundType != null">
+                fundType,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="createUserId != null">
+                createUserId,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="updateUserId != null">
+                updateUserId,
+            </if>
+            <if test="recordStatus != null">
+                recordStatus,
+            </if>
+            <if test="parentId != null">
+                parentId,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{detailId,jdbcType=VARCHAR},
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="agentId != null">
+                #{agentId,jdbcType=VARCHAR},
+            </if>
+            <if test="agentName != null">
+                #{agentName,jdbcType=VARCHAR},
+            </if>
+            <if test="happenMoney != null">
+                #{happenMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="afterHappenMoney != null">
+                #{afterHappenMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="fundType != null">
+                #{fundType,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserId != null">
+                #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordStatus != null">
+                #{recordStatus,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hb.facade.entity.CustomerFundDetailDO">
+        update t_customer_fund_detail
+        <set>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                userName = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="agentId != null">
+                agentId = #{agentId,jdbcType=VARCHAR},
+            </if>
+            <if test="agentName != null">
+                agentName = #{agentName,jdbcType=VARCHAR},
+            </if>
+            <if test="happenMoney != null">
+                happenMoney = #{happenMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="afterHappenMoney != null">
+                afterHappenMoney = #{afterHappenMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="fundType != null">
+                fundType = #{fundType,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                createUserId = #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserId != null">
+                updateUserId = #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordStatus != null">
+                recordStatus = #{recordStatus,jdbcType=CHAR},
+            </if>
+            <if test="parentId != null">
+                parentId = #{parentId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where detailId = #{detailId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>
