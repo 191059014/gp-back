@@ -1,7 +1,6 @@
 package com.hb.web.mapper;
 
 import com.hb.facade.entity.OrderDO;
-import com.hb.web.vo.appvo.request.HotStockVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,13 +19,6 @@ public interface OrderMapper {
     List<OrderDO> findList(@Param("orderDO") OrderDO orderDO, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);
 
     Integer findCount(@Param("orderDO") OrderDO orderDO);
-
-    /**
-     * ########## 获取热门股票 ##########
-     *
-     * @return 股票代码集合
-     */
-    List<HotStockVO> getHotStockList();
 
     List<OrderDO> findByUserIdAndOrderStatus(@Param("userId") String userId, @Param("orderStatuSet") Set<Integer> orderStatuSet);
 }

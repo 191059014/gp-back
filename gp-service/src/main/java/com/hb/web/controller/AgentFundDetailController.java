@@ -1,10 +1,10 @@
 package com.hb.web.controller;
 
 import com.hb.facade.entity.AgentFundDeailDO;
-import com.hb.web.vo.webvo.request.AgentFundDetailRequestVO;
+import com.hb.facade.vo.webvo.request.AgentFundDetailRequestVO;
 import com.hb.web.api.IAgentFundDetailService;
-import com.hb.web.common.ResponseData;
-import com.hb.web.common.ResponseEnum;
+import com.hb.facade.common.ResponseData;
+import com.hb.facade.common.ResponseEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

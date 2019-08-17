@@ -1,0 +1,10 @@
+ip:
+  blacklist: 192.168.17.2
+request:
+  timeBetween: 3
+  maxTimes: 10
+
+
+
+
+

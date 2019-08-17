@@ -29,6 +29,12 @@ public class UserDO extends BaseDO {
     private String userName;
 
     /**
+     * 真实姓名
+     */
+    @SelfTableColumn(value = "realName", comment = "真实姓名")
+    private String realName;
+
+    /**
      * 登录密码
      */
     @SelfTableColumn(value = "password", comment = "登录密码")
@@ -57,6 +63,12 @@ public class UserDO extends BaseDO {
      */
     @SelfTableColumn(value = "realAuthStatus", length = 1, defaultValue = "0", comment = "实名认证状态")
     private Integer realAuthStatus;
+
+    /**
+     * 银行卡实名认证状态
+     */
+    @SelfTableColumn(value = "bankRealAuthStatus", length = 1, defaultValue = "0", comment = "银行卡实名认证状态")
+    private Integer bankRealAuthStatus;
 
     /**
      * 手机号
@@ -105,6 +117,14 @@ public class UserDO extends BaseDO {
         this.userName = userName;
     }
 
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -145,6 +165,14 @@ public class UserDO extends BaseDO {
         this.realAuthStatus = realAuthStatus;
     }
 
+    public Integer getBankRealAuthStatus() {
+        return bankRealAuthStatus;
+    }
+
+    public void setBankRealAuthStatus(Integer bankRealAuthStatus) {
+        this.bankRealAuthStatus = bankRealAuthStatus;
+    }
+
     public String getMobile() {
         return mobile;
     }
@@ -182,11 +210,13 @@ public class UserDO extends BaseDO {
         return "UserDO{" +
                 "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
+                ", realName='" + realName + '\'' +
                 ", password='" + password + '\'' +
                 ", bankName='" + bankName + '\'' +
                 ", bankNo='" + bankNo + '\'' +
                 ", idCardNo='" + idCardNo + '\'' +
                 ", realAuthStatus='" + realAuthStatus + '\'' +
+                ", bankRealAuthStatus='" + bankRealAuthStatus + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", inviterMobile=" + inviterMobile +
                 ", riskLevel='" + riskLevel + '\'' +

@@ -1,7 +1,7 @@
 package com.hb.web.mapper;
 
 import com.hb.facade.entity.AgentFundDeailDO;
-import com.hb.web.vo.webvo.request.AgentFundDetailRequestVO;
+import com.hb.facade.vo.webvo.request.AgentFundDetailRequestVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

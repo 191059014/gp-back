@@ -32,12 +32,4 @@ public interface IOrderService {
     Integer findCount(OrderDO orderDO);
 
     List<Map<String, Object>> getOrderStatusList();
-
-    /**
-     * ########## 获取热门股票 ##########
-     *
-     * @param number 多少个热门股票
-     * @return 股票代码集合
-     */
-    Set<String> getHotStockSet(int number);
 }

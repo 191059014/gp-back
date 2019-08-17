@@ -3,7 +3,7 @@ package com.hb.web.impl;
 import com.hb.web.mapper.AgentFundDetailMapper;
 import com.hb.facade.entity.AgentFundDeailDO;
 import com.hb.facade.enumutil.FundTypeEnum;
-import com.hb.web.vo.webvo.request.AgentFundDetailRequestVO;
+import com.hb.facade.vo.webvo.request.AgentFundDetailRequestVO;
 import com.hb.unic.util.helper.PageHelper;
 import com.hb.web.api.IAgentFundDetailService;
 import org.springframework.beans.factory.annotation.Autowired;

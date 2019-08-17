@@ -2,7 +2,7 @@ package com.hb.web.api;
 
 
 import com.hb.facade.entity.AgentFundDeailDO;
-import com.hb.web.vo.webvo.request.AgentFundDetailRequestVO;
+import com.hb.facade.vo.webvo.request.AgentFundDetailRequestVO;
 
 import java.util.List;
 import java.util.Map;

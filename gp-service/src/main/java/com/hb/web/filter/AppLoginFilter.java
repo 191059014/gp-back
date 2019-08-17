@@ -5,9 +5,9 @@ import com.hb.facade.entity.UserDO;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.EncryptUtils;
-import com.hb.web.common.AppResponseCodeEnum;
-import com.hb.web.common.AppResultModel;
-import com.hb.web.constant.AppConstant;
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
+import com.hb.facade.constant.AppConstant;
 import com.hb.web.container.BodyReaderHttpServletRequestWrapper;
 import com.hb.web.container.SpringUtil;
 import com.hb.web.tool.RedisTools;
@@ -60,6 +60,7 @@ public class AppLoginFilter implements Filter {
         String signature = request.getHeader(AppConstant.SIGNATURE);
         wrapper = new BodyReaderHttpServletRequestWrapper(request);
         String bodyString = ((BodyReaderHttpServletRequestWrapper) wrapper).getBody();
+        LOGGER.info(LogUtils.appLog("request body is {}"), bodyString);
         String message = new StringBuilder().append(requestUrl).append(bodyString).append(secret).toString();
         String encode = EncryptUtils.encode(message);
         if (StringUtils.equals(signature, encode)) {

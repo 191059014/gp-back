@@ -8,12 +8,12 @@ import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.DateUtils;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.*;
-import com.hb.web.common.AppResponseCodeEnum;
-import com.hb.web.common.AppResultModel;
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
 import com.hb.web.util.LogUtils;
-import com.hb.web.vo.appvo.request.DepositRequestVO;
-import com.hb.web.vo.appvo.request.RechargeRequestVO;
-import com.hb.web.vo.appvo.response.UserFundSubTotalResponseVO;
+import com.hb.facade.vo.appvo.request.DepositRequestVO;
+import com.hb.facade.vo.appvo.request.RechargeRequestVO;
+import com.hb.facade.vo.appvo.response.UserFundSubTotalResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -180,10 +180,15 @@ public class CustomerFundApp extends BaseApp {
         }
         /**
          * 更新用户资金信息
+         * 可用余额减少
+         * 冻结资金增加
          */
         customerFund.setFreezeMoney(depositMoney);
         BigDecimal newUseableMoney = BigDecimalUtils.subtract(usableMoney, depositMoney);
+        BigDecimal freezeMoney = customerFund.getFreezeMoney();
+        BigDecimal newFreezeMoney = BigDecimalUtils.add(freezeMoney, depositMoney);
         customerFund.setUsableMoney(newUseableMoney);
+        customerFund.setFreezeMoney(newFreezeMoney);
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
         /**
          * 生成一条线下审批任务

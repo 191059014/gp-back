@@ -41,19 +41,8 @@ public class CheckTools {
      */
     public static boolean checkPassword(String password) {
         int length = password.length();
-        if (!(length >= 6 && length <= 15)) {
+        if (!(length >= 6 && length <= 20)) {
             return false;
-        }
-        for (int i = password.length(); --i >= 0; ) {
-            int chr = password.charAt(i);
-            boolean pass = false;
-            // [0-9A-Za-z]校验
-            if ((chr >= 48 && chr <= 57) || (chr >= 65 && chr <= 90) || (chr >= 97 && chr <= 122)) {
-                pass = true;
-            }
-            if (!pass) {
-                return false;
-            }
         }
         return true;
     }

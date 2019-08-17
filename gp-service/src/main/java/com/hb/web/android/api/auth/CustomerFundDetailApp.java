@@ -5,11 +5,11 @@ import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.ICustomerFundDetailService;
-import com.hb.web.common.AppResponseCodeEnum;
-import com.hb.web.common.AppResultModel;
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
 import com.hb.web.util.LogUtils;
-import com.hb.web.vo.appvo.request.QueryCustomerFundDetailRequestVO;
-import com.hb.web.vo.appvo.request.QueryCustomerFundDetailResponseVO;
+import com.hb.facade.vo.appvo.request.QueryCustomerFundDetailRequestVO;
+import com.hb.facade.vo.appvo.request.QueryCustomerFundDetailResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +45,12 @@ public class CustomerFundDetailApp extends BaseApp {
     public AppResultModel<QueryCustomerFundDetailResponseVO> queryCustomerFundDetail(@RequestBody QueryCustomerFundDetailRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("查询用户资金流水，入参：{}"), requestVO);
         QueryCustomerFundDetailResponseVO responseVO = new QueryCustomerFundDetailResponseVO();
-        if (requestVO.getFundType() == null || requestVO.getStartRow() == null || requestVO.getPageNum() == null) {
+        if (requestVO.getFundType() == null || requestVO.getStartRow() == null || requestVO.getPageSize() == null) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         CustomerFundDetailDO query = new CustomerFundDetailDO();
         query.setFundType(requestVO.getFundType());
-        List<CustomerFundDetailDO> pageList = iCustomerFundDetailService.findAppPageList(query, requestVO.getStartRow(), requestVO.getPageNum());
+        List<CustomerFundDetailDO> pageList = iCustomerFundDetailService.findAppPageList(query, requestVO.getStartRow(), requestVO.getPageSize());
         responseVO.setFundDetailList(pageList);
         LOGGER.info(LogUtils.appLog("查询用户资金流水，出参：{}"), responseVO);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);

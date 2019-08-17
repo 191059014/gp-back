@@ -2,8 +2,8 @@ package com.hb.web.controller;
 
 import com.hb.facade.entity.AgentFundDO;
 import com.hb.web.api.IAgentFundService;
-import com.hb.web.common.ResponseData;
-import com.hb.web.common.ResponseEnum;
+import com.hb.facade.common.ResponseData;
+import com.hb.facade.common.ResponseEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

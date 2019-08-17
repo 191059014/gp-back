@@ -2,8 +2,8 @@ package com.hb.web.controller;
 
 import com.hb.facade.entity.PermissionDO;
 import com.hb.web.api.IPermissionService;
-import com.hb.web.common.ResponseData;
-import com.hb.web.common.ResponseEnum;
+import com.hb.facade.common.ResponseData;
+import com.hb.facade.common.ResponseEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

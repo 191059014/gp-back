@@ -1,11 +1,12 @@
 package com.hb.web.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.hb.unic.base.BaseContext;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
-import com.hb.web.common.ResponseData;
-import com.hb.web.common.ResponseEnum;
-import com.hb.web.constant.GeneralConst;
+import com.hb.facade.common.ResponseData;
+import com.hb.facade.common.ResponseEnum;
+import com.hb.facade.constant.GeneralConst;
 import com.hb.web.container.SelfRunner;
 import com.hb.web.container.SpringUtil;
 import com.hb.web.tool.RedisTools;
@@ -37,8 +38,7 @@ public class SecurityFilter implements Filter {
         RedisTools redisTools = SpringUtil.getBean(RedisTools.class);
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        SelfRunner selfRunner = SpringUtil.getBean(SelfRunner.class);
-        String blacklist = selfRunner.getProperty("gp.ip.blacklist");
+        String blacklist = BaseContext.getValue("ip.blacklist");
         String userRealIpAddress = getUserIpAddress(request);
         LOGGER.info("the real ip address of request: {}", userRealIpAddress);
         if (blacklist != null && blacklist.contains(userRealIpAddress)) {
@@ -53,14 +53,16 @@ public class SecurityFilter implements Filter {
             String cacheKey = GeneralConst.REQUEST_IP_KEY + userRealIpAddress;
             String currentTimesStr = redisTools.get(cacheKey);
             int currentTimes = StringUtils.isBlank(currentTimesStr) ? 0 : Integer.parseInt(currentTimesStr);
-            if (currentTimes > 3) {
+            int timeBetween = Integer.parseInt(BaseContext.getValue("request.timeBetween"));
+            int maxTimes = Integer.parseInt(BaseContext.getValue("request.maxTimes"));
+            if (currentTimes > maxTimes) {
                 LOGGER.warn("current request is too often, ip: {}", userRealIpAddress);
                 ResponseData<Object> responseData = ResponseData.generateResponseData(ResponseEnum.REQUEST_TOO_OFTEN);
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write(JSON.toJSONString(responseData));
                 return;
             }
-            redisTools.set(cacheKey, ++currentTimes, 1);
+            redisTools.set(cacheKey, ++currentTimes, timeBetween);
         }
 
         filterChain.doFilter(request, response);

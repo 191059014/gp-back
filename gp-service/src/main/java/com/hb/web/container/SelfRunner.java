@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Properties;
@@ -22,7 +24,7 @@ import java.util.Properties;
  * @date 2019年06月11日 19时18分
  */
 @RestController
-@RequestMapping("tools")
+@RequestMapping("self/tools")
 @Api(tags = "系统工具")
 public class SelfRunner implements CommandLineRunner {
 
@@ -33,39 +35,21 @@ public class SelfRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        String path = "common/general-config.yml";
-        loadYmlProperties(path);
-    }
-
-    @ApiOperation(value = "加载缓存")
-    @RequestMapping("/loadYmlProperties")
-    public String loadYmlProperties(String path) {
-        LOGGER.info("load yml properties of path : {}", path);
-        Properties yml = YamlUtils.readYml(path);
-        for (Object key : yml.keySet()) {
-            Object value = yml.get(key);
-            LOGGER.info("key : {}, value : {}", key, value);
-            redisTools.set((String) key, value);
-        }
-        return "SUCCESS";
+        System.out.println("=======================");
+        System.out.println("   server start complete...");
+        System.out.println("   you can enjoy yourself...");
+        System.out.println("=======================");
     }
 
     @ApiOperation(value = "获取缓存")
-    @RequestMapping("/getProperty")
-    public String getProperty(String key) {
-        if (redisTools.hasKey(key)) {
-            return redisTools.get(key);
-        }
-        return "cannot found key in cache";
+    @GetMapping("/getProperty")
+    public String getProperty(@RequestParam("key") String key) {
+        return redisTools.get(key);
     }
 
     @ApiOperation(value = "清除缓存")
-    @RequestMapping("/clearProperty")
-    public Boolean clearProperty(String key) {
-        if (StringUtils.isBlank(key)) {
-            LOGGER.info("cannot found key in cache");
-            return false;
-        }
+    @GetMapping("/clearProperty")
+    public Boolean clearProperty(@RequestParam("key") String key) {
         return redisTools.delete(key);
     }
 

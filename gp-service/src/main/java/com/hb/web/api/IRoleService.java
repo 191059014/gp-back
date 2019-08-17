@@ -1,7 +1,7 @@
 package com.hb.web.api;
 
 import com.hb.facade.entity.RoleDO;
-import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
+import com.hb.facade.vo.webvo.response.RoleTreeResponseVO;
 
 import java.util.List;
 import java.util.Set;

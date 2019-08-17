@@ -4,7 +4,7 @@ import com.hb.web.mapper.OrderMapper;
 import com.hb.facade.entity.OrderDO;
 import com.hb.facade.enumutil.OrderStatusEnum;
 import com.hb.facade.enumutil.TableEnum;
-import com.hb.web.vo.appvo.request.HotStockVO;
+import com.hb.facade.vo.appvo.request.HotStockVO;
 import com.hb.unic.util.helper.PageHelper;
 import com.hb.unic.util.util.DateUtils;
 import com.hb.web.api.IOrderService;
@@ -89,25 +89,6 @@ public class OrderServiceImpl implements IOrderService {
             resultList.add(map);
         }
         return resultList;
-    }
-
-    @Override
-    public Set<String> getHotStockSet(int number) {
-        List<HotStockVO> hotStockList = orderMapper.getHotStockList();
-        Collections.sort(hotStockList, new Comparator<HotStockVO>() {
-            @Override
-            public int compare(HotStockVO o1, HotStockVO o2) {
-                return o1.getTotalNum().compareTo(o2.getTotalNum());
-            }
-        });
-        Set<String> set = new HashSet<>();
-        for (int i = hotStockList.size() - 1; i > -1; i--) {
-            if (i == hotStockList.size() - number - 1) {
-                break;
-            }
-            set.add(hotStockList.get(i).getStockCode());
-        }
-        return set;
     }
 
 }

@@ -13,6 +13,9 @@
             <if test="userName != null">
                 userName,
             </if>
+            <if test="realName != null">
+                realName,
+            </if>
             <if test="password != null">
                 password,
             </if>
@@ -27,6 +30,9 @@
             </if>
             <if test="realAuthStatus != null">
                 realAuthStatus,
+            </if>
+            <if test="bankRealAuthStatus != null">
+                bankRealAuthStatus,
             </if>
             <if test="mobile != null">
                 mobile,
@@ -67,6 +73,9 @@
             <if test="userName != null">
                 #{userName,jdbcType=VARCHAR},
             </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
             <if test="password != null">
                 #{password,jdbcType=VARCHAR},
             </if>
@@ -81,6 +90,9 @@
             </if>
             <if test="realAuthStatus != null">
                 #{realAuthStatus,jdbcType=INTEGER},
+            </if>
+            <if test="bankRealAuthStatus != null">
+                #{bankRealAuthStatus,jdbcType=INTEGER},
             </if>
             <if test="mobile != null">
                 #{mobile,jdbcType=VARCHAR},
@@ -124,6 +136,9 @@
             <if test="userDO.userName != null and userDO.userName !=''">
                 userName=#{userDO.userName},
             </if>
+            <if test="userDO.realName != null and userDO.realName !=''">
+                realName=#{userDO.realName},
+            </if>
             <if test="userDO.password != null and userDO.password !=''">
                 password=#{userDO.password},
             </if>
@@ -138,6 +153,9 @@
             </if>
             <if test="userDO.realAuthStatus != null and userDO.realAuthStatus !=''">
                 realAuthStatus=#{userDO.realAuthStatus},
+            </if>
+            <if test="userDO.bankRealAuthStatus != null and userDO.bankRealAuthStatus !=''">
+                bankRealAuthStatus=#{userDO.bankRealAuthStatus},
             </if>
             <if test="userDO.mobile != null and userDO.mobile !=''">
                 mobile=#{userDO.mobile},
@@ -207,6 +225,9 @@
         <if test="userDO.userName != null and userDO.userName !=''">
             <![CDATA[ and userName = #{userDO.userName} ]]>
         </if>
+        <if test="userDO.realName != null and userDO.realName !=''">
+            <![CDATA[ and realName = #{userDO.realName} ]]>
+        </if>
         <if test="userDO.password != null and userDO.password !=''">
             <![CDATA[ and password = #{userDO.password} ]]>
         </if>
@@ -221,6 +242,9 @@
         </if>
         <if test="userDO.realAuthStatus != null and userDO.realAuthStatus !=''">
             <![CDATA[ and realAuthStatus = #{userDO.realAuthStatus} ]]>
+        </if>
+        <if test="userDO.bankRealAuthStatus != null and userDO.bankRealAuthStatus !=''">
+            <![CDATA[ and bankRealAuthStatus = #{userDO.bankRealAuthStatus} ]]>
         </if>
         <if test="userDO.mobile != null and userDO.mobile !=''">
             <![CDATA[ and mobile = #{userDO.mobile} ]]>

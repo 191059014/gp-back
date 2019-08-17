@@ -1,7 +1,7 @@
 package com.hb.web.mapper;
 
 import com.hb.facade.entity.RoleDO;
-import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
+import com.hb.facade.vo.webvo.response.RoleTreeResponseVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

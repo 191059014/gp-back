@@ -1,8 +1,8 @@
 package com.hb.web.controller;
 
 import com.hb.web.api.IRolePermissionService;
-import com.hb.web.common.ResponseData;
-import com.hb.web.common.ResponseEnum;
+import com.hb.facade.common.ResponseData;
+import com.hb.facade.common.ResponseEnum;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

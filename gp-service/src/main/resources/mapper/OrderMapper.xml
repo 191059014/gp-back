@@ -304,7 +304,7 @@
         <include refid="selectByConditionSql"/>
     </select>
 
-    <select id="getHotStockList" resultType="com.hb.web.vo.appvo.request.HotStockVO">
+    <select id="getHotStockList" resultType="com.hb.facade.vo.appvo.request.HotStockVO">
         select COUNT(1) as totalNum,stockCode as stockCode from t_order GROUP BY stockCode ORDER BY COUNT(1) DESC
     </select>
 

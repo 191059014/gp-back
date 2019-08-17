@@ -2,7 +2,7 @@ package com.hb.web.impl;
 
 import com.hb.web.mapper.RoleMapper;
 import com.hb.facade.entity.RoleDO;
-import com.hb.web.vo.webvo.response.RoleTreeResponseVO;
+import com.hb.facade.vo.webvo.response.RoleTreeResponseVO;
 import com.hb.unic.util.helper.PageHelper;
 import com.hb.web.api.IPermissionService;
 import com.hb.web.api.IRolePermissionService;

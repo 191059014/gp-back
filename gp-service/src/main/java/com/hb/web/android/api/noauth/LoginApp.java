@@ -12,19 +12,19 @@ import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IAgentService;
 import com.hb.web.api.IUserService;
-import com.hb.web.common.AppResponseCodeEnum;
-import com.hb.web.common.AppResultModel;
-import com.hb.web.common.RedisKeyFactory;
-import com.hb.web.constant.AppConstant;
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
+import com.hb.facade.common.RedisKeyFactory;
+import com.hb.facade.constant.AppConstant;
 import com.hb.web.tool.CheckTools;
 import com.hb.web.tool.SecretTools;
 import com.hb.web.tool.TokenTools;
 import com.hb.web.tool.VerifyCodeTools;
 import com.hb.web.util.LogUtils;
-import com.hb.web.vo.appvo.request.LoginRequestVO;
-import com.hb.web.vo.appvo.request.MobileVerifyRequestVO;
-import com.hb.web.vo.appvo.request.RegisterRequestVO;
-import com.hb.web.vo.appvo.response.LoginResponseVO;
+import com.hb.facade.vo.appvo.request.LoginRequestVO;
+import com.hb.facade.vo.appvo.request.MobileVerifyRequestVO;
+import com.hb.facade.vo.appvo.request.RegisterRequestVO;
+import com.hb.facade.vo.appvo.response.LoginResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -121,11 +121,12 @@ public class LoginApp extends BaseApp {
         if (registerRequestVO == null) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
+        String userName = registerRequestVO.getUserName();
         String password = registerRequestVO.getPassword();
         String mobile = registerRequestVO.getMobile();
         String mobileVerifyCode = registerRequestVO.getMobileVerifyCode();
         String inviterMobile = registerRequestVO.getInviterMobile();
-        if (StringUtils.isAnyBlank(password, mobile, mobileVerifyCode, inviterMobile)) {
+        if (StringUtils.isAnyBlank(password, mobile, mobileVerifyCode, inviterMobile, userName)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         if (!CheckTools.isMobile(mobile)) {
@@ -157,6 +158,7 @@ public class LoginApp extends BaseApp {
         }
 
         UserDO userDO = new UserDO();
+        userDO.setUserName(userName);
         userDO.setPassword(password);
         userDO.setMobile(mobile);
         userDO.setInviterMobile(inviterMobile);
