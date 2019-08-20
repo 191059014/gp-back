@@ -35,10 +35,10 @@ public class SelfRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("=======================");
-        System.out.println("   server start complete...");
-        System.out.println("   you can enjoy yourself...");
-        System.out.println("=======================");
+        System.out.println("========================");
+        System.out.println(" server start complete");
+        System.out.println(" you can enjoy yourself");
+        System.out.println("========================");
     }
 
     @ApiOperation(value = "获取缓存")
