@@ -7,6 +7,7 @@ import com.hb.web.api.ICustomerFundDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,12 +25,12 @@ public class CustomerFundDetailServiceImpl implements ICustomerFundDetailService
 
     @Override
     public List<CustomerFundDetailDO> findListByCondition(CustomerFundDetailDO customerFundDetailDO, Integer pageNum, Integer pageSize) {
-        return customerFundDetailMapper.findListByCondition(customerFundDetailDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
+        return customerFundDetailMapper.findListByCondition(customerFundDetailDO, PageHelper.getStartRow(pageNum, pageSize), pageSize, null, null);
     }
 
     @Override
-    public List<CustomerFundDetailDO> findAppPageList(CustomerFundDetailDO customerFundDetailDO, Integer startRow, Integer pageSize) {
-        return customerFundDetailMapper.findListByCondition(customerFundDetailDO, startRow, pageSize);
+    public List<CustomerFundDetailDO> findAppPageList(CustomerFundDetailDO customerFundDetailDO, Integer startRow, Integer pageSize, Date beginTime, Date endTime) {
+        return customerFundDetailMapper.findListByCondition(customerFundDetailDO, startRow, pageSize, beginTime, endTime);
     }
 
     @Override

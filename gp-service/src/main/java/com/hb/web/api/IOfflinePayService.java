@@ -95,4 +95,11 @@ public interface IOfflinePayService {
      */
     List<Map<String, Object>> getOfflinePayStatusCombobox();
 
+    /**
+     * ########## 线下支付审核 ##########
+     *
+     * @param offlinePayChekDO 线下支付审核信息
+     */
+    void update(OfflinePayChekDO offlinePayChekDO);
+
 }

@@ -1,6 +1,7 @@
 package com.hb.web.android.api.auth;
 
 import com.hb.facade.entity.CustomerFundDetailDO;
+import com.hb.facade.entity.UserDO;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.web.android.base.BaseApp;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,12 +47,13 @@ public class CustomerFundDetailApp extends BaseApp {
     public AppResultModel<QueryCustomerFundDetailResponseVO> queryCustomerFundDetail(@RequestBody QueryCustomerFundDetailRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("查询用户资金流水，入参：{}"), requestVO);
         QueryCustomerFundDetailResponseVO responseVO = new QueryCustomerFundDetailResponseVO();
-        if (requestVO.getFundType() == null || requestVO.getStartRow() == null || requestVO.getPageSize() == null) {
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
-        }
+        Date beginTime = requestVO.getTimeBegin() == null ? null : new Date(requestVO.getTimeBegin());
+        Date endTime = requestVO.getTimeEnd() == null ? null : new Date(requestVO.getTimeEnd());
+        UserDO userCache = getUserCache();
         CustomerFundDetailDO query = new CustomerFundDetailDO();
+        query.setUserId(userCache.getUserId());
         query.setFundType(requestVO.getFundType());
-        List<CustomerFundDetailDO> pageList = iCustomerFundDetailService.findAppPageList(query, requestVO.getStartRow(), requestVO.getPageSize());
+        List<CustomerFundDetailDO> pageList = iCustomerFundDetailService.findAppPageList(query, requestVO.getStartRow(), requestVO.getPageSize(), beginTime, endTime);
         responseVO.setFundDetailList(pageList);
         LOGGER.info(LogUtils.appLog("查询用户资金流水，出参：{}"), responseVO);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);

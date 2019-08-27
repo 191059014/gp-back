@@ -2,6 +2,7 @@ package com.hb.web.android.api.noauth;
 
 import com.hb.facade.entity.AgentDO;
 import com.hb.facade.entity.UserDO;
+import com.hb.facade.vo.appvo.request.ResetPasswordRequestVO;
 import com.hb.remote.constant.SMSTemplate;
 import com.hb.remote.constant.enumutil.SMSResEnum;
 import com.hb.remote.model.SMSSendResult;
@@ -182,7 +183,7 @@ public class LoginApp extends BaseApp {
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, loginResponseVO);
     }
 
-    @ApiOperation(value = "获取手机验证码（暂时模拟，后面调用短信平台）")
+    @ApiOperation(value = "获取手机验证码")
     @PostMapping("/getMobileVerifyCode")
     public AppResultModel<String> getMobileVerifyCode(@RequestBody MobileVerifyRequestVO mobileVerifyRequestVO) {
         LOGGER.info(LogUtils.appLog("获取手机验证码，入参：{}"), mobileVerifyRequestVO);
@@ -200,6 +201,36 @@ public class LoginApp extends BaseApp {
         // 将手机验证码放入缓存，默认时间
         redisTools.set(RedisKeyFactory.getMobileVerifyKey(mobile), mobileVerifyCode, AppConstant.MOBILE_VERIFYCODE_EXPIRE_TIME * 60);
         LOGGER.info(LogUtils.appLog("获取手机验证码并将其放入缓存成功：{}"), mobileVerifyCode);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+    }
+
+    @ApiOperation(value = "重置密码")
+    @PostMapping("/reset_password")
+    public AppResultModel resetPassword(@RequestBody ResetPasswordRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("重置密码，入参：{}"), requestVO);
+        String phoneNum = requestVO.getPhoneNum();
+        String verify = requestVO.getVerify();
+        String password = requestVO.getPassword();
+        if (StringUtils.isAnyBlank(phoneNum, verify, password)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+        }
+        String mobileVerifyKey = RedisKeyFactory.getMobileVerifyKey(phoneNum);
+        String mobileVerify = redisTools.get(mobileVerifyKey);
+        LOGGER.info(LogUtils.appLog("重置密码从缓存里获取验证码：{}"), mobileVerify);
+        if (mobileVerify == null) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.INVALID_MOBILE_VERIFYCODE);
+        }
+        if (!StringUtils.equals(verify, mobileVerify)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_MOBILE_VERIFYCODE);
+        }
+        UserDO userCache = getUserCache();
+        UserDO update = new UserDO();
+        update.setPassword(password);
+        boolean success = iUserService.updateUserById(userCache.getUserId(), update);
+        LOGGER.info(LogUtils.appLog("重置密码结果：{}"), success);
+        if (!success) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 

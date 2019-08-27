@@ -16,6 +16,16 @@ public enum ResponseEnum {
     REQUEST_IN_BLACKLIST("99997", "当前IP已纳入黑名单，禁止访问"),
     REQUEST_TOO_OFTEN("99998", "当前操作太过频繁，请稍后再试"),
     ERROR("99999", "操作失败，请稍后再试"),
+    /**
+     * 客户资金流水
+     */
+    ADD_CUSTOMER_FUND_DETAIL_FAILED("20000", "添加客户资金流水失败"),
+    /**
+     * 客户资金
+     */
+    ADD_CUSTOMER_FUND_FAILED("20050", "更新客户资金信息失败"),
+    NO_FUND_INFO("20051", "查询不到用户的资金信息"),
+    NOT_ENOUGH_USEABLE_MONEY("20052", "您的账户余额不足，无法提现"),
 
     /**
      * 登陆相关

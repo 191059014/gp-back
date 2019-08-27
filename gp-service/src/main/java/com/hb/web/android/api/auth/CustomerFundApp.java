@@ -1,19 +1,22 @@
 package com.hb.web.android.api.auth;
 
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
 import com.hb.facade.entity.*;
 import com.hb.facade.enumutil.*;
+import com.hb.facade.vo.appvo.request.DepositRequestVO;
+import com.hb.facade.vo.appvo.request.RechargeRequestVO;
+import com.hb.facade.vo.appvo.response.UserFundSubTotalResponseVO;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.DateUtils;
 import com.hb.web.android.base.BaseApp;
-import com.hb.web.api.*;
-import com.hb.facade.common.AppResponseCodeEnum;
-import com.hb.facade.common.AppResultModel;
+import com.hb.web.api.IAgentService;
+import com.hb.web.api.ICustomerFundService;
+import com.hb.web.api.IOfflinePayService;
+import com.hb.web.api.IOrderService;
 import com.hb.web.util.LogUtils;
-import com.hb.facade.vo.appvo.request.DepositRequestVO;
-import com.hb.facade.vo.appvo.request.RechargeRequestVO;
-import com.hb.facade.vo.appvo.response.UserFundSubTotalResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -51,16 +54,13 @@ public class CustomerFundApp extends BaseApp {
     private ICustomerFundService iCustomerFundService;
 
     @Autowired
-    private ICustomerFundDetailService iCustomerFundDetailService;
-
-    @Autowired
-    private IAgentService iAgentService;
-
-    @Autowired
     private IOfflinePayService iOfflinePayService;
 
     @Autowired
     private IOrderService iOrderService;
+
+    @Autowired
+    private IAgentService iAgentService;
 
     @ApiOperation(value = "获取客户资金信息")
     @PostMapping("/getFundInfo")
@@ -110,54 +110,22 @@ public class CustomerFundApp extends BaseApp {
              */
             addOrUpdate.setAgentId(agent.getAgentId());
             addOrUpdate.setAgentName(agent.getAgentName());
-            addOrUpdate.setAccountTotalMoney(rechargeMoney);// 账户总金额
-            addOrUpdate.setUsableMoney(rechargeMoney);// 可用金额
-            addOrUpdate.setTotalRechargeMoney(rechargeMoney);// 累计充值
             addOrUpdate.setCreateTime(DateUtils.getCurrentDate());
             addOrUpdate.setCreateUserId(userCache.getUserId());
             addOrUpdate.setUnit(userCache.getUnit());
             LOGGER.info(LogUtils.appLog("即将新增的充值信息：{}"), addOrUpdate.toString());
-            result = iCustomerFundService.addCustomerFund(addOrUpdate);
-        } else {
-            /**
-             * 更新用户资金信息
-             */
-            addOrUpdate.setAccountTotalMoney(BigDecimalUtils.add(query.getAccountTotalMoney(), rechargeMoney));// 账户总金额
-            addOrUpdate.setUsableMoney(BigDecimalUtils.add(query.getUsableMoney(), rechargeMoney));// 可用金额
-            addOrUpdate.setTotalRechargeMoney(BigDecimalUtils.add(addOrUpdate.getTotalRechargeMoney(), rechargeMoney));// 累计充值
-            LOGGER.info(LogUtils.appLog("即将更新的充值信息：{}"), addOrUpdate.toString());
-            result = iCustomerFundService.updateByPrimaryKeySelective(addOrUpdate);
+            iCustomerFundService.addCustomerFund(addOrUpdate);
         }
-        if (result > 0) {
-            LOGGER.info(LogUtils.appLog("充值成功：{}"), addOrUpdate);
-            // 插入流水
-            CustomerFundDetailDO customerFundDetailDO = new CustomerFundDetailDO();
-            customerFundDetailDO.setUserId(userCache.getUserId());
-            customerFundDetailDO.setUserName(userCache.getUserName());
-            customerFundDetailDO.setAgentId(agent.getAgentId());
-            customerFundDetailDO.setAgentName(agent.getAgentName());
-            customerFundDetailDO.setHappenMoney(rechargeMoney);// 发生金额
-            customerFundDetailDO.setAfterHappenMoney(rechargeMoney);// 发生后金额
-            customerFundDetailDO.setFundType(FundTypeEnum.RECHARGE.getValue());// 资金类型
-            customerFundDetailDO.setRemark(FundTypeEnum.RECHARGE.getDesc());// 备注
-            customerFundDetailDO.setCreateTime(DateUtils.getCurrentDate());
-            customerFundDetailDO.setCreateUserId(userCache.getUserId());
-            customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
-            customerFundDetailDO.setUpdateUserId(userCache.getUserId());
-            customerFundDetailDO.setUnit(userCache.getUnit());
-            int addOneResult = iCustomerFundDetailService.addOne(customerFundDetailDO);
-            if (addOneResult > 0) {
-                LOGGER.info(LogUtils.appLog("添加充值流水成功：{}"), customerFundDetailDO);
-            } else {
-                LOGGER.info(LogUtils.appLog("添加充值流水失败：{}"), customerFundDetailDO);
-                throw new Exception("添加充值流水失败");
-            }
-            alarmTools.alert("APP", "用户资金", "充值", "用户【" + userCache.getUserName() + "】充值【" + rechargeMoney + "元】成功");
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
-        } else {
-            LOGGER.info(LogUtils.appLog("充值失败：{}"), addOrUpdate);
-            throw new Exception("添加充值流水失败");
-        }
+        OfflinePayChekDO offlinePayChekDO = new OfflinePayChekDO(userCache.getUserId());
+        offlinePayChekDO.setHappenMoney(rechargeMoney);
+        offlinePayChekDO.setPayChannel(OfflinePayChannelEnum.ALIPAY.getValue());
+        offlinePayChekDO.setCheckStatus(OfflineCheckStatusEnum.AUDITING.getValue());
+        offlinePayChekDO.setPayStatus(OfflinePayStatusEnum.NOT_PAY.getValue());
+        offlinePayChekDO.setFundType(FundTypeEnum.RECHARGE.getValue());
+        iOfflinePayService.addOne(offlinePayChekDO);
+
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+
     }
 
     @ApiOperation(value = "提现（暂时模拟，后面调用支付平台）")
@@ -166,30 +134,7 @@ public class CustomerFundApp extends BaseApp {
     public AppResultModel deposit(@RequestBody DepositRequestVO depositRequestVO) {
         LOGGER.info(LogUtils.appLog("提现，入参：{}"), depositRequestVO);
         UserDO userCache = getUserCache();
-        CustomerFundDO query = new CustomerFundDO(userCache.getUserId());
-        CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(query);
-        if (customerFund == null) {
-            LOGGER.info(LogUtils.appLog("查询不到用户的资金信息"));
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.NO_FUND_INFO);
-        }
         BigDecimal depositMoney = depositRequestVO.getDepositMoney();
-        BigDecimal usableMoney = customerFund.getUsableMoney();
-        if (depositMoney.compareTo(usableMoney) > 0) {
-            LOGGER.info(LogUtils.appLog("提现金额大于可用余额"));
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_USEABLE_MONEY);
-        }
-        /**
-         * 更新用户资金信息
-         * 可用余额减少
-         * 冻结资金增加
-         */
-        customerFund.setFreezeMoney(depositMoney);
-        BigDecimal newUseableMoney = BigDecimalUtils.subtract(usableMoney, depositMoney);
-        BigDecimal freezeMoney = customerFund.getFreezeMoney();
-        BigDecimal newFreezeMoney = BigDecimalUtils.add(freezeMoney, depositMoney);
-        customerFund.setUsableMoney(newUseableMoney);
-        customerFund.setFreezeMoney(newFreezeMoney);
-        iCustomerFundService.updateByPrimaryKeySelective(customerFund);
         /**
          * 生成一条线下审批任务
          */

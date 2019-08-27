@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppFilterConfig {
 
-    @Bean
+//    @Bean
     public FilterRegistrationBean buildAppLoginFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(1);

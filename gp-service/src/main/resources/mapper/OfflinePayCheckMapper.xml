@@ -53,6 +53,9 @@
             <if test="payStatus != null">
                 payStatus,
             </if>
+            <if test="fundType != null">
+                fundType,
+            </if>
             <if test="remark != null">
                 remark,
             </if>
@@ -96,6 +99,9 @@
             </if>
             <if test="payStatus != null">
                 #{payStatus,jdbcType=INTEGER},
+            </if>
+            <if test="fundType != null">
+                #{fundType,jdbcType=INTEGER},
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},

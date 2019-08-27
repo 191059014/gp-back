@@ -77,6 +77,12 @@
         <if test="customerFundDetailDO.parentId != null and customerFundDetailDO.parentId !=''">
             <![CDATA[ and parentId = #{customerFundDetailDO.parentId} ]]>
         </if>
+        <if test="beginTime != null">
+            <![CDATA[ and createTime > #{beginTime} ]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and #{endTime} > createTime ]]>
+        </if>
         and recordStatus = "1"
     </sql>
 

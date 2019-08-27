@@ -1,13 +1,14 @@
 package com.hb.web.controller;
 
+import com.hb.facade.common.ResponseData;
+import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.entity.OfflinePayChekDO;
 import com.hb.facade.entity.UserDO;
+import com.hb.facade.vo.webvo.response.OfflinePayCheckResponseVO;
 import com.hb.unic.util.util.CloneUtils;
 import com.hb.web.api.IOfflinePayService;
 import com.hb.web.api.IUserService;
-import com.hb.facade.common.ResponseData;
-import com.hb.facade.common.ResponseEnum;
-import com.hb.facade.vo.webvo.response.OfflinePayCheckResponseVO;
+import com.hb.web.exception.BusinessException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
@@ -123,11 +124,11 @@ public class OfflinePayController {
     @ApiOperation(value = "修改线下审核信息")
     @PostMapping("/update")
     public ResponseData update(@RequestBody OfflinePayChekDO offlinePayChekDO) {
-        int result = iOfflinePayService.updateByPrimaryKeySelective(offlinePayChekDO);
-        if (result > 0) {
+        try {
+            iOfflinePayService.update(offlinePayChekDO);
             return ResponseData.generateResponseData(ResponseEnum.SUCCESS);
-        } else {
-            return ResponseData.generateResponseData(ResponseEnum.ERROR);
+        } catch (BusinessException e) {
+            return ResponseData.generateResponseData(e.getCode(), e.getMsg());
         }
     }
 

@@ -2,6 +2,7 @@ package com.hb.web.api;
 
 import com.hb.facade.entity.CustomerFundDetailDO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,9 +30,11 @@ public interface ICustomerFundDetailService {
      * @param customerFundDetailDO 客户资金流水信息
      * @param startRow             开始行数
      * @param pageSize             每页条数
+     * @param beginTime
+     * @param endTime
      * @return List<CustomerFundDetailDO>
      */
-    List<CustomerFundDetailDO> findAppPageList(CustomerFundDetailDO customerFundDetailDO, Integer startRow, Integer pageSize);
+    List<CustomerFundDetailDO> findAppPageList(CustomerFundDetailDO customerFundDetailDO, Integer startRow, Integer pageSize, Date beginTime, Date endTime);
 
     /**
      * ########## 根据条件查询客户资金流水总条数 ##########

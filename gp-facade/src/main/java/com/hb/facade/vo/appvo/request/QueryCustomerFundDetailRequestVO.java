@@ -18,6 +18,8 @@ public class QueryCustomerFundDetailRequestVO extends AppPages {
      * 资金类型
      */
     private Integer fundType;
+    private Long timeBegin;
+    private Long timeEnd;
 
     public Integer getFundType() {
         return fundType;
@@ -27,10 +29,28 @@ public class QueryCustomerFundDetailRequestVO extends AppPages {
         this.fundType = fundType;
     }
 
+    public Long getTimeBegin() {
+        return timeBegin;
+    }
+
+    public void setTimeBegin(Long timeBegin) {
+        this.timeBegin = timeBegin;
+    }
+
+    public Long getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(Long timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
     @Override
     public String toString() {
         return "QueryCustomerFundDetailRequestVO{" +
                 "fundType=" + fundType +
+                "timeBegin=" + timeBegin +
+                "timeEnd=" + timeEnd +
                 "} " + super.toString();
     }
 }
