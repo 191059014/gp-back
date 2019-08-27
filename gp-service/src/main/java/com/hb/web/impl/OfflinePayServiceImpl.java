@@ -163,11 +163,10 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
          * 可用余额减少
          * 冻结资金增加
          */
-        customerFund.setFreezeMoney(depositMoney);
         BigDecimal newUseableMoney = BigDecimalUtils.subtract(usableMoney, depositMoney);
+        customerFund.setUsableMoney(newUseableMoney);
         BigDecimal freezeMoney = customerFund.getFreezeMoney();
         BigDecimal newFreezeMoney = BigDecimalUtils.add(freezeMoney, depositMoney);
-        customerFund.setUsableMoney(newUseableMoney);
         customerFund.setFreezeMoney(newFreezeMoney);
         int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
         LOGGER.info("更新用户资金信息：{}，结果：{}", customerFund, result);
