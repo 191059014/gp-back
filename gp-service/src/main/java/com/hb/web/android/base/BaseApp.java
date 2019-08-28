@@ -97,12 +97,6 @@ public class BaseApp {
      * @return 用户信息
      */
     public UserDO getUserCache() {
-        if (true) {
-            UserDO u1 = new UserDO("U1");
-            u1.setUserName("黄彪");
-            u1.setInviterMobile("0000");
-            return u1;
-        }
         String token = getToken();
         UserDO userCache = TokenTools.get(token, redisTools);
         LOGGER.info(LogUtils.appLog("获取用户缓存信息，结果：{}"), userCache.toString());
