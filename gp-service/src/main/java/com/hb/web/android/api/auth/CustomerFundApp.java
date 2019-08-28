@@ -2,6 +2,7 @@ package com.hb.web.android.api.auth;
 
 import com.hb.facade.common.AppResponseCodeEnum;
 import com.hb.facade.common.AppResultModel;
+import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.entity.*;
 import com.hb.facade.enumutil.*;
 import com.hb.facade.vo.appvo.request.DepositRequestVO;
@@ -16,6 +17,7 @@ import com.hb.web.api.IAgentService;
 import com.hb.web.api.ICustomerFundService;
 import com.hb.web.api.IOfflinePayService;
 import com.hb.web.api.IOrderService;
+import com.hb.web.exception.BusinessException;
 import com.hb.web.util.LogUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -123,7 +125,7 @@ public class CustomerFundApp extends BaseApp {
         offlinePayChekDO.setPayStatus(OfflinePayStatusEnum.NOT_PAY.getValue());
         offlinePayChekDO.setFundType(FundTypeEnum.RECHARGE.getValue());
         iOfflinePayService.addOne(offlinePayChekDO);
-
+        alarmTools.alert("APP", "用户资金", "充值", "用户【" + userCache.getUserName() + "】申请充值【" + rechargeMoney + "元】，请及时处理！");
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
 
     }
@@ -136,6 +138,22 @@ public class CustomerFundApp extends BaseApp {
         UserDO userCache = getUserCache();
         BigDecimal depositMoney = depositRequestVO.getDepositMoney();
         /**
+         * 冻结资金
+         */
+        CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
+        BigDecimal freezeMoney = customerFund.getFreezeMoney();
+        BigDecimal usableMoney = customerFund.getUsableMoney();
+        if (depositMoney.compareTo(usableMoney) > 0) {
+            LOGGER.info(LogUtils.appLog("提现金额大于可用余额"));
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_USEABLE_MONEY);
+        }
+        freezeMoney = BigDecimalUtils.add(freezeMoney, depositMoney);
+        usableMoney = BigDecimalUtils.subtract(usableMoney, depositMoney);
+        customerFund.setFreezeMoney(freezeMoney);
+        customerFund.setUsableMoney(usableMoney);
+        iCustomerFundService.updateByPrimaryKeySelective(customerFund);
+
+        /**
          * 生成一条线下审批任务
          */
         OfflinePayChekDO add = new OfflinePayChekDO(userCache.getUserId());
@@ -145,7 +163,7 @@ public class CustomerFundApp extends BaseApp {
         add.setPayStatus(OfflinePayStatusEnum.NOT_PAY.getValue());
         add.setFundType(FundTypeEnum.DEPOSIT.getValue());
         iOfflinePayService.addOne(add);
-        alarmTools.alert("APP", "客户资金", "提现", "用户【" + userCache.getUserName() + "】发起提现申请，金额【" + depositMoney + "】");
+        alarmTools.alert("APP", "客户资金", "提现", "用户【" + userCache.getUserName() + "】申请提现【" + depositMoney + "元】，请及时处理！");
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 

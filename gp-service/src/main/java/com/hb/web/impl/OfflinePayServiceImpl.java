@@ -129,6 +129,9 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
             depositMoney(offlinePayChekDO);
         }
         // 更新线下支付信息
+        if (OfflineCheckStatusEnum.PASS.getValue().equals(offlinePayChekDO.getCheckStatus())) {
+            offlinePayChekDO.setPayStatus(OfflinePayStatusEnum.ALREADY_PAY.getValue());
+        }
         updateByPrimaryKeySelective(offlinePayChekDO);
     }
 
@@ -143,64 +146,75 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
      * @param offlinePayChekDO 提现信息
      */
     private void depositMoney(OfflinePayChekDO offlinePayChekDO) {
-        if (!OfflineCheckStatusEnum.PASS.getValue().equals(offlinePayChekDO.getCheckStatus())) {
-            return;
-        }
         String userId = offlinePayChekDO.getUserId();
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(new CustomerFundDO(userId));
         LOGGER.info("查询用户的资金信息：{}", customerFund);
         if (customerFund == null) {
             throw new BusinessException(ResponseEnum.NO_FUND_INFO);
         }
-        BigDecimal depositMoney = offlinePayChekDO.getHappenMoney();
+        BigDecimal happenMoney = offlinePayChekDO.getHappenMoney();
         BigDecimal usableMoney = customerFund.getUsableMoney();
-        if (depositMoney.compareTo(usableMoney) > 0) {
-            LOGGER.info(LogUtils.appLog("提现金额大于可用余额"));
+        BigDecimal freezeMoney = customerFund.getFreezeMoney();
+        if (BigDecimal.ZERO.compareTo(usableMoney) > 0) {
+            LOGGER.info(LogUtils.appLog("账户余额不足"));
             throw new BusinessException(ResponseEnum.NOT_ENOUGH_USEABLE_MONEY);
         }
-        /**
-         * 更新用户资金信息
-         * 可用余额减少
-         * 冻结资金增加
-         */
-        BigDecimal newUseableMoney = BigDecimalUtils.subtract(usableMoney, depositMoney);
-        customerFund.setUsableMoney(newUseableMoney);
-        BigDecimal freezeMoney = customerFund.getFreezeMoney();
-        BigDecimal newFreezeMoney = BigDecimalUtils.add(freezeMoney, depositMoney);
-        customerFund.setFreezeMoney(newFreezeMoney);
-        int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
-        LOGGER.info("更新用户资金信息：{}，结果：{}", customerFund, result);
-        if (result <= 0) {
-            throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_FAILED);
-        }
-        /**
-         * 插入流水
-         */
-        UserDO user = iUserService.findUser(new UserDO(userId));
-        AgentDO query = new AgentDO();
-        query.setMobile(user.getInviterMobile());
-        AgentDO agent = iAgentService.findAgent(query);
+        if (OfflineCheckStatusEnum.PASS.getValue().equals(offlinePayChekDO.getCheckStatus())) {
+            /**
+             * 更新用户资金信息
+             * 总资产减少
+             * 可用余额不变
+             * 冻结资金减少
+             */
+            BigDecimal newFreezeMoney = BigDecimalUtils.subtract(freezeMoney, happenMoney);
+            customerFund.setFreezeMoney(newFreezeMoney);
+            BigDecimal accountTotalMoney = customerFund.getAccountTotalMoney();
+            BigDecimal newAccountTotalMoney = BigDecimalUtils.subtract(accountTotalMoney, happenMoney);
+            customerFund.setAccountTotalMoney(newAccountTotalMoney);
+            int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
+            LOGGER.info("更新用户资金信息：{}，结果：{}", customerFund, result);
+            if (result <= 0) {
+                throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_FAILED);
+            }
+            /**
+             * 插入流水
+             */
+            UserDO user = iUserService.findUser(new UserDO(userId));
+            AgentDO query = new AgentDO();
+            query.setMobile(user.getInviterMobile());
+            AgentDO agent = iAgentService.findAgent(query);
 
-        CustomerFundDetailDO customerFundDetailDO = new CustomerFundDetailDO();
-        customerFundDetailDO.setUserId(userId);
-        customerFundDetailDO.setUserName(user.getUserName());
-        customerFundDetailDO.setAgentId(agent.getAgentId());
-        customerFundDetailDO.setAgentName(agent.getAgentName());
-        customerFundDetailDO.setHappenMoney(depositMoney);// 发生金额
-        customerFundDetailDO.setAfterHappenMoney(depositMoney);// 发生后金额
-        customerFundDetailDO.setFundType(FundTypeEnum.DEPOSIT.getValue());// 资金类型
-        customerFundDetailDO.setRemark(FundTypeEnum.DEPOSIT.getDesc());// 备注
-        customerFundDetailDO.setCreateTime(DateUtils.getCurrentDate());
-        customerFundDetailDO.setCreateUserId(userId);
-        customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
-        customerFundDetailDO.setUpdateUserId(userId);
-        customerFundDetailDO.setUnit(user.getUnit());
-        int addOneResult = iCustomerFundDetailService.addOne(customerFundDetailDO);
-        LOGGER.info("添加提现流水：{}，结果：{}", customerFundDetailDO, addOneResult);
-        if (addOneResult <= 0) {
-            throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_DETAIL_FAILED);
+            CustomerFundDetailDO customerFundDetailDO = new CustomerFundDetailDO();
+            customerFundDetailDO.setUserId(userId);
+            customerFundDetailDO.setUserName(user.getUserName());
+            customerFundDetailDO.setAgentId(agent.getAgentId());
+            customerFundDetailDO.setAgentName(agent.getAgentName());
+            customerFundDetailDO.setHappenMoney(happenMoney);// 发生金额
+            customerFundDetailDO.setAfterHappenMoney(happenMoney);// 发生后金额
+            customerFundDetailDO.setFundType(FundTypeEnum.DEPOSIT.getValue());// 资金类型
+            customerFundDetailDO.setRemark(FundTypeEnum.DEPOSIT.getDesc());// 备注
+            customerFundDetailDO.setCreateTime(DateUtils.getCurrentDate());
+            customerFundDetailDO.setCreateUserId(userId);
+            customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
+            customerFundDetailDO.setUpdateUserId(userId);
+            customerFundDetailDO.setUnit(user.getUnit());
+            int addOneResult = iCustomerFundDetailService.addOne(customerFundDetailDO);
+            LOGGER.info("添加提现流水：{}，结果：{}", customerFundDetailDO, addOneResult);
+            if (addOneResult <= 0) {
+                throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_DETAIL_FAILED);
+            }
+            alarmTools.alert("WEB", "用户资金", "提现", "用户【" + user.getUserName() + "】提现【" + happenMoney + "元】成功");
+        } else if (OfflineCheckStatusEnum.REJECT.getValue().equals(offlinePayChekDO.getCheckStatus())) {
+            /**
+             * 恢复冻结资金到可用余额
+             */
+            BigDecimal newFreezeMoney = BigDecimalUtils.subtract(freezeMoney, happenMoney);
+            customerFund.setFreezeMoney(newFreezeMoney);
+            BigDecimal newUsableMoney = BigDecimalUtils.add(usableMoney, happenMoney);
+            customerFund.setUsableMoney(newUsableMoney);
+            iCustomerFundService.updateByPrimaryKeySelective(customerFund);
         }
-        alarmTools.alert("APP", "用户资金", "提现", "用户【" + user.getUserName() + "】充值【" + depositMoney + "元】成功");
+
     }
 
     /**
@@ -253,7 +267,7 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
         if (addOneResult <= 0) {
             throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_DETAIL_FAILED);
         }
-        alarmTools.alert("APP", "用户资金", "充值", "用户【" + user.getUserName() + "】充值【" + happenMoney + "元】成功");
+        alarmTools.alert("WEB", "用户资金", "充值", "用户【" + user.getUserName() + "】充值【" + happenMoney + "元】成功");
     }
 
     @Override
