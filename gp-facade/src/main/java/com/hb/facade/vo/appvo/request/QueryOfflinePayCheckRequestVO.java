@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version com.hb.facade.vo.appvo.request.QueryOfflinePayCheckRequestVO.java, v1.0
  * @date 2019年06月26日 22时22分
  */
-public class QueryOfflinePayCheckRequestVO implements Serializable {
+public class QueryOfflinePayCheckRequestVO extends AppPages {
 
     /**
      * serialVersionUID
@@ -17,78 +17,22 @@ public class QueryOfflinePayCheckRequestVO implements Serializable {
     private static final long serialVersionUID = 6059643548642831615L;
 
     /**
-     * 支付渠道
+     * 资金类型
      */
-    private Integer payChannel;
+    private Integer fundType;
 
-    /**
-     * 审核状态
-     */
-    private Integer checkStatus;
-
-    /**
-     * 支付状态
-     */
-    private Integer payStatus;
-
-    /**
-     * 开始行数
-     */
-    private Integer startRow;
-
-    /**
-     * 每页条数
-     */
-    private Integer pageSize;
-
-    public Integer getPayChannel() {
-        return payChannel;
+    public Integer getFundType() {
+        return fundType;
     }
 
-    public void setPayChannel(Integer payChannel) {
-        this.payChannel = payChannel;
-    }
-
-    public Integer getCheckStatus() {
-        return checkStatus;
-    }
-
-    public void setCheckStatus(Integer checkStatus) {
-        this.checkStatus = checkStatus;
-    }
-
-    public Integer getPayStatus() {
-        return payStatus;
-    }
-
-    public void setPayStatus(Integer payStatus) {
-        this.payStatus = payStatus;
-    }
-
-    public Integer getStartRow() {
-        return startRow;
-    }
-
-    public void setStartRow(Integer startRow) {
-        this.startRow = startRow;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
+    public void setFundType(Integer fundType) {
+        this.fundType = fundType;
     }
 
     @Override
     public String toString() {
         return "QueryOfflinePayCheckRequestVO{" +
-                "payChannel='" + payChannel + '\'' +
-                ", checkStatus='" + checkStatus + '\'' +
-                ", payStatus='" + payStatus + '\'' +
-                ", startRow=" + startRow +
-                ", pageSize=" + pageSize +
-                '}';
+                "fundType=" + fundType +
+                "} " + super.toString();
     }
 }

@@ -185,7 +185,7 @@
     <select id="findList" resultType="com.hb.facade.entity.OfflinePayChekDO">
         select * from t_offline_pay_check where 1=1
         <include refid="selectByConditionSql"/>
-        order by checkStatus asc ,createtime desc
+        order by createtime desc
         <if test="pageSize != null and pageSize != 0">
             limit #{startRow},#{pageSize}
         </if>
@@ -213,6 +213,9 @@
         </if>
         <if test="offlinePayChekDO.payChannel != null and offlinePayChekDO.payChannel != ''">
             and payChannel=#{offlinePayChekDO.payChannel}
+        </if>
+        <if test="offlinePayChekDO.fundType != null and offlinePayChekDO.fundType != ''">
+            and fundType=#{offlinePayChekDO.fundType}
         </if>
         <if test="offlinePayChekDO.unit != null and offlinePayChekDO.unit != ''">
             and unit=#{offlinePayChekDO.unit}
