@@ -68,10 +68,23 @@ public class CustomerFundDetailDO extends BaseDO {
     private Integer fundType;
 
     /**
+     * 审核状态
+     */
+    @SelfTableColumn(value = "checkStatus", length = 1, comment = "审核状态")
+    private Integer checkStatus;
+
+    /**
      * 备注
      */
     @SelfTableColumn(value = "remark", comment = "备注")
     private String remark;
+
+    public CustomerFundDetailDO() {
+    }
+
+    public CustomerFundDetailDO(String detailId) {
+        this.detailId = detailId;
+    }
 
     public String getDetailId() {
         return detailId;
@@ -137,6 +150,14 @@ public class CustomerFundDetailDO extends BaseDO {
         this.fundType = fundType;
     }
 
+    public Integer getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(Integer checkStatus) {
+        this.checkStatus = checkStatus;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -156,6 +177,7 @@ public class CustomerFundDetailDO extends BaseDO {
                 ", happenMoney='" + happenMoney + '\'' +
                 ", afterHappenMoney='" + afterHappenMoney + '\'' +
                 ", fundType='" + fundType + '\'' +
+                ", checkStatus='" + checkStatus + '\'' +
                 ", remark='" + remark + '\'' +
                 '}' + "," + super.toString();
     }

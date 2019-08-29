@@ -11,20 +11,20 @@ public class StockQueryPageRequestVO extends AppPages {
 
     private static final long serialVersionUID = -1244937184626484440L;
 
-    private String stockCode;
+    private String queryText;
 
-    public String getStockCode() {
-        return stockCode;
+    public String getQueryText() {
+        return queryText;
     }
 
-    public void setStockCode(String stockCode) {
-        this.stockCode = stockCode;
+    public void setQueryText(String queryText) {
+        this.queryText = queryText;
     }
 
     @Override
     public String toString() {
         return "StockQueryPageRequestVO{" +
-                "stockCode='" + stockCode + '\'' +
+                "queryText='" + queryText + '\'' +
                 "} " + super.toString();
     }
 }

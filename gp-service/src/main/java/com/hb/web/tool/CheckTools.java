@@ -1,7 +1,11 @@
 package com.hb.web.tool;
 
+import com.hb.unic.util.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +17,10 @@ import java.util.regex.Pattern;
  * @date 2019年06月22日 14时47分
  */
 public class CheckTools {
+
+    public static void main(String[] args) {
+        System.out.println(stockOnLine());
+    }
 
 
     /**
@@ -45,6 +53,26 @@ public class CheckTools {
             return false;
         }
         return true;
+    }
+
+    /**
+     * ########## 判断股票是不是开市时间 ##########
+     *
+     * @return boolean
+     */
+    public static boolean stockOnLine() {
+        Date currentDate = DateUtils.getCurrentDate();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        String nowStr = hour + "" + minute;
+        System.out.println(nowStr);
+        int now = Integer.parseInt(nowStr);
+        if ((now >= 930 && now <= 1130) || (now >= 1300 && now <= 1500)) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -14,6 +14,7 @@ import com.hb.web.api.ICustomerFundService;
 import com.hb.web.api.IOrderService;
 import com.hb.facade.common.AppResponseCodeEnum;
 import com.hb.facade.common.AppResultModel;
+import com.hb.web.tool.CheckTools;
 import com.hb.web.util.LogUtils;
 import com.hb.facade.vo.appvo.request.OrderRequestVO;
 import com.hb.facade.vo.appvo.request.QueryOrderRequestVO;
@@ -56,6 +57,9 @@ public class OrderApp extends BaseApp {
     @PostMapping("/order")
     public AppResultModel order(@RequestBody OrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("股票下单，入参：{}"), requestVO);
+        if (!CheckTools.stockOnLine()) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
+        }
         UserDO userCache = getUserCache();
         CustomerFundDO query = new CustomerFundDO(userCache.getUserId());
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(query);
@@ -81,13 +85,13 @@ public class OrderApp extends BaseApp {
          * 更新账户信息
          *
          * 1.总金额不变
-         * 2.冻结金额增加
+         * 2.交易冻结金额增加
          * 3.可用余额减少
          */
         CustomerFundDO updateCustomerFund = new CustomerFundDO(customerFund.getUserId());
-        BigDecimal newFreezeMoney = BigDecimalUtils.add(customerFund.getFreezeMoney(), requestVO.getStrategyOwnMoney());
+        BigDecimal newTradeFreezeMoney = BigDecimalUtils.add(customerFund.getTradeFreezeMoney(), requestVO.getStrategyOwnMoney());
         BigDecimal newUsableMoney = BigDecimalUtils.subtract(customerFund.getUsableMoney(), requestVO.getStrategyOwnMoney());
-        updateCustomerFund.setFreezeMoney(newFreezeMoney);
+        updateCustomerFund.setTradeFreezeMoney(newTradeFreezeMoney);
         updateCustomerFund.setUsableMoney(newUsableMoney);
         iCustomerFundService.updateByPrimaryKeySelective(updateCustomerFund);
         LOGGER.info(LogUtils.appLog("股票下单成功后更新账户信息成功"));
@@ -101,8 +105,10 @@ public class OrderApp extends BaseApp {
     public AppResultModel<OrderQueryResponseVO> queryOrder(@RequestBody QueryOrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("查询订单，入参：{}"), requestVO);
         OrderQueryResponseVO responseVO = new OrderQueryResponseVO();
+        UserDO userCache = getUserCache();
         OrderDO orderDO = new OrderDO();
         orderDO.setOrderStatus(requestVO.getOrderStatus());
+        orderDO.setUserId(userCache.getUserId());
         List<OrderDO> list = iOrderService.findListPages(orderDO, requestVO.getStartRow(), requestVO.getPageNum());
         responseVO.setOrderList(list);
         LOGGER.info(LogUtils.appLog("查询订单，返回结果：{}"), list);

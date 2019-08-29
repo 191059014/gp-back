@@ -19,7 +19,7 @@ public enum ResponseEnum {
     /**
      * 客户资金流水
      */
-    ADD_CUSTOMER_FUND_DETAIL_FAILED("20000", "添加客户资金流水失败"),
+    UPDATE_CUSTOMER_FUND_DETAIL_FAILED("20000", "更新客户资金流水失败"),
     /**
      * 客户资金
      */

@@ -76,6 +76,12 @@ public class OfflinePayChekDO extends BaseDO {
     @SelfTableColumn(value = "systemRemark", comment = "管理员备注")
     private String systemRemark;
 
+    /**
+     * 资金明细ID
+     */
+    @SelfTableColumn(value = "detailId", comment = "资金明细ID")
+    private String detailId;
+
     public OfflinePayChekDO() {
     }
 
@@ -155,6 +161,14 @@ public class OfflinePayChekDO extends BaseDO {
         this.fundType = fundType;
     }
 
+    public String getDetailId() {
+        return detailId;
+    }
+
+    public void setDetailId(String detailId) {
+        this.detailId = detailId;
+    }
+
     @Override
     public String toString() {
         return "OfflinePayChekDO{" +
@@ -167,6 +181,7 @@ public class OfflinePayChekDO extends BaseDO {
                 ", fundType='" + fundType + '\'' +
                 ", remark='" + remark + '\'' +
                 ", systemRemark='" + systemRemark + '\'' +
+                ", detailId='" + detailId + '\'' +
                 '}' + super.toString();
     }
 }

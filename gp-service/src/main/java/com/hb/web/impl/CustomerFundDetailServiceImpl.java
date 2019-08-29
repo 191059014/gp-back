@@ -45,7 +45,7 @@ public class CustomerFundDetailServiceImpl implements ICustomerFundDetailService
 
     @Override
     public CustomerFundDetailDO findOne(CustomerFundDetailDO customerFundDetailDO) {
-        return customerFundDetailMapper.findOne(customerFundDetailDO);
+        return customerFundDetailMapper.findOne(customerFundDetailDO, null, null);
     }
 
     @Override

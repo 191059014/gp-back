@@ -8,6 +8,7 @@
         <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
         <result column="accountTotalMoney" property="accountTotalMoney" jdbcType="DECIMAL"/>
         <result column="freezeMoney" property="freezeMoney" jdbcType="DECIMAL"/>
+        <result column="tradeFreezeMoney" property="tradeFreezeMoney" jdbcType="DECIMAL"/>
         <result column="usableMoney" property="usableMoney" jdbcType="DECIMAL"/>
         <result column="totalRechargeMoney" property="totalRechargeMoney" jdbcType="DECIMAL"/>
         <result column="totalWithdrawMoney" property="totalWithdrawMoney" jdbcType="DECIMAL"/>
@@ -129,6 +130,9 @@
             <if test="freezeMoney != null">
                 freezeMoney,
             </if>
+            <if test="tradeFreezeMoney != null">
+                tradeFreezeMoney,
+            </if>
             <if test="usableMoney != null">
                 usableMoney,
             </if>
@@ -187,6 +191,9 @@
             </if>
             <if test="freezeMoney != null">
                 #{freezeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeFreezeMoney != null">
+                #{tradeFreezeMoney,jdbcType=DECIMAL},
             </if>
             <if test="usableMoney != null">
                 #{usableMoney,jdbcType=DECIMAL},
@@ -247,6 +254,9 @@
             </if>
             <if test="freezeMoney != null">
                 freezeMoney = #{freezeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeFreezeMoney != null">
+                tradeFreezeMoney = #{tradeFreezeMoney,jdbcType=DECIMAL},
             </if>
             <if test="usableMoney != null">
                 usableMoney = #{usableMoney,jdbcType=DECIMAL},

@@ -57,6 +57,12 @@ public class CustomerFundDO extends BaseDO {
     private BigDecimal freezeMoney;
 
     /**
+     * 交易冻结金额
+     */
+    @SelfTableColumn(value = "tradeFreezeMoney", length = 12, defaultValue = "0", comment = "交易冻结金额")
+    private BigDecimal tradeFreezeMoney;
+
+    /**
      * 可用余额
      */
     @SelfTableColumn(value = "usableMoney", length = 12, defaultValue = "0", comment = "可用余额")
@@ -195,6 +201,14 @@ public class CustomerFundDO extends BaseDO {
         this.totalInAndOutMoney = totalInAndOutMoney;
     }
 
+    public BigDecimal getTradeFreezeMoney() {
+        return tradeFreezeMoney;
+    }
+
+    public void setTradeFreezeMoney(BigDecimal tradeFreezeMoney) {
+        this.tradeFreezeMoney = tradeFreezeMoney;
+    }
+
     @Override
     public String toString() {
         return "CustomerFundDO{" +
@@ -204,6 +218,7 @@ public class CustomerFundDO extends BaseDO {
                 ", agentName='" + agentName + '\'' +
                 ", accountTotalMoney=" + accountTotalMoney +
                 ", freezeMoney=" + freezeMoney +
+                ", tradeFreezeMoney=" + tradeFreezeMoney +
                 ", usableMoney=" + usableMoney +
                 ", totalRechargeMoney=" + totalRechargeMoney +
                 ", totalWithdrawMoney=" + totalWithdrawMoney +

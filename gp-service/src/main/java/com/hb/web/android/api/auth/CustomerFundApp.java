@@ -13,10 +13,7 @@ import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.DateUtils;
 import com.hb.web.android.base.BaseApp;
-import com.hb.web.api.IAgentService;
-import com.hb.web.api.ICustomerFundService;
-import com.hb.web.api.IOfflinePayService;
-import com.hb.web.api.IOrderService;
+import com.hb.web.api.*;
 import com.hb.web.exception.BusinessException;
 import com.hb.web.util.LogUtils;
 import io.swagger.annotations.Api;
@@ -56,6 +53,9 @@ public class CustomerFundApp extends BaseApp {
     private ICustomerFundService iCustomerFundService;
 
     @Autowired
+    private ICustomerFundDetailService iCustomerFundDetailService;
+
+    @Autowired
     private IOfflinePayService iOfflinePayService;
 
     @Autowired
@@ -91,7 +91,6 @@ public class CustomerFundApp extends BaseApp {
         BigDecimal rechargeMoney = new BigDecimal(rechargeMoneyStr);
         // 查询客户资金信息
         CustomerFundDO query = iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
-        int result = 0;
         CustomerFundDO addOrUpdate = new CustomerFundDO();
         addOrUpdate.setUserId(userCache.getUserId());
         addOrUpdate.setUserName(userCache.getUserName());
@@ -118,12 +117,30 @@ public class CustomerFundApp extends BaseApp {
             LOGGER.info(LogUtils.appLog("即将新增的充值信息：{}"), addOrUpdate.toString());
             iCustomerFundService.addCustomerFund(addOrUpdate);
         }
+        /**
+         * 新增用户资金流水
+         */
+        CustomerFundDetailDO detailDO = new CustomerFundDetailDO();
+        detailDO.setUserId(userCache.getUserId());
+        detailDO.setUserName(userCache.getUserName());
+        detailDO.setAgentId(agent.getAgentId());
+        detailDO.setAgentName(agent.getAgentName());
+        detailDO.setHappenMoney(rechargeMoney);
+        detailDO.setAfterHappenMoney(rechargeMoney);
+        detailDO.setFundType(FundTypeEnum.RECHARGE.getValue());
+        detailDO.setCheckStatus(OfflineCheckStatusEnum.AUDITING.getValue());
+        detailDO.setRemark(FundTypeEnum.RECHARGE.getDesc());
+        iCustomerFundDetailService.addOne(detailDO);
+        /**
+         * 新增线下支付审核信息
+         */
         OfflinePayChekDO offlinePayChekDO = new OfflinePayChekDO(userCache.getUserId());
         offlinePayChekDO.setHappenMoney(rechargeMoney);
         offlinePayChekDO.setPayChannel(OfflinePayChannelEnum.ALIPAY.getValue());
         offlinePayChekDO.setCheckStatus(OfflineCheckStatusEnum.AUDITING.getValue());
         offlinePayChekDO.setPayStatus(OfflinePayStatusEnum.NOT_PAY.getValue());
         offlinePayChekDO.setFundType(FundTypeEnum.RECHARGE.getValue());
+        offlinePayChekDO.setDetailId(detailDO.getDetailId());
         iOfflinePayService.addOne(offlinePayChekDO);
         alarmTools.alert("APP", "用户资金", "充值", "用户【" + userCache.getUserName() + "】申请充值【" + rechargeMoney + "元】，请及时处理！");
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
@@ -136,6 +153,13 @@ public class CustomerFundApp extends BaseApp {
     public AppResultModel deposit(@RequestBody DepositRequestVO depositRequestVO) {
         LOGGER.info(LogUtils.appLog("提现，入参：{}"), depositRequestVO);
         UserDO userCache = getUserCache();
+        AgentDO agentDO = new AgentDO();
+        agentDO.setMobile(userCache.getInviterMobile());
+        AgentDO agent = iAgentService.findAgent(agentDO);
+        if (agent == null) {
+            LOGGER.warn("agent of user[{}] is null", userCache.getUserId());
+            agent = new AgentDO();
+        }
         BigDecimal depositMoney = depositRequestVO.getDepositMoney();
         /**
          * 冻结资金
@@ -152,7 +176,20 @@ public class CustomerFundApp extends BaseApp {
         customerFund.setFreezeMoney(freezeMoney);
         customerFund.setUsableMoney(usableMoney);
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
-
+        /**
+         * 新增用户资金流水
+         */
+        CustomerFundDetailDO detailDO = new CustomerFundDetailDO();
+        detailDO.setUserId(userCache.getUserId());
+        detailDO.setUserName(userCache.getUserName());
+        detailDO.setAgentId(agent.getAgentId());
+        detailDO.setAgentName(agent.getAgentName());
+        detailDO.setHappenMoney(depositMoney);
+        detailDO.setAfterHappenMoney(depositMoney);
+        detailDO.setFundType(FundTypeEnum.DEPOSIT.getValue());
+        detailDO.setCheckStatus(OfflineCheckStatusEnum.AUDITING.getValue());
+        detailDO.setRemark(FundTypeEnum.DEPOSIT.getDesc());
+        iCustomerFundDetailService.addOne(detailDO);
         /**
          * 生成一条线下审批任务
          */
@@ -162,6 +199,7 @@ public class CustomerFundApp extends BaseApp {
         add.setCheckStatus(OfflineCheckStatusEnum.AUDITING.getValue());
         add.setPayStatus(OfflinePayStatusEnum.NOT_PAY.getValue());
         add.setFundType(FundTypeEnum.DEPOSIT.getValue());
+        add.setDetailId(detailDO.getDetailId());
         iOfflinePayService.addOne(add);
         alarmTools.alert("APP", "客户资金", "提现", "用户【" + userCache.getUserName() + "】申请提现【" + depositMoney + "元】，请及时处理！");
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);

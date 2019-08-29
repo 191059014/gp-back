@@ -1,7 +1,10 @@
 package com.hb.web.impl;
 
 import com.hb.facade.common.ResponseEnum;
-import com.hb.facade.entity.*;
+import com.hb.facade.entity.CustomerFundDO;
+import com.hb.facade.entity.CustomerFundDetailDO;
+import com.hb.facade.entity.OfflinePayChekDO;
+import com.hb.facade.entity.UserDO;
 import com.hb.facade.enumutil.FundTypeEnum;
 import com.hb.facade.enumutil.OfflineCheckStatusEnum;
 import com.hb.facade.enumutil.OfflinePayChannelEnum;
@@ -18,6 +21,8 @@ import com.hb.web.mapper.OfflinePayCheckMapper;
 import com.hb.web.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -120,6 +125,7 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(OfflinePayChekDO offlinePayChekDO) {
         if (FundTypeEnum.RECHARGE.getValue().equals(offlinePayChekDO.getFundType())) {
             // 充值
@@ -176,32 +182,21 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
             if (result <= 0) {
                 throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_FAILED);
             }
-            /**
-             * 插入流水
-             */
             UserDO user = iUserService.findUser(new UserDO(userId));
-            AgentDO query = new AgentDO();
-            query.setMobile(user.getInviterMobile());
-            AgentDO agent = iAgentService.findAgent(query);
-
-            CustomerFundDetailDO customerFundDetailDO = new CustomerFundDetailDO();
-            customerFundDetailDO.setUserId(userId);
-            customerFundDetailDO.setUserName(user.getUserName());
-            customerFundDetailDO.setAgentId(agent.getAgentId());
-            customerFundDetailDO.setAgentName(agent.getAgentName());
-            customerFundDetailDO.setHappenMoney(happenMoney);// 发生金额
-            customerFundDetailDO.setAfterHappenMoney(happenMoney);// 发生后金额
-            customerFundDetailDO.setFundType(FundTypeEnum.DEPOSIT.getValue());// 资金类型
-            customerFundDetailDO.setRemark(FundTypeEnum.DEPOSIT.getDesc());// 备注
+            /**
+             * 更新流水
+             */
+            CustomerFundDetailDO customerFundDetailDO = iCustomerFundDetailService.findOne(new CustomerFundDetailDO(offlinePayChekDO.getDetailId()));
             customerFundDetailDO.setCreateTime(DateUtils.getCurrentDate());
             customerFundDetailDO.setCreateUserId(userId);
             customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
             customerFundDetailDO.setUpdateUserId(userId);
             customerFundDetailDO.setUnit(user.getUnit());
-            int addOneResult = iCustomerFundDetailService.addOne(customerFundDetailDO);
-            LOGGER.info("添加提现流水：{}，结果：{}", customerFundDetailDO, addOneResult);
-            if (addOneResult <= 0) {
-                throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_DETAIL_FAILED);
+            customerFundDetailDO.setCheckStatus(offlinePayChekDO.getCheckStatus());
+            int updateResult = iCustomerFundDetailService.updateByPrimaryKeySelective(customerFundDetailDO);
+            LOGGER.info("更新提现流水：{}，结果：{}", customerFundDetailDO, updateResult);
+            if (updateResult <= 0) {
+                throw new BusinessException(ResponseEnum.UPDATE_CUSTOMER_FUND_DETAIL_FAILED);
             }
             alarmTools.alert("WEB", "用户资金", "提现", "用户【" + user.getUserName() + "】提现【" + happenMoney + "元】成功");
         } else if (OfflineCheckStatusEnum.REJECT.getValue().equals(offlinePayChekDO.getCheckStatus())) {
@@ -223,14 +218,11 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
      * @param offlinePayChekDO 充值信息
      */
     private void rechargeMoney(OfflinePayChekDO offlinePayChekDO) {
-        if (!OfflineCheckStatusEnum.PASS.getValue().equals(offlinePayChekDO.getCheckStatus())) {
+        if (OfflineCheckStatusEnum.AUDITING.getValue().equals(offlinePayChekDO.getCheckStatus())) {
             return;
         }
         String userId = offlinePayChekDO.getUserId();
         UserDO user = iUserService.findUser(new UserDO(userId));
-        AgentDO query = new AgentDO();
-        query.setMobile(user.getInviterMobile());
-        AgentDO agent = iAgentService.findAgent(query);
         /**
          * 更新用户资金信息
          */
@@ -246,26 +238,19 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
             throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_FAILED);
         }
         /**
-         * 插入流水
+         * 更新流水
          */
-        CustomerFundDetailDO customerFundDetailDO = new CustomerFundDetailDO();
-        customerFundDetailDO.setUserId(userId);
-        customerFundDetailDO.setUserName(user.getUserName());
-        customerFundDetailDO.setAgentId(agent.getAgentId());
-        customerFundDetailDO.setAgentName(agent.getAgentName());
-        customerFundDetailDO.setHappenMoney(happenMoney);// 发生金额
-        customerFundDetailDO.setAfterHappenMoney(happenMoney);// 发生后金额
-        customerFundDetailDO.setFundType(FundTypeEnum.RECHARGE.getValue());// 资金类型
-        customerFundDetailDO.setRemark(FundTypeEnum.RECHARGE.getDesc());// 备注
+        CustomerFundDetailDO customerFundDetailDO = iCustomerFundDetailService.findOne(new CustomerFundDetailDO(offlinePayChekDO.getDetailId()));
         customerFundDetailDO.setCreateTime(DateUtils.getCurrentDate());
         customerFundDetailDO.setCreateUserId(userId);
         customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
         customerFundDetailDO.setUpdateUserId(userId);
         customerFundDetailDO.setUnit(user.getUnit());
-        int addOneResult = iCustomerFundDetailService.addOne(customerFundDetailDO);
-        LOGGER.info("添加充值流水：{}，结果：{}", customerFundDetailDO, addOneResult);
-        if (addOneResult <= 0) {
-            throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_DETAIL_FAILED);
+        customerFundDetailDO.setCheckStatus(offlinePayChekDO.getCheckStatus());
+        int updateResult = iCustomerFundDetailService.updateByPrimaryKeySelective(customerFundDetailDO);
+        LOGGER.info("更新充值流水：{}，结果：{}", customerFundDetailDO, updateResult);
+        if (updateResult <= 0) {
+            throw new BusinessException(ResponseEnum.UPDATE_CUSTOMER_FUND_DETAIL_FAILED);
         }
         alarmTools.alert("WEB", "用户资金", "充值", "用户【" + user.getUserName() + "】充值【" + happenMoney + "元】成功");
     }

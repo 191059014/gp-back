@@ -304,10 +304,6 @@
         <include refid="selectByConditionSql"/>
     </select>
 
-    <select id="getHotStockList" resultType="com.hb.facade.vo.appvo.request.HotStockVO">
-        select COUNT(1) as totalNum,stockCode as stockCode from t_order GROUP BY stockCode ORDER BY COUNT(1) DESC
-    </select>
-
     <select id="findByUserIdAndOrderStatus" resultType="com.hb.facade.entity.OrderDO">
         select * from t_order where userId=#{userId} and orderStatus in
         <foreach collection="orderStatuSet" item="orderStatus" open="(" close=")" separator=",">

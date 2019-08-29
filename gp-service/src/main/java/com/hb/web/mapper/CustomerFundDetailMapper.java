@@ -20,6 +20,6 @@ public interface CustomerFundDetailMapper {
 
     Integer findCountByCondition(@Param("customerFundDetailDO") CustomerFundDetailDO customerFundDetailDO);
 
-    CustomerFundDetailDO findOne(@Param("customerFundDetailDO") CustomerFundDetailDO customerFundDetailDO);
+    CustomerFundDetailDO findOne(@Param("customerFundDetailDO") CustomerFundDetailDO customerFundDetailDO, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
 
 }
