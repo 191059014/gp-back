@@ -1,24 +1,19 @@
 package com.hb.web.android.api.noauth;
 
-import com.hb.unic.logger.Logger;
-import com.hb.unic.logger.LoggerFactory;
-import com.hb.web.android.base.BaseApp;
 import com.hb.facade.common.AppResponseCodeEnum;
 import com.hb.facade.common.AppResultModel;
-import com.hb.web.util.LogUtils;
 import com.hb.facade.vo.appvo.request.ResourceRequestVO;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
+import com.hb.unic.util.helper.JsonFileParseHelper;
+import com.hb.web.android.base.BaseApp;
+import com.hb.web.util.LogUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * ========== 获取资源 ==========
@@ -47,33 +42,9 @@ public class ResourceApp extends BaseApp {
     @PostMapping("/getResource")
     public AppResultModel getResource(@RequestBody ResourceRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("根据路径获取静态资源，入参：{}"), requestVO);
-        Resource resource = new ClassPathResource(requestVO.getPath());
-        StringBuilder sb = new StringBuilder();
-        InputStream is = null;
-        DataInputStream dis = null;
-        try {
-            is = resource.getInputStream();
-            dis = new DataInputStream(is);
-            int data;
-            while ((data = dis.read()) != -1) {
-                sb.append((char) data);
-            }
-        } catch (IOException e) {
-            LOGGER.info(LogUtils.appLog("根据路径获取静态资源，异常：{}"), LogUtils.getStackTrace(e));
-        } finally {
-            try {
-                if (dis != null) {
-                    dis.close();
-                }
-                if (is != null) {
-                    is.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        LOGGER.info(LogUtils.appLog("根据路径获取静态资源，出参：{}"), sb.toString());
-        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, sb.toString());
+        String json = JsonFileParseHelper.readJsonFile2StringByStream(requestVO.getPath());
+        LOGGER.info(LogUtils.appLog("根据路径获取静态资源，出参：{}"), json);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, json);
     }
 
 }

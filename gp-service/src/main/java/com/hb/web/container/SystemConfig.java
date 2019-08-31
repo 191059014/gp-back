@@ -27,7 +27,7 @@ public class SystemConfig implements InitializingBean {
      */
     private void loadAppJson() {
         if (appJson == null) {
-            String json = JsonFileParseHelper.readJsonFile2String("static/app/app.json");
+            String json = JsonFileParseHelper.readJsonFile2StringByStream("static/app/app.json");
             System.out.println(json);
             appJson = JSON.parseObject(json, AppJson.class);
         }
