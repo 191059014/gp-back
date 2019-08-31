@@ -68,6 +68,10 @@ public class CheckTools {
         }
         Calendar c = Calendar.getInstance();
         c.setTime(currentDate);
+        int week = c.get(Calendar.DAY_OF_WEEK);
+        if (week == Calendar.SATURDAY || week == Calendar.SUNDAY) {
+            return false;
+        }
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         String nowStr = hour + "" + minute;
