@@ -16,7 +16,7 @@ function startGpWeb() {
     echo "拉取最新远程分支代码"
     git fetch --all && git reset --hard origin/master && git pull
     nohup cnpm run dev > ../gpweb.out 2>&1 &
-    tail -f ../gpweb.out
+    exit
 }
 
 # 启动后台
