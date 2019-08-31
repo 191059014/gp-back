@@ -62,4 +62,13 @@ public interface ICustomerFundService {
      * @return int
      */
     int deleteCustomerFundById(String userId);
+
+    /**
+     * 查询排行榜
+     *
+     * @param startRow 开始行
+     * @param pageSize 每页条数
+     * @return 用户资金信息列表
+     */
+    List<CustomerFundDO> getRankList(Integer startRow, Integer pageSize);
 }

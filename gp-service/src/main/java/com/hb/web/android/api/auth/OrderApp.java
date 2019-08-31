@@ -4,7 +4,7 @@ import com.hb.facade.entity.CustomerFundDO;
 import com.hb.facade.entity.OrderDO;
 import com.hb.facade.entity.UserDO;
 import com.hb.facade.enumutil.OrderStatusEnum;
-import com.hb.facade.vo.appvo.request.SellOrderRequestVO;
+import com.hb.facade.vo.appvo.request.*;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.BigDecimalUtils;
@@ -16,8 +16,6 @@ import com.hb.facade.common.AppResponseCodeEnum;
 import com.hb.facade.common.AppResultModel;
 import com.hb.web.tool.CheckTools;
 import com.hb.web.util.LogUtils;
-import com.hb.facade.vo.appvo.request.OrderRequestVO;
-import com.hb.facade.vo.appvo.request.QueryOrderRequestVO;
 import com.hb.facade.vo.appvo.response.OrderQueryResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -115,10 +113,24 @@ public class OrderApp extends BaseApp {
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);
     }
 
-    @ApiOperation(value = "平仓")
+    @ApiOperation(value = "卖出")
     @PostMapping("/sellOrder")
     public AppResultModel sellOrder(@RequestBody SellOrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("平仓，入参：{}"), requestVO);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+    }
+
+    @ApiOperation(value = "递延")
+    @PostMapping("/delay")
+    public AppResultModel delay(@RequestBody DelayRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("递延，入参：{}"), requestVO);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+    }
+
+    @ApiOperation(value = "追加信用金")
+    @PostMapping("/appendOrderMoney")
+    public AppResultModel appendOrderMoney(@RequestBody AppendOrderMoneyRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("追加信用金，入参：{}"), requestVO);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 

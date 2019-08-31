@@ -2,11 +2,13 @@ package com.hb.web.android.api.auth;
 
 import com.hb.facade.common.AppResponseCodeEnum;
 import com.hb.facade.common.AppResultModel;
-import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.entity.*;
 import com.hb.facade.enumutil.*;
+import com.hb.facade.vo.appvo.request.AppPages;
 import com.hb.facade.vo.appvo.request.DepositRequestVO;
 import com.hb.facade.vo.appvo.request.RechargeRequestVO;
+import com.hb.facade.vo.appvo.response.Rank;
+import com.hb.facade.vo.appvo.response.UserRankResponseVO;
 import com.hb.facade.vo.appvo.response.UserFundSubTotalResponseVO;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
@@ -14,10 +16,10 @@ import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.DateUtils;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.*;
-import com.hb.web.exception.BusinessException;
 import com.hb.web.util.LogUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,9 +30,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * ========== 用户资金信息 ==========
@@ -63,6 +64,9 @@ public class CustomerFundApp extends BaseApp {
 
     @Autowired
     private IAgentService iAgentService;
+
+    @Autowired
+    private IUserService iUserService;
 
     @ApiOperation(value = "获取客户资金信息")
     @PostMapping("/getFundInfo")
@@ -221,7 +225,6 @@ public class CustomerFundApp extends BaseApp {
         result.setTotalProfitAndLossMoney(customerFund.getTotalProfitAndLossMoney());
         Set<Integer> orderStatuSet = new HashSet<>();
         orderStatuSet.add(OrderStatusEnum.IN_THE_POSITION.getValue());
-        orderStatuSet.add(OrderStatusEnum.DELEGATION.getValue());
         List<OrderDO> orderList = this.iOrderService.findByUserIdAndOrderStatus(userCache.getUserId(), orderStatuSet);
         BigDecimal totalStrategyMoney = BigDecimal.ZERO;
         BigDecimal totalStrategyOwnMoney = BigDecimal.ZERO;
@@ -233,6 +236,35 @@ public class CustomerFundApp extends BaseApp {
         result.setTotalStrategyOwnMoney(totalStrategyOwnMoney);
         LOGGER.info(LogUtils.appLog("查询客户资金分类汇总，出参：{}"), result);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, result);
+    }
+
+    /**
+     * 查询排行榜
+     *
+     * @param appPages 分页参数
+     * @return 排行信息
+     */
+    @ApiOperation(value = "查询排行榜")
+    @PostMapping("/getRankList")
+    public AppResultModel<UserRankResponseVO> getRankList(@RequestBody AppPages appPages) {
+        LOGGER.info(LogUtils.appLog("查询排行榜，入参：{}"), appPages);
+        List<CustomerFundDO> fundList = iCustomerFundService.getRankList(appPages.getStartRow(), appPages.getPageSize());
+        if (CollectionUtils.isEmpty(fundList)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        Set<String> userIdSet = fundList.stream().map(CustomerFundDO::getUserId).collect(Collectors.toSet());
+        Map<String, UserDO> userMap = iUserService.getUserMapByUserIdSet(userIdSet);
+        UserRankResponseVO responseVO = new UserRankResponseVO();
+        List<Rank> rankList = new ArrayList<>();
+        for (CustomerFundDO customerFundDO : fundList) {
+            Rank rank = new Rank();
+            rank.setUserName(userMap.get(customerFundDO.getUserId()).getUserName());
+            rank.setTotalProfitAndLossMoney(customerFundDO.getTotalProfitAndLossMoney());
+            rankList.add(rank);
+        }
+        responseVO.setRankList(rankList);
+        LOGGER.info(LogUtils.appLog("查询排行榜，出参：{}"), responseVO);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);
     }
 
 }

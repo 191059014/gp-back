@@ -10,11 +10,14 @@ import com.hb.web.api.IAgentService;
 import com.hb.web.api.IRolePermissionService;
 import com.hb.web.api.IUserService;
 import com.hb.facade.constant.GeneralConst;
+import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * ========== 用户service实现 ==========
@@ -94,8 +97,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<UserDO> getUserListByUserIdSet(Set<String> userIdSet) {
-        return userMapper.getUserListByUserIdSet(userIdSet);
+    public Map<String, UserDO> getUserMapByUserIdSet(Set<String> userIdSet) {
+        if (CollectionUtils.isEmpty(userIdSet)) {
+            return new HashedMap();
+        }
+        List<UserDO> userList = userMapper.getUserListByUserIdSet(userIdSet);
+        if (CollectionUtils.isEmpty(userList)) {
+            return new HashedMap();
+        }
+        Map<String, UserDO> userMap = userList.stream().collect(Collectors.toMap(UserDO::getUserId, u -> u, (k, v) -> k));
+        return userMap;
     }
 
     @Override

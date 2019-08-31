@@ -1,6 +1,7 @@
 package com.hb.web.tool;
 
 import com.hb.unic.util.util.DateUtils;
+import com.hb.web.container.SystemConfig;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
@@ -62,6 +63,9 @@ public class CheckTools {
      */
     public static boolean stockOnLine() {
         Date currentDate = DateUtils.getCurrentDate();
+        if (DateUtils.isWeekend(currentDate) || SystemConfig.isSpecialHoliday(currentDate)) {
+            return false;
+        }
         Calendar c = Calendar.getInstance();
         c.setTime(currentDate);
         int hour = c.get(Calendar.HOUR_OF_DAY);

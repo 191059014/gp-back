@@ -21,4 +21,5 @@ public interface CustomerFundMapper {
 
     CustomerFundDO findCustomerFund(@Param("customerFundDO") CustomerFundDO customerFundDO);
 
+    List<CustomerFundDO> getRankList(@Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);
 }

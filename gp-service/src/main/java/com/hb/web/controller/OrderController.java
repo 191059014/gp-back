@@ -46,9 +46,7 @@ public class OrderController {
         Integer count = iOrderService.findCount(orderDO);
         if (CollectionUtils.isNotEmpty(orderList)) {
             Set<String> userIdSet = orderList.stream().map(OrderDO::getUserId).collect(Collectors.toSet());
-            List<UserDO> userList = iUserService.getUserListByUserIdSet(userIdSet);
-            userList = userList == null ? new ArrayList<>() : userList;
-            Map<String, UserDO> userMap = userList.stream().collect(Collectors.toMap(UserDO::getUserId, u -> u, (k, v) -> k));
+            Map<String, UserDO> userMap = iUserService.getUserMapByUserIdSet(userIdSet);
             for (OrderDO order : orderList) {
                 OrderQueryResponseVO clone = CloneUtils.clone(order, OrderQueryResponseVO.class);
                 clone.setUserName(userMap.get(order.getUserId()) == null ? "" : userMap.get(order.getUserId()).getUserName());

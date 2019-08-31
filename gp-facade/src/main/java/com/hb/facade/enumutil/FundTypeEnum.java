@@ -9,10 +9,12 @@ package com.hb.facade.enumutil;
  */
 public enum FundTypeEnum {
 
-    DEFERRED_FEE(1, "递延费分成", "递延费扣除"),
-    FREEZE(2, "冻结", "冻结信息服务费"),
-    RECHARGE(3, "充值", "账户充值"),
-    DEPOSIT(4, "提现", "账户提现");
+    RECHARGE(1, "充值", "账户充值"),
+    DEPOSIT(2, "提现", "账户提现"),
+    FREEZE(3, "冻结", "持仓中冻结资金"),
+    DELAY(4, "递延费", "递延费扣除"),
+    DELAY_BACK(5, "递延费返还", "递延费返还"),
+    SERVICE(6, "服务费", "服务费");
 
     private Integer value;
     private String name;

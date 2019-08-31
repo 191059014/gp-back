@@ -91,8 +91,7 @@ public class OfflinePayController {
         Integer count = iOfflinePayService.findCount(offlinePayChekDO);
         if (CollectionUtils.isNotEmpty(list)) {
             Set<String> userIdSet = list.stream().map(OfflinePayChekDO::getUserId).collect(Collectors.toSet());
-            List<UserDO> userList = iUserService.getUserListByUserIdSet(userIdSet);
-            Map<String, UserDO> userMap = userList.stream().collect(Collectors.toMap(UserDO::getUserId, user -> user, (k1, k2) -> k1));
+            Map<String, UserDO> userMap = iUserService.getUserMapByUserIdSet(userIdSet);
             for (OfflinePayChekDO payChekDO : list) {
                 OfflinePayCheckResponseVO clone = CloneUtils.clone(payChekDO, OfflinePayCheckResponseVO.class);
                 clone.setUserName(userMap.get(payChekDO.getUserId()).getUserName());

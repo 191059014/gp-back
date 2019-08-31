@@ -47,6 +47,10 @@
         <include refid="sqlCondition"/>
     </select>
 
+    <select id="getRankList" resultType="com.hb.facade.entity.CustomerFundDO">
+        select * from t_customer_fund where recordStatus = "1" order  by totalProfitAndLossMoney desc
+    </select>
+
     <sql id="sqlCondition">
         <if test="customerFundDO.userId != null and customerFundDO.userId !=''">
             <![CDATA[ and userId = #{customerFundDO.userId} ]]>

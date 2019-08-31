@@ -2,6 +2,7 @@ package com.hb.web.android.api.noauth;
 
 import com.hb.facade.entity.AgentDO;
 import com.hb.facade.entity.UserDO;
+import com.hb.facade.enumutil.RealAuthStatusEnum;
 import com.hb.facade.vo.appvo.request.ResetPasswordRequestVO;
 import com.hb.remote.constant.SMSTemplate;
 import com.hb.remote.constant.enumutil.SMSResEnum;
@@ -164,6 +165,8 @@ public class LoginApp extends BaseApp {
         userDO.setMobile(mobile);
         userDO.setInviterMobile(inviterMobile);
         userDO.setUnit(agentQuery.getUnit());
+        userDO.setRealAuthStatus(RealAuthStatusEnum.NO_AUTH.getValue());
+        userDO.setBankRealAuthStatus(RealAuthStatusEnum.NO_AUTH.getValue());
         // 添加用户
         iUserService.addUser(userDO);
         LOGGER.info(LogUtils.appLog("注册用户成功"));

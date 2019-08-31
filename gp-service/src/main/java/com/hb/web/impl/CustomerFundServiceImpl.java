@@ -52,4 +52,9 @@ public class CustomerFundServiceImpl implements ICustomerFundService {
         return customerFundMapper.deleteByPrimaryKey(userId);
     }
 
+    @Override
+    public List<CustomerFundDO> getRankList(Integer startRow, Integer pageSize) {
+        return customerFundMapper.getRankList(startRow, pageSize);
+    }
+
 }

@@ -82,7 +82,7 @@ public interface IUserService {
      * @param userIdSet 用户ID集合
      * @return 用户信息集合
      */
-    List<UserDO> getUserListByUserIdSet(Set<String> userIdSet);
+    Map<String, UserDO> getUserMapByUserIdSet(Set<String> userIdSet);
 
     Set<String> getUserPermissionList(String userId);
 }

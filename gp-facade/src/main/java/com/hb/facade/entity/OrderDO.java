@@ -144,6 +144,20 @@ public class OrderDO extends BaseDO {
     @SelfTableColumn(value = "delayMoney", length = 12, defaultValue = "0", comment = "递延金")
     private BigDecimal delayMoney;
 
+    /**
+     * 递延天数
+     */
+    @ApiModelProperty(value = "递延天数")
+    @SelfTableColumn(value = "delayDays", length = 12, comment = "递延天数")
+    private Integer delayDays;
+
+    /**
+     * 追加信用金
+     */
+    @ApiModelProperty(value = "追加信用金")
+    @SelfTableColumn(value = "delayMoney", length = 12, defaultValue = "0", comment = "追加信用金")
+    private BigDecimal appendMoney;
+
     public OrderDO() {
     }
 
@@ -304,6 +318,22 @@ public class OrderDO extends BaseDO {
         this.delayMoney = delayMoney;
     }
 
+    public Integer getDelayDays() {
+        return delayDays;
+    }
+
+    public void setDelayDays(Integer delayDays) {
+        this.delayDays = delayDays;
+    }
+
+    public BigDecimal getAppendMoney() {
+        return appendMoney;
+    }
+
+    public void setAppendMoney(BigDecimal appendMoney) {
+        this.appendMoney = appendMoney;
+    }
+
     @Override
     public String toString() {
         return "OrderDO{" +
@@ -326,6 +356,8 @@ public class OrderDO extends BaseDO {
                 ", stopLossMoney=" + stopLossMoney +
                 ", serviceMoney=" + serviceMoney +
                 ", delayMoney=" + delayMoney +
+                ", delayDays=" + delayDays +
+                ", appendMoney=" + appendMoney +
                 '}';
     }
 }
