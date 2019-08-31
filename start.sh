@@ -14,7 +14,7 @@ function startGpWeb() {
     fi
     cd /data/gp-web
     echo "拉取最新远程分支代码"
-    git pull
+    git fetch --all && git reset --hard origin/master && git pull
     nohup cnpm run dev > ../gpweb.out 2>&1 &
     tail -f ../gpweb.out
 }
@@ -25,21 +25,21 @@ function startGpBack() {
     echo "                更新unic项目，并重新打包unic项目                   "
     echo "==================================================================="
     cd /data/unic
-    git pull
+    git fetch --all && git reset --hard origin/master && git pull
     mvn clean install
 
     echo "==================================================================="
     echo "           更新remote-api项目，并重新打包remote-api项目            "
     echo "==================================================================="
     cd /data/remote-api
-    git pull
+    git fetch --all && git reset --hard origin/master && git pull
     mvn clean install
 
     echo "==================================================================="
     echo "              更新gp-back项目，并重新打包gp-back项目               "
     echo "==================================================================="
     cd /data/gp-back
-    git pull
+    git fetch --all && git reset --hard origin/master && git pull
     mvn clean install
 
     pid=`ps -ef | grep gp-service-0.0.1-SNAPSHOT.jar | grep -v grep | awk '{print $2}'`
@@ -65,28 +65,28 @@ function startGpBatch() {
     echo "                更新unic项目，并重新打包unic项目                   "
     echo "==================================================================="
     cd /data/unic
-    git pull
+    git fetch --all && git reset --hard origin/master && git pull
     mvn clean install
 
     echo "==================================================================="
     echo "           更新remote-api项目，并重新打包remote-api项目            "
     echo "==================================================================="
     cd /data/remote-api
-    git pull
+    git fetch --all && git reset --hard origin/master && git pull
     mvn clean install
 
     echo "==================================================================="
     echo "           更新gp-facade项目，并重新打包gp-facade项目              "
     echo "==================================================================="
     cd /data/gp-back/gp-facade
-    git pull
+    git fetch --all && git reset --hard origin/master && git pull
     mvn clean install
 
     echo "==================================================================="
     echo "              更新gp-batch项目，并重新打包gp-batch项目               "
     echo "==================================================================="
     cd /data/gp-batch
-    git pull
+    git fetch --all && git reset --hard origin/master && git pull
     mvn clean install
 
     pid=`ps -ef | grep gp-batch-0.0.1-SNAPSHOT.jar | grep -v grep | awk '{print $2}'`
