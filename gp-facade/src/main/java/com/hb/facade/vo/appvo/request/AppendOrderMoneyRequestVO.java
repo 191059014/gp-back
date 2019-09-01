@@ -10,7 +10,7 @@ public class AppendOrderMoneyRequestVO implements Serializable {
 
     private static final long serialVersionUID = 1311236053147838403L;
 
-    private BigDecimal orderId;
+    private String orderId;
     private BigDecimal appendMoney;
 
     public BigDecimal getAppendMoney() {
@@ -21,11 +21,11 @@ public class AppendOrderMoneyRequestVO implements Serializable {
         this.appendMoney = appendMoney;
     }
 
-    public BigDecimal getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(BigDecimal orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 

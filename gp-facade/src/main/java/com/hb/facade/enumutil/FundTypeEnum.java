@@ -14,7 +14,8 @@ public enum FundTypeEnum {
     FREEZE(3, "冻结", "持仓中冻结资金"),
     DELAY(4, "递延费", "递延费扣除"),
     DELAY_BACK(5, "递延费返还", "递延费返还"),
-    SERVICE(6, "服务费", "服务费");
+    SERVICE(6, "服务费", "服务费"),
+    APPEND(7, "追加信用金", "追加订单持仓信用金");
 
     private Integer value;
     private String name;

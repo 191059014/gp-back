@@ -53,4 +53,13 @@ public class SystemConfig implements InitializingBean {
         return false;
     }
 
+    /**
+     * 获取AppJson配置
+     *
+     * @return AppJson
+     */
+    public static AppJson getAppJson() {
+        return appJson;
+    }
+
 }

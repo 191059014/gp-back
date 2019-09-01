@@ -157,13 +157,7 @@ public class CustomerFundApp extends BaseApp {
     public AppResultModel deposit(@RequestBody DepositRequestVO depositRequestVO) {
         LOGGER.info(LogUtils.appLog("提现，入参：{}"), depositRequestVO);
         UserDO userCache = getUserCache();
-        AgentDO agentDO = new AgentDO();
-        agentDO.setMobile(userCache.getInviterMobile());
-        AgentDO agent = iAgentService.findAgent(agentDO);
-        if (agent == null) {
-            LOGGER.warn("agent of user[{}] is null", userCache.getUserId());
-            agent = new AgentDO();
-        }
+        AgentDO agent = iAgentService.getAgentByInviterMobile(userCache.getInviterMobile());
         BigDecimal depositMoney = depositRequestVO.getDepositMoney();
         /**
          * 冻结资金

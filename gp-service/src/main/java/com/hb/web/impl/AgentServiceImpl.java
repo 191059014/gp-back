@@ -130,5 +130,16 @@ public class AgentServiceImpl implements IAgentService {
         return permissionSet;
     }
 
+    @Override
+    public AgentDO getAgentByInviterMobile(String inviterMobile) {
+        AgentDO query = new AgentDO();
+        query.setMobile(inviterMobile);
+        AgentDO agent = findAgent(query);
+        if (agent == null) {
+            agent = new AgentDO();
+        }
+        return agent;
+    }
+
 
 }

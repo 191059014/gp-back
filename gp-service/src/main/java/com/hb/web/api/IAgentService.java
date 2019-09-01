@@ -80,4 +80,12 @@ public interface IAgentService {
      * @return 权限集合
      */
     Set<String> getPermissionSet(String agentId);
+
+    /**
+     * 根据邀请人手机号查询代理人员
+     *
+     * @param inviterMobile 邀请人手机号
+     * @return 代理人信息
+     */
+    AgentDO getAgentByInviterMobile(String inviterMobile);
 }
