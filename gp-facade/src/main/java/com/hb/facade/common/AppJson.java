@@ -1,4 +1,4 @@
-package com.hb.web.base;
+package com.hb.facade.common;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

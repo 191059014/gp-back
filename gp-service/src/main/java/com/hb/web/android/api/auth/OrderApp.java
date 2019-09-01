@@ -19,7 +19,8 @@ import com.hb.web.api.IAgentService;
 import com.hb.web.api.ICustomerFundDetailService;
 import com.hb.web.api.ICustomerFundService;
 import com.hb.web.api.IOrderService;
-import com.hb.web.tool.CalcTools;
+import com.hb.facade.common.SystemConfig;
+import com.hb.facade.calc.StockTools;
 import com.hb.web.tool.CheckTools;
 import com.hb.web.util.LogUtils;
 import io.swagger.annotations.Api;
@@ -35,9 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * ========== 订单 ==========
@@ -76,7 +75,7 @@ public class OrderApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel order(@RequestBody OrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("股票下单，入参：{}"), requestVO);
-        if (!CheckTools.stockOnLine()) {
+        if (!StockTools.stockOnLine()) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
         }
         UserDO userCache = getUserCache();
@@ -95,10 +94,10 @@ public class OrderApp extends BaseApp {
         clone.setOrderStatus(OrderStatusEnum.IN_THE_POSITION.getValue());
         // 服务费
         BigDecimal strategyMoney = requestVO.getStrategyMoney();
-        BigDecimal serviceMoney = CalcTools.calcServiceMoney(strategyMoney);
+        BigDecimal serviceMoney = StockTools.calcServiceMoney(strategyMoney, SystemConfig.getAppJson().getServiceMoneyPercent());
         clone.setServiceMoney(serviceMoney);
         // 递延金
-        BigDecimal delayMoney = CalcTools.calcDelayMoney(strategyMoney, 1);
+        BigDecimal delayMoney = StockTools.calcDelayMoney(strategyMoney, 1, SystemConfig.getAppJson().getDelayMoneyPercent());
         clone.setDelayMoney(delayMoney);
         clone.setUnit(userCache.getUnit());
         int i = iOrderService.insertSelective(clone);
@@ -178,6 +177,9 @@ public class OrderApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel sellOrder(@RequestBody SellOrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("卖出，入参：{}"), requestVO);
+        if (!StockTools.stockOnLine()) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
+        }
         String orderId = requestVO.getOrderId();
         if (StringUtils.isBlank(orderId)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
@@ -194,7 +196,7 @@ public class OrderApp extends BaseApp {
         /**
          * 更新订单信息
          */
-        BigDecimal profit = CalcTools.calcOrderProfit(orderDO.getBuyPrice(), currentPrice, orderDO.getBuyNumber());
+        BigDecimal profit = StockTools.calcOrderProfit(orderDO.getBuyPrice(), currentPrice, orderDO.getBuyNumber());
         // 卖出 价格
         orderDO.setSellPrice(currentPrice);
         // 卖出总价格
@@ -204,15 +206,14 @@ public class OrderApp extends BaseApp {
         // 利润
         orderDO.setProfit(profit);
         // 盈亏率
-        orderDO.setProfitRate(CalcTools.calcOrderProfitRate(profit, strategyMoney));
+        orderDO.setProfitRate(StockTools.calcOrderProfitRate(profit, strategyMoney));
 
-        int daysBetween = DateUtils.getDaysBetween(new Date(), orderDO.getCreateTime());
-        LOGGER.info(LogUtils.appLog("卖出，从下单时间到卖出时间总天数：{}"), daysBetween);
-        int backDays = Math.subtractExact(daysBetween, orderDO.getDelayDays());
+        int backDays = StockTools.calcBackDays(orderDO.getCreateTime(),orderDO.getDelayDays());
+        LOGGER.info(LogUtils.appLog("卖出，需要退还的递延金的天数：{}"), backDays);
         BigDecimal backDelayMoney = BigDecimal.ZERO;
         if (backDays > 0) {
             // 退还递延金
-            backDelayMoney = CalcTools.calcDelayMoney(strategyMoney, backDays);
+            backDelayMoney = StockTools.calcDelayMoney(strategyMoney, backDays, SystemConfig.getAppJson().getDelayMoneyPercent());
             LOGGER.info(LogUtils.appLog("卖出，退还递延金：{}"), backDelayMoney);
             // 递延金
             orderDO.setDelayMoney(BigDecimalUtils.subtract(orderDO.getDelayMoney(), backDelayMoney));
@@ -234,7 +235,7 @@ public class OrderApp extends BaseApp {
         customerFund.setTradeFreezeMoney(BigDecimalUtils.multiply(customerFund.getTradeFreezeMoney(), strategyMoney));
         customerFund.setTotalProfitAndLossMoney(BigDecimalUtils.add(customerFund.getTotalProfitAndLossMoney(), profit));
         LOGGER.info(LogUtils.appLog("卖出-更新客户资金信息：{}"), customerFund);
-        iCustomerFundService.addCustomerFund(customerFund);
+        iCustomerFundService.updateByPrimaryKeySelective(customerFund);
 
         /**
          * 增加退还递延金流水
@@ -279,7 +280,7 @@ public class OrderApp extends BaseApp {
         CustomerFundDO customerFundUpdate = new CustomerFundDO(userId);
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(customerFundUpdate);
         OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
-        BigDecimal delayMoney = CalcTools.calcDelayMoney(orderDO.getStrategyMoney(), delayDays);
+        BigDecimal delayMoney = StockTools.calcDelayMoney(orderDO.getStrategyMoney(), delayDays, SystemConfig.getAppJson().getDelayMoneyPercent());
         if (customerFund.getUsableMoney().compareTo(delayMoney) < 0) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_MONEY);
         }

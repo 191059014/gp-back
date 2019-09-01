@@ -1,9 +1,8 @@
-package com.hb.web.container;
+package com.hb.facade.common;
 
 import com.alibaba.fastjson.JSON;
 import com.hb.unic.util.helper.JsonFileParseHelper;
 import com.hb.unic.util.util.StringUtils;
-import com.hb.web.base.AppJson;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 

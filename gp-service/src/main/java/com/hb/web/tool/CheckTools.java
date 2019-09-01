@@ -1,12 +1,7 @@
 package com.hb.web.tool;
 
-import com.hb.unic.util.util.DateUtils;
-import com.hb.web.container.SystemConfig;
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +15,7 @@ import java.util.regex.Pattern;
 public class CheckTools {
 
     public static void main(String[] args) {
-        System.out.println(stockOnLine());
+        System.out.println();
     }
 
 
@@ -54,33 +49,6 @@ public class CheckTools {
             return false;
         }
         return true;
-    }
-
-    /**
-     * ########## 判断股票是不是开市时间 ##########
-     *
-     * @return boolean
-     */
-    public static boolean stockOnLine() {
-        Date currentDate = DateUtils.getCurrentDate();
-        if (DateUtils.isWeekend(currentDate) || SystemConfig.isSpecialHoliday(currentDate)) {
-            return false;
-        }
-        Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
-        int week = c.get(Calendar.DAY_OF_WEEK);
-        if (week == Calendar.SATURDAY || week == Calendar.SUNDAY) {
-            return false;
-        }
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-        String nowStr = hour + "" + minute;
-        System.out.println(nowStr);
-        int now = Integer.parseInt(nowStr);
-        if ((now >= 930 && now <= 1130) || (now >= 1300 && now <= 1500)) {
-            return true;
-        }
-        return false;
     }
 
 }
