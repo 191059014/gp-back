@@ -234,10 +234,14 @@ public class OrderApp extends BaseApp {
         int backDays = StockTools.calcBackDays(orderDO.getCreateTime(), orderDO.getDelayDays());
         LOGGER.info(LogUtils.appLog("卖出，需要退还的递延金的天数：{}"), backDays);
         BigDecimal backDelayMoney = BigDecimal.ZERO;
+        // 退换的递延天数
+        orderDO.setBackDelayDays(backDays);
         if (backDays > 0) {
             // 退还递延金
             backDelayMoney = StockTools.calcDelayMoney(strategyMoney, backDays, SystemConfig.getAppJson().getDelayMoneyPercent());
             LOGGER.info(LogUtils.appLog("卖出，退还递延金：{}"), backDelayMoney);
+            // 退还的递延金
+            orderDO.setBackDelayMoney(backDelayMoney);
             // 递延金
             orderDO.setDelayMoney(BigDecimalUtils.subtract(orderDO.getDelayMoney(), backDelayMoney));
         }
@@ -310,10 +314,14 @@ public class OrderApp extends BaseApp {
 
         /**
          * 更新订单信息
-         * 1.更新订单递延天数
          */
         OrderDO orderUpdate = new OrderDO(orderId, null);
-        orderUpdate.setDelayDays(Math.addExact(orderDO.getDelayDays(), delayDays));
+        // 更新订单递延天数
+        int newDelayDays = Math.addExact(orderDO.getDelayDays(), delayDays);
+        orderUpdate.setDelayDays(newDelayDays);
+        // 计算新的递延到期时间
+        orderDO.setDelayEndTime(StockTools.calcSellDate(orderDO.getBuyTime(), newDelayDays));
+        // 更新递延金
         orderUpdate.setDelayMoney(BigDecimalUtils.add(orderDO.getDelayMoney(), delayMoney));
         LOGGER.info(LogUtils.appLog("递延-更新订单信息：{}"), orderUpdate);
         iOrderService.updateByPrimaryKeySelective(orderUpdate);
