@@ -1,12 +1,15 @@
 package com.hb.facade.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.unic.base.annotation.SelfTableClass;
 import com.hb.unic.base.annotation.SelfTableColumn;
+import com.hb.unic.util.util.DateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * ========== 订单表 ==========
@@ -68,6 +71,13 @@ public class OrderDO extends BaseDO {
     @SelfTableColumn(value = "buyPrice", length = 12, defaultValue = "0", comment = "买入价格")
     private BigDecimal buyPrice;
     /**
+     * 买入时间
+     */
+    @ApiModelProperty(value = "买入时间")
+    @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
+    @SelfTableColumn(value = "buyTime", defaultValue = "CURRENT_TIMESTAMP", comment = "买入时间")
+    private Date buyTime;
+    /**
      * 买入总金额
      */
     @ApiModelProperty(value = "买入总金额")
@@ -115,14 +125,12 @@ public class OrderDO extends BaseDO {
     @ApiModelProperty(value = "策略金额")
     @SelfTableColumn(value = "strategyMoney", length = 12, defaultValue = "0", comment = "策略金额")
     private BigDecimal strategyMoney;
-
     /**
      * 止盈价格
      */
     @ApiModelProperty(value = "止盈价格")
     @SelfTableColumn(value = "stopEarnMoney", length = 12, defaultValue = "0", comment = "止盈价格")
     private BigDecimal stopEarnMoney;
-
     /**
      * 止损价格
      */
@@ -136,27 +144,81 @@ public class OrderDO extends BaseDO {
     @ApiModelProperty(value = "信息服务费")
     @SelfTableColumn(value = "serviceMoney", length = 12, defaultValue = "0", comment = "信息服务费")
     private BigDecimal serviceMoney;
-
     /**
      * 递延金
      */
     @ApiModelProperty(value = "递延金")
     @SelfTableColumn(value = "delayMoney", length = 12, defaultValue = "0", comment = "递延金")
     private BigDecimal delayMoney;
-
     /**
      * 递延天数
      */
     @ApiModelProperty(value = "递延天数")
     @SelfTableColumn(value = "delayDays", length = 12, comment = "递延天数")
     private Integer delayDays;
-
+    /**
+     * 剩余递延天数
+     */
+    @ApiModelProperty(value = "剩余递延天数")
+    @SelfTableColumn(value = "residueDelayDays", length = 12, comment = "剩余递延天数")
+    private Integer residueDelayDays;
+    /**
+     * 退换递延天数
+     */
+    @ApiModelProperty(value = "退换递延天数")
+    @SelfTableColumn(value = "backDelayDays", length = 12, comment = "退换递延天数")
+    private Integer backDelayDays;
+    /**
+     * 退换递延金额
+     */
+    @ApiModelProperty(value = "退换递延金额")
+    @SelfTableColumn(value = "backDelayMoney", length = 12, comment = "退换递延金额")
+    private BigDecimal backDelayMoney;
+    /**
+     * 递延到期时间
+     */
+    @ApiModelProperty(value = "递延到期时间")
+    @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
+    @SelfTableColumn(value = "delayEndTime", defaultValue = "CURRENT_TIMESTAMP", comment = "递延到期时间")
+    private Date delayEndTime;
     /**
      * 追加信用金
      */
     @ApiModelProperty(value = "追加信用金")
     @SelfTableColumn(value = "delayMoney", length = 12, defaultValue = "0", comment = "追加信用金")
     private BigDecimal appendMoney;
+    /**
+     * 委托价格
+     */
+    @ApiModelProperty(value = "委托价格")
+    @SelfTableColumn(value = "entrustPrice", length = 12, defaultValue = "0", comment = "委托价格")
+    private BigDecimal entrustPrice;
+    /**
+     * 委托股数
+     */
+    @ApiModelProperty(value = "委托股数")
+    @SelfTableColumn(value = "entrustNumber", length = 12, defaultValue = "0", comment = "委托股数")
+    private Integer entrustNumber;
+    /**
+     * 卖出股数
+     */
+    @ApiModelProperty(value = "卖出股数")
+    @SelfTableColumn(value = "sellNumber", length = 11, defaultValue = "0", comment = "卖出股数")
+    private Integer sellNumber;
+    /**
+     * 卖出时间
+     */
+    @ApiModelProperty(value = "卖出时间")
+    @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
+    @SelfTableColumn(value = "sellTime", defaultValue = "CURRENT_TIMESTAMP", comment = "卖出时间")
+    private Date sellTime;
+    /**
+     * 取消时间
+     */
+    @ApiModelProperty(value = "取消时间")
+    @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
+    @SelfTableColumn(value = "cancelTime", defaultValue = "CURRENT_TIMESTAMP", comment = "取消时间")
+    private Date cancelTime;
 
     public OrderDO() {
     }
@@ -334,6 +396,86 @@ public class OrderDO extends BaseDO {
         this.appendMoney = appendMoney;
     }
 
+    public Date getBuyTime() {
+        return buyTime;
+    }
+
+    public void setBuyTime(Date buyTime) {
+        this.buyTime = buyTime;
+    }
+
+    public Date getDelayEndTime() {
+        return delayEndTime;
+    }
+
+    public void setDelayEndTime(Date delayEndTime) {
+        this.delayEndTime = delayEndTime;
+    }
+
+    public BigDecimal getEntrustPrice() {
+        return entrustPrice;
+    }
+
+    public void setEntrustPrice(BigDecimal entrustPrice) {
+        this.entrustPrice = entrustPrice;
+    }
+
+    public Integer getEntrustNumber() {
+        return entrustNumber;
+    }
+
+    public void setEntrustNumber(Integer entrustNumber) {
+        this.entrustNumber = entrustNumber;
+    }
+
+    public Integer getSellNumber() {
+        return sellNumber;
+    }
+
+    public void setSellNumber(Integer sellNumber) {
+        this.sellNumber = sellNumber;
+    }
+
+    public Date getSellTime() {
+        return sellTime;
+    }
+
+    public void setSellTime(Date sellTime) {
+        this.sellTime = sellTime;
+    }
+
+    public Date getCancelTime() {
+        return cancelTime;
+    }
+
+    public void setCancelTime(Date cancelTime) {
+        this.cancelTime = cancelTime;
+    }
+
+    public Integer getResidueDelayDays() {
+        return residueDelayDays;
+    }
+
+    public void setResidueDelayDays(Integer residueDelayDays) {
+        this.residueDelayDays = residueDelayDays;
+    }
+
+    public Integer getBackDelayDays() {
+        return backDelayDays;
+    }
+
+    public void setBackDelayDays(Integer backDelayDays) {
+        this.backDelayDays = backDelayDays;
+    }
+
+    public BigDecimal getBackDelayMoney() {
+        return backDelayMoney;
+    }
+
+    public void setBackDelayMoney(BigDecimal backDelayMoney) {
+        this.backDelayMoney = backDelayMoney;
+    }
+
     @Override
     public String toString() {
         return "OrderDO{" +
@@ -344,10 +486,11 @@ public class OrderDO extends BaseDO {
                 ", stockName='" + stockName + '\'' +
                 ", buyNumber=" + buyNumber +
                 ", buyPrice=" + buyPrice +
+                ", buyTime=" + buyTime +
                 ", buyPriceTotal=" + buyPriceTotal +
                 ", sellPrice=" + sellPrice +
                 ", sellPriceTotal=" + sellPriceTotal +
-                ", orderStatus='" + orderStatus + '\'' +
+                ", orderStatus=" + orderStatus +
                 ", profit=" + profit +
                 ", profitRate=" + profitRate +
                 ", strategyOwnMoney=" + strategyOwnMoney +
@@ -357,7 +500,17 @@ public class OrderDO extends BaseDO {
                 ", serviceMoney=" + serviceMoney +
                 ", delayMoney=" + delayMoney +
                 ", delayDays=" + delayDays +
+                ", residueDelayDays=" + residueDelayDays +
+                ", backDelayDays=" + backDelayDays +
+                ", backDelayMoney=" + backDelayMoney +
+                ", delayEndTime=" + delayEndTime +
                 ", appendMoney=" + appendMoney +
+                ", entrustPrice=" + entrustPrice +
+                ", entrustNumber=" + entrustNumber +
+                ", sellNumber=" + sellNumber +
+                ", sellTime=" + sellTime +
+                ", cancelTime=" + cancelTime +
                 '}';
     }
+
 }

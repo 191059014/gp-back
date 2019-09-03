@@ -100,6 +100,8 @@ public class OrderApp extends BaseApp {
         BigDecimal delayMoney = StockTools.calcDelayMoney(strategyMoney, 1, SystemConfig.getAppJson().getDelayMoneyPercent());
         clone.setDelayMoney(delayMoney);
         clone.setUnit(userCache.getUnit());
+        clone.setBuyTime(new Date());
+        clone.setDelayDays(1);
         int i = iOrderService.insertSelective(clone);
         if (i < 1) {
             LOGGER.info(LogUtils.appLog("股票下单失败"));
@@ -207,8 +209,9 @@ public class OrderApp extends BaseApp {
         orderDO.setProfit(profit);
         // 盈亏率
         orderDO.setProfitRate(StockTools.calcOrderProfitRate(profit, strategyMoney));
-
-        int backDays = StockTools.calcBackDays(orderDO.getCreateTime(),orderDO.getDelayDays());
+        // 卖出时间
+        orderDO.setSellTime(new Date());
+        int backDays = StockTools.calcBackDays(orderDO.getCreateTime(), orderDO.getDelayDays());
         LOGGER.info(LogUtils.appLog("卖出，需要退还的递延金的天数：{}"), backDays);
         BigDecimal backDelayMoney = BigDecimal.ZERO;
         if (backDays > 0) {
