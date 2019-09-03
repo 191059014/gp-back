@@ -88,10 +88,21 @@ public class OrderApp extends BaseApp {
             // 余额不足
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_MONEY);
         }
+        // 查询当前时间股票行情
+        StockModel stockModel = iStockService.queryStock(requestVO.getStockCode());
+        LOGGER.info(LogUtils.appLog("买入，当前时间股票行情：{}"), stockModel);
+        BigDecimal currentPrice = stockModel.getCurrentPrice();
         OrderDO clone = CloneUtils.clone(requestVO, OrderDO.class);
+        // 用户ID，用户姓名
         clone.setUserId(userId);
         clone.setUserName(userCache.getUserName());
+        // 订单状态
         clone.setOrderStatus(OrderStatusEnum.IN_THE_POSITION.getValue());
+        // 买入时间
+        Date buyTime = new Date();
+        clone.setBuyTime(buyTime);
+        // 买入总金额
+        clone.setBuyPriceTotal(BigDecimalUtils.multiply(new BigDecimal(requestVO.getBuyNumber()), currentPrice));
         // 服务费
         BigDecimal strategyMoney = requestVO.getStrategyMoney();
         BigDecimal serviceMoney = StockTools.calcServiceMoney(strategyMoney, SystemConfig.getAppJson().getServiceMoneyPercent());
@@ -99,9 +110,18 @@ public class OrderApp extends BaseApp {
         // 递延金
         BigDecimal delayMoney = StockTools.calcDelayMoney(strategyMoney, 1, SystemConfig.getAppJson().getDelayMoneyPercent());
         clone.setDelayMoney(delayMoney);
+        // 递延天数
+        int defaultDelayDays = 1;
+        clone.setDelayDays(defaultDelayDays);
+        // 剩余递延天数
+        clone.setResidueDelayDays(defaultDelayDays);
+        // 递延到期时间
+        clone.setDelayEndTime(StockTools.calcSellDate(buyTime, defaultDelayDays));
         clone.setUnit(userCache.getUnit());
-        clone.setBuyTime(new Date());
-        clone.setDelayDays(1);
+        // 委托价格
+        clone.setEntrustPrice(requestVO.getBuyPrice());
+        // 委托股数
+        clone.setEntrustNumber(requestVO.getBuyNumber());
         int i = iOrderService.insertSelective(clone);
         if (i < 1) {
             LOGGER.info(LogUtils.appLog("股票下单失败"));

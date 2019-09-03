@@ -150,7 +150,7 @@ public class StockTools {
      * @param delayDays 递延天数
      * @return 卖出的日期
      */
-    private static Date calcSellDate(Date orderTime, int delayDays) {
+    public static Date calcSellDate(Date orderTime, int delayDays) {
         Date date = null;
         int j = 0;
         for (int i = 0; i < 100; i++) {
@@ -162,7 +162,12 @@ public class StockTools {
                 break;
             }
         }
-        return date;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        calendar.set(Calendar.MINUTE, 50);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
     }
 
     /**
