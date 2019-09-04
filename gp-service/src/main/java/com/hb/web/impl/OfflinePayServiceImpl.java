@@ -168,15 +168,13 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
         if (OfflineCheckStatusEnum.PASS.getValue().equals(offlinePayChekDO.getCheckStatus())) {
             /**
              * 更新用户资金信息
-             * 总资产减少
-             * 可用余额不变
-             * 冻结资金减少
+             * 可用余额减少
+             * 冻结资金增加
              */
             BigDecimal newFreezeMoney = BigDecimalUtils.add(freezeMoney, happenMoney);
             customerFund.setFreezeMoney(newFreezeMoney);
-            BigDecimal accountTotalMoney = customerFund.getAccountTotalMoney();
-            BigDecimal newAccountTotalMoney = BigDecimalUtils.subtract(accountTotalMoney, happenMoney);
-            customerFund.setAccountTotalMoney(newAccountTotalMoney);
+            BigDecimal newUsableMoney = BigDecimalUtils.subtract(usableMoney, happenMoney);
+            customerFund.setUsableMoney(newUsableMoney);
             int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
             LOGGER.info("更新用户资金信息：{}，结果：{}", customerFund, result);
             if (result <= 0) {
