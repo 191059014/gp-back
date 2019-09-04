@@ -9,10 +9,12 @@ package com.hb.facade.enumutil;
  */
 public enum OrderStatusEnum {
 
-    ENTRUST(0, "委托中"),
-    IN_THE_POSITION(1, "持仓中"),
-    ALREADY_SETTLED(2, "已结算"),
-    GIVEUP(3, "已放弃");
+    BUY_ENTRUST(10, "买入委托中"),
+    IN_THE_POSITION(20, "持仓中"),
+    SELL_ENTRUST(30, "卖出委托中"),
+    ALREADY_SELL(50, "已卖出"),
+    GIVEUP(40, "已放弃"),
+    CALCLE(60, "已取消");
 
     /**
      * 值

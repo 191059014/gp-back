@@ -18,7 +18,7 @@ public interface CustomerFundDetailMapper {
 
     List<CustomerFundDetailDO> findListByCondition(@Param("customerFundDetailDO") CustomerFundDetailDO customerFundDetailDO, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
 
-    Integer findCountByCondition(@Param("customerFundDetailDO") CustomerFundDetailDO customerFundDetailDO);
+    Integer findCountByCondition(@Param("customerFundDetailDO") CustomerFundDetailDO customerFundDetailDO, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
 
     CustomerFundDetailDO findOne(@Param("customerFundDetailDO") CustomerFundDetailDO customerFundDetailDO, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
 

@@ -9,9 +9,9 @@ package com.hb.facade.enumutil;
  */
 public enum OfflineCheckStatusEnum {
 
-    AUDITING(0, "待审核"),
-    PASS(1, "通过"),
-    REJECT(2, "拒绝");
+    AUDITING(1, "待审核"),
+    PASS(2, "通过"),
+    REJECT(3, "拒绝");
 
     private Integer value;
     private String name;

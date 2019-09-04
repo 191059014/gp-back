@@ -35,7 +35,7 @@ public class CustomerFundDetailServiceImpl implements ICustomerFundDetailService
 
     @Override
     public Integer findCountByCondition(CustomerFundDetailDO customerFundDetailDO) {
-        return customerFundDetailMapper.findCountByCondition(customerFundDetailDO);
+        return customerFundDetailMapper.findCountByCondition(customerFundDetailDO, null, null);
     }
 
     @Override
