@@ -7,6 +7,7 @@ import com.hb.web.api.IStockListService;
 import com.hb.web.mapper.StockListMapper;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class StockListServiceImpl implements IStockListService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StockListServiceImpl.class);
 
+    @Autowired
     private StockListMapper stockListMapper;
 
     @Override

@@ -194,7 +194,9 @@ public class OrderApp extends BaseApp {
         List<QueryOrderPageResponseVO> orderList = new ArrayList<>();
         list.forEach(o -> {
             QueryOrderPageResponseVO vo = CloneUtils.clone(o, QueryOrderPageResponseVO.class);
-            vo.setStockState(stockMap.get(o.getStockCode()).getState());
+            Integer state = stockMap.get(o.getStockCode()) == null ? null : stockMap.get(o.getStockCode()).getState();
+            vo.setStockState(state);
+            orderList.add(vo);
         });
         responseVO.setOrderList(orderList);
         LOGGER.info(LogUtils.appLog("根据订单状态分页查询订单，返回结果：{}"), list);
