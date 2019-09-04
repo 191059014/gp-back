@@ -267,6 +267,7 @@ public class OrderApp extends BaseApp {
             orderDO.setDelayMoney(BigDecimalUtils.subtract(orderDO.getDelayMoney(), backDelayMoney));
         }
         LOGGER.info(LogUtils.appLog("卖出-更新订单信息：{}"), orderDO);
+        orderDO.setUpdateTime(new Date());
         iOrderService.updateByPrimaryKeySelective(orderDO);
 
         /**
@@ -345,6 +346,7 @@ public class OrderApp extends BaseApp {
         // 更新递延金
         orderUpdate.setDelayMoney(BigDecimalUtils.add(orderDO.getDelayMoney(), delayMoney));
         LOGGER.info(LogUtils.appLog("递延-更新订单信息：{}"), orderUpdate);
+        orderDO.setUpdateTime(new Date());
         iOrderService.updateByPrimaryKeySelective(orderUpdate);
 
         /**
@@ -413,6 +415,7 @@ public class OrderApp extends BaseApp {
             orderUpdate.setStopLossMoney(stopLossMoney);
         }
         LOGGER.info(LogUtils.appLog("追加信用金-更新订单信息：{}"), orderUpdate);
+        orderDO.setUpdateTime(new Date());
         iOrderService.updateByPrimaryKeySelective(orderUpdate);
 
         /**
@@ -472,6 +475,8 @@ public class OrderApp extends BaseApp {
         orderDO.setProfitRate(StockTools.calcOrderProfitRate(profit, strategyMoney));
         // 卖出时间
         orderDO.setSellTime(new Date());
+        orderDO.setCancelTime(new Date());
+        orderDO.setUpdateTime(new Date());
         int backDays = StockTools.calcBackDays(orderDO.getCreateTime(), orderDO.getDelayDays());
         LOGGER.info(LogUtils.appLog("放弃订单，需要退还的递延金的天数：{}"), backDays);
         BigDecimal backDelayMoney = BigDecimal.ZERO;
