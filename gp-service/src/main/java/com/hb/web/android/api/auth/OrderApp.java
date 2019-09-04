@@ -199,7 +199,7 @@ public class OrderApp extends BaseApp {
             orderList.add(vo);
         });
         responseVO.setOrderList(orderList);
-        LOGGER.info(LogUtils.appLog("根据订单状态分页查询订单，返回结果：{}"), list);
+        LOGGER.info(LogUtils.appLog("根据订单状态分页查询订单，返回结果：{}"), orderList);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);
     }
 
