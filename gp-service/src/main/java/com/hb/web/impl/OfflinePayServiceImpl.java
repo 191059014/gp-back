@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ========== 线下支付 ==========
@@ -171,10 +168,7 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
              * 可用余额减少
              * 冻结资金增加
              */
-            BigDecimal newFreezeMoney = BigDecimalUtils.add(freezeMoney, happenMoney);
-            customerFund.setFreezeMoney(newFreezeMoney);
-            BigDecimal newUsableMoney = BigDecimalUtils.subtract(usableMoney, happenMoney);
-            customerFund.setUsableMoney(newUsableMoney);
+            customerFund.setUpdateTime(new Date());
             int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
             LOGGER.info("更新用户资金信息：{}，结果：{}", customerFund, result);
             if (result <= 0) {
