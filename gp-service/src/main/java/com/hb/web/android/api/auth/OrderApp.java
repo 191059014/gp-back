@@ -204,8 +204,8 @@ public class OrderApp extends BaseApp {
     }
 
     @ApiOperation(value = "根据订单ID查询订单信息")
-    @PostMapping("/queryOrderByStatus")
-    public AppResultModel<OrderDO> queryOrderByStatus(@RequestBody OrderDO requestVO) {
+    @PostMapping("/queryOrderById")
+    public AppResultModel<OrderDO> queryOrderById(@RequestBody OrderDO requestVO) {
         LOGGER.info(LogUtils.appLog("根据订单ID查询订单信息，入参：{}"), requestVO);
         if (StringUtils.isBlank(requestVO.getOrderId())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
