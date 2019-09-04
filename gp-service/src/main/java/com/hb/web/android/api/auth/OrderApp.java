@@ -75,9 +75,9 @@ public class OrderApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel order(@RequestBody OrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("股票下单，入参：{}"), requestVO);
-        if (!StockTools.stockOnLine()) {
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
-        }
+//        if (!StockTools.stockOnLine()) {
+//            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
+//        }
         UserDO userCache = getUserCache();
         String userId = userCache.getUserId();
         CustomerFundDO query = new CustomerFundDO(userId);
@@ -93,6 +93,8 @@ public class OrderApp extends BaseApp {
         LOGGER.info(LogUtils.appLog("买入，当前时间股票行情：{}"), stockModel);
         BigDecimal currentPrice = stockModel.getCurrentPrice();
         OrderDO clone = CloneUtils.clone(requestVO, OrderDO.class);
+        // 股票名称
+        clone.setStockName(stockModel.getStockName());
         // 用户ID，用户姓名
         clone.setUserId(userId);
         clone.setUserName(userCache.getUserName());
@@ -104,11 +106,10 @@ public class OrderApp extends BaseApp {
         // 买入总金额
         clone.setBuyPriceTotal(BigDecimalUtils.multiply(new BigDecimal(requestVO.getBuyNumber()), currentPrice));
         // 服务费
-        BigDecimal strategyMoney = requestVO.getStrategyMoney();
-        BigDecimal serviceMoney = StockTools.calcServiceMoney(strategyMoney, SystemConfig.getAppJson().getServiceMoneyPercent());
+        BigDecimal serviceMoney = StockTools.calcServiceMoney(strategyOwnMoney, SystemConfig.getAppJson().getServiceMoneyPercent());
         clone.setServiceMoney(serviceMoney);
         // 递延金
-        BigDecimal delayMoney = StockTools.calcDelayMoney(strategyMoney, 1, SystemConfig.getAppJson().getDelayMoneyPercent());
+        BigDecimal delayMoney = StockTools.calcDelayMoney(strategyOwnMoney, 1, SystemConfig.getAppJson().getDelayMoneyPercent());
         clone.setDelayMoney(delayMoney);
         // 递延天数
         int defaultDelayDays = 1;
