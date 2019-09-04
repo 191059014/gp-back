@@ -408,6 +408,10 @@ public class OrderApp extends BaseApp {
         OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
         OrderDO orderUpdate = new OrderDO(orderId, null);
         orderUpdate.setAppendMoney(BigDecimalUtils.add(orderDO.getAppendMoney(), appendMoney));
+        BigDecimal stopLossMoney = requestVO.getStopLossMoney();
+        if (stopLossMoney != null && BigDecimal.ZERO.compareTo(stopLossMoney) != 0) {
+            orderUpdate.setStopLossMoney(stopLossMoney);
+        }
         LOGGER.info(LogUtils.appLog("追加信用金-更新订单信息：{}"), orderUpdate);
         iOrderService.updateByPrimaryKeySelective(orderUpdate);
 
