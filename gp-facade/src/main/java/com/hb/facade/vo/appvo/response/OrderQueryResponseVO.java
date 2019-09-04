@@ -20,13 +20,13 @@ public class OrderQueryResponseVO implements Serializable {
     /**
      * 订单列表
      */
-    private List<OrderDO> orderList;
+    private List<QueryOrderPageResponseVO> orderList;
 
-    public List<OrderDO> getOrderList() {
+    public List<QueryOrderPageResponseVO> getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(List<OrderDO> orderList) {
+    public void setOrderList(List<QueryOrderPageResponseVO> orderList) {
         this.orderList = orderList;
     }
 

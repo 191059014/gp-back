@@ -7,21 +7,17 @@ import com.hb.facade.enumutil.FundTypeEnum;
 import com.hb.facade.enumutil.OrderStatusEnum;
 import com.hb.facade.vo.appvo.request.*;
 import com.hb.facade.vo.appvo.response.OrderQueryResponseVO;
+import com.hb.facade.vo.appvo.response.QueryOrderPageResponseVO;
 import com.hb.remote.model.StockModel;
 import com.hb.remote.service.IStockService;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.CloneUtils;
-import com.hb.unic.util.util.DateUtils;
 import com.hb.web.android.base.BaseApp;
-import com.hb.web.api.IAgentService;
-import com.hb.web.api.ICustomerFundDetailService;
-import com.hb.web.api.ICustomerFundService;
-import com.hb.web.api.IOrderService;
+import com.hb.web.api.*;
 import com.hb.facade.common.SystemConfig;
 import com.hb.facade.calc.StockTools;
-import com.hb.web.tool.CheckTools;
 import com.hb.web.util.LogUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,8 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * ========== 订单 ==========
@@ -69,6 +65,9 @@ public class OrderApp extends BaseApp {
 
     @Autowired
     private IStockService iStockService;
+
+    @Autowired
+    private IStockListService iStockListService;
 
     @ApiOperation(value = "股票下单")
     @PostMapping("/order")
@@ -180,19 +179,38 @@ public class OrderApp extends BaseApp {
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
-    @ApiOperation(value = "查询订单")
+    @ApiOperation(value = "根据订单状态分页查询订单")
     @PostMapping("/queryOrder")
     public AppResultModel<OrderQueryResponseVO> queryOrder(@RequestBody QueryOrderRequestVO requestVO) {
-        LOGGER.info(LogUtils.appLog("查询订单，入参：{}"), requestVO);
+        LOGGER.info(LogUtils.appLog("根据订单状态分页查询订单，入参：{}"), requestVO);
         OrderQueryResponseVO responseVO = new OrderQueryResponseVO();
         UserDO userCache = getUserCache();
         OrderDO orderDO = new OrderDO();
         orderDO.setOrderStatus(requestVO.getOrderStatus());
         orderDO.setUserId(userCache.getUserId());
         List<OrderDO> list = iOrderService.findListPages(orderDO, requestVO.getStartRow(), requestVO.getPageNum());
-        responseVO.setOrderList(list);
-        LOGGER.info(LogUtils.appLog("查询订单，返回结果：{}"), list);
+        Set<String> stockCodeSet = list.stream().map(OrderDO::getStockCode).collect(Collectors.toSet());
+        Map<String, StockListDO> stockMap = iStockListService.getStockMapBySet(stockCodeSet);
+        List<QueryOrderPageResponseVO> orderList = new ArrayList<>();
+        list.forEach(o -> {
+            QueryOrderPageResponseVO vo = CloneUtils.clone(o, QueryOrderPageResponseVO.class);
+            vo.setStockState(stockMap.get(o.getStockCode()).getState());
+        });
+        responseVO.setOrderList(orderList);
+        LOGGER.info(LogUtils.appLog("根据订单状态分页查询订单，返回结果：{}"), list);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);
+    }
+
+    @ApiOperation(value = "根据订单ID查询订单信息")
+    @PostMapping("/queryOrderByStatus")
+    public AppResultModel<OrderDO> queryOrderByStatus(@RequestBody OrderDO requestVO) {
+        LOGGER.info(LogUtils.appLog("根据订单ID查询订单信息，入参：{}"), requestVO);
+        if (StringUtils.isBlank(requestVO.getOrderId())) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+        }
+        OrderDO orderDO = iOrderService.selectByPrimaryKey(requestVO.getOrderId());
+        LOGGER.info(LogUtils.appLog("根据订单ID查询订单信息，返回结果：{}"), orderDO);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, orderDO);
     }
 
     @ApiOperation(value = "卖出")
@@ -408,6 +426,101 @@ public class OrderApp extends BaseApp {
         iCustomerFundDetailService.addOne(customerFundDetailAdd);
 
         alarmTools.alert("APP", "订单", "追加信用金", "用户【" + userCache.getUserName() + "】追加信用金成功，订单号：" + orderId);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+    }
+
+    @ApiOperation(value = "放弃订单")
+    @PostMapping("/cancelOrder")
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public AppResultModel cancelOrder(@RequestBody SellOrderRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("放弃订单，入参：{}"), requestVO);
+        if (!StockTools.stockOnLine()) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
+        }
+        String orderId = requestVO.getOrderId();
+        if (StringUtils.isBlank(orderId)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+        }
+        UserDO userCache = getUserCache();
+        String userId = userCache.getUserId();
+        OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
+        BigDecimal strategyMoney = orderDO.getStrategyMoney();
+        BigDecimal strategyOwnMoney = orderDO.getStrategyOwnMoney();
+        // 查询当前时间股票行情
+        StockModel stockModel = iStockService.queryStock(orderDO.getStockCode());
+        LOGGER.info(LogUtils.appLog("放弃订单，当前时间股票行情：{}"), stockModel);
+        BigDecimal currentPrice = stockModel.getCurrentPrice();
+        /**
+         * 更新订单信息
+         */
+        BigDecimal profit = StockTools.calcOrderProfit(orderDO.getBuyPrice(), currentPrice, orderDO.getBuyNumber());
+        // 卖出 价格
+        orderDO.setSellPrice(currentPrice);
+        // 卖出总价格
+        orderDO.setSellPriceTotal(BigDecimalUtils.add(strategyMoney, profit));
+        // 订单状态
+        orderDO.setOrderStatus(OrderStatusEnum.GIVEUP.getValue());
+        // 利润
+        orderDO.setProfit(profit);
+        // 盈亏率
+        orderDO.setProfitRate(StockTools.calcOrderProfitRate(profit, strategyMoney));
+        // 卖出时间
+        orderDO.setSellTime(new Date());
+        int backDays = StockTools.calcBackDays(orderDO.getCreateTime(), orderDO.getDelayDays());
+        LOGGER.info(LogUtils.appLog("放弃订单，需要退还的递延金的天数：{}"), backDays);
+        BigDecimal backDelayMoney = BigDecimal.ZERO;
+        // 退换的递延天数
+        orderDO.setBackDelayDays(backDays);
+        if (backDays > 0) {
+            // 退还递延金
+            backDelayMoney = StockTools.calcDelayMoney(strategyMoney, backDays, SystemConfig.getAppJson().getDelayMoneyPercent());
+            LOGGER.info(LogUtils.appLog("放弃订单，退还递延金：{}"), backDelayMoney);
+            // 退还的递延金
+            orderDO.setBackDelayMoney(backDelayMoney);
+            // 递延金
+            orderDO.setDelayMoney(BigDecimalUtils.subtract(orderDO.getDelayMoney(), backDelayMoney));
+        }
+        LOGGER.info(LogUtils.appLog("放弃订单-更新订单信息：{}"), orderDO);
+        iOrderService.updateByPrimaryKeySelective(orderDO);
+
+        /**
+         * 更新客户资金信息
+         * 1.账户总金额变化
+         * 2.可用余额变化
+         * 3.冻结资金变化
+         * 4.累计盈亏变化
+         */
+        CustomerFundDO query = new CustomerFundDO(userId);
+        CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(query);
+        customerFund.setAccountTotalMoney(BigDecimalUtils.add(customerFund.getAccountTotalMoney(), profit));
+        customerFund.setUsableMoney(BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getUsableMoney(), strategyOwnMoney, profit, backDelayMoney));
+        customerFund.setTradeFreezeMoney(BigDecimalUtils.multiply(customerFund.getTradeFreezeMoney(), strategyMoney));
+        customerFund.setTotalProfitAndLossMoney(BigDecimalUtils.add(customerFund.getTotalProfitAndLossMoney(), profit));
+        LOGGER.info(LogUtils.appLog("放弃订单-更新客户资金信息：{}"), customerFund);
+        iCustomerFundService.updateByPrimaryKeySelective(customerFund);
+
+        /**
+         * 增加退还递延金流水
+         */
+        AgentDO agent = iAgentService.getAgentByInviterMobile(userCache.getInviterMobile());
+        if (backDelayMoney.compareTo(BigDecimal.ZERO) > 0) {
+            CustomerFundDetailDO backDelayDetail = new CustomerFundDetailDO();
+            backDelayDetail.setUserId(userId);
+            backDelayDetail.setUserName(userCache.getUserName());
+            backDelayDetail.setAgentId(agent.getAgentId());
+            backDelayDetail.setAgentName(agent.getAgentName());
+            backDelayDetail.setHappenMoney(backDelayMoney);
+            backDelayDetail.setAfterHappenMoney(backDelayMoney);
+            backDelayDetail.setFundType(FundTypeEnum.DELAY_BACK.getValue());
+            backDelayDetail.setRemark(FundTypeEnum.DELAY_BACK.getDesc());
+            LOGGER.info(LogUtils.appLog("放弃订单-退还递延金流水：{}"), backDelayDetail);
+            iCustomerFundDetailService.addOne(backDelayDetail);
+        }
+
+        /**
+         * 增加已结算流水 TODO
+         */
+
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
