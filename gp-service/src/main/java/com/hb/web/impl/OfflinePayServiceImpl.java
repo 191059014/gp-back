@@ -172,7 +172,7 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
              * 可用余额不变
              * 冻结资金减少
              */
-            BigDecimal newFreezeMoney = BigDecimalUtils.subtract(freezeMoney, happenMoney);
+            BigDecimal newFreezeMoney = BigDecimalUtils.add(freezeMoney, happenMoney);
             customerFund.setFreezeMoney(newFreezeMoney);
             BigDecimal accountTotalMoney = customerFund.getAccountTotalMoney();
             BigDecimal newAccountTotalMoney = BigDecimalUtils.subtract(accountTotalMoney, happenMoney);
