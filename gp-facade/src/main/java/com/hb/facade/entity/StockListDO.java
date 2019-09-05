@@ -11,6 +11,8 @@ public class StockListDO {
 
     private Byte type;
 
+    private Integer state;
+
     public Integer getId() {
         return id;
     }
@@ -50,4 +52,25 @@ public class StockListDO {
     public void setType(Byte type) {
         this.type = type;
     }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return "StockListDO{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", full_code='" + full_code + '\'' +
+                ", type=" + type +
+                ", state=" + state +
+                '}';
+    }
+
 }

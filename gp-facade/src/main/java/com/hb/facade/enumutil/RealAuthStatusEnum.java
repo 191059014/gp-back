@@ -10,7 +10,8 @@ package com.hb.facade.enumutil;
 public enum RealAuthStatusEnum {
 
     NO_AUTH(0, "未实名认证"),
-    IS_AUTH(1, "已实名认证");
+    IS_AUTH(1, "已实名认证"),
+    AUTH_NOT_PASS(2, "实名不通过");
 
     private Integer value;
     private String name;

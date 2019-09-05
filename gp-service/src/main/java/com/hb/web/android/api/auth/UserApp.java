@@ -23,7 +23,6 @@ import com.hb.web.util.LogUtils;
 import com.hb.facade.vo.appvo.request.BankCardRealNameAuthRequestVO;
 import com.hb.facade.vo.appvo.request.BankCardRequestVO;
 import com.hb.facade.vo.appvo.request.IdCardRealNameAuthRequestVO;
-import com.hb.facade.vo.appvo.response.BankCardRealNameAuthResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -109,10 +108,16 @@ public class UserApp extends BaseApp {
         try {
             IdCardAuthResult idCardAuthResult = realNameAuth.idCardAuth(requestVO.getCardNo(), requestVO.getCardName());
             if (idCardAuthResult == null || idCardAuthResult.getResult() == null) {
+                UserDO update = new UserDO();
+                update.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
+                iUserService.updateUserById(userCache.getUserId(), update);
                 return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
             }
             if (!StringUtils.equals(IdCardAuthResEnum.success.getCode(), idCardAuthResult.getCode())
                     || !idCardAuthResult.getResult().getResult().getIsok()) {
+                UserDO update = new UserDO();
+                update.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
+                iUserService.updateUserById(userCache.getUserId(), update);
                 return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
             }
             /**

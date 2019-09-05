@@ -1,5 +1,7 @@
 package com.hb.facade.vo.appvo.request;
 
+import com.hb.unic.util.util.BigDecimalUtils;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -12,6 +14,7 @@ public class AppendOrderMoneyRequestVO implements Serializable {
 
     private String orderId;
     private BigDecimal appendMoney;
+    private BigDecimal stopLossMoney;
 
     public BigDecimal getAppendMoney() {
         return appendMoney;
@@ -29,11 +32,20 @@ public class AppendOrderMoneyRequestVO implements Serializable {
         this.orderId = orderId;
     }
 
+    public BigDecimal getStopLossMoney() {
+        return stopLossMoney;
+    }
+
+    public void setStopLossMoney(BigDecimal stopLossMoney) {
+        this.stopLossMoney = stopLossMoney;
+    }
+
     @Override
     public String toString() {
         return "AppendOrderMoneyRequestVO{" +
                 "orderId=" + orderId +
                 ", appendMoney=" + appendMoney +
+                ", stopLossMoney=" + stopLossMoney +
                 '}';
     }
 }

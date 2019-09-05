@@ -53,7 +53,7 @@ public class StockTools {
     public static BigDecimal calcOrderProfit(BigDecimal buyPrice, BigDecimal sellPrice, Integer buyNumber) {
         BigDecimal unitProfit = BigDecimalUtils.subtract(sellPrice, buyPrice, BigDecimalUtils.TEN_SCALE);
         BigDecimal totalProfit = BigDecimalUtils.multiply(unitProfit, new BigDecimal(buyNumber));
-        LOGGER.info("利润：{}", totalProfit);
+        LOGGER.info("利润=（卖出价格-买入价格）*买入股数=({}-{})*{}={}", sellPrice, buyPrice, buyNumber, totalProfit);
         return totalProfit;
     }
 
@@ -65,7 +65,7 @@ public class StockTools {
      */
     public static BigDecimal calcOrderProfitRate(BigDecimal profit, BigDecimal strategyMoney) {
         BigDecimal profitRate = BigDecimalUtils.divide(profit, strategyMoney);
-        LOGGER.info("利润：{}", profitRate);
+        LOGGER.info("利润=利润/建仓市值={}/{}={}", profit, strategyMoney, profitRate);
         return profitRate;
     }
 
@@ -129,12 +129,15 @@ public class StockTools {
      * @return 退还的递延金天数
      */
     public static int calcBackDays(Date orderTime, int delayDays) {
+        System.out.println("下单时间：" + DateUtils.date2str(orderTime, DateUtils.FORMAT_YMD) + "，递延天数：" + delayDays);
         Date date = null;
         int j = 0;
         for (int i = 0; i < 100; i++) {
             date = DateUtils.addDays(orderTime, i + 1);
             if (!isSpecialHoliday(date)) {
                 j++;
+            } else {
+                System.out.println("周末或者节假日：" + DateUtils.date2str(date, DateUtils.FORMAT_YMD));
             }
             if (DateUtils.getDaysBetween(new Date(), date) == 0) {
                 break;
@@ -150,7 +153,7 @@ public class StockTools {
      * @param delayDays 递延天数
      * @return 卖出的日期
      */
-    private static Date calcSellDate(Date orderTime, int delayDays) {
+    public static Date calcSellDate(Date orderTime, int delayDays) {
         Date date = null;
         int j = 0;
         for (int i = 0; i < 100; i++) {
@@ -162,7 +165,13 @@ public class StockTools {
                 break;
             }
         }
-        return date;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        calendar.set(Calendar.MINUTE, 50);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
     }
 
     /**
