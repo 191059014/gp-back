@@ -100,8 +100,6 @@ public class OrderApp extends BaseApp {
         LOGGER.info(LogUtils.appLog("买入，当前时间股票行情：{}"), stockModel);
         BigDecimal currentPrice = stockModel.getCurrentPrice();
         OrderDO insertOrder = CloneUtils.clone(requestVO, OrderDO.class);
-        // 股票名称
-        insertOrder.setStockName(stockModel.getStockName());
         // 用户ID
         insertOrder.setUserId(userId);
         // 用户姓名
