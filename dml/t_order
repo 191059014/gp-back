@@ -1,0 +1,32 @@
+# 查询订单
+select * from t_order_0 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_1 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_2 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_3 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_4 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_5 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_6 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_7 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_8 where userId='U1' and orderStatus=50
+UNION
+select * from t_order_9 where userId='U1' and orderStatus=50
+
+# 根据用户删除订单
+DELETE from t_order_0 where userid='U3';
+DELETE from t_order_1 where userid='U3';
+DELETE from t_order_2 where userid='U3';
+DELETE from t_order_3 where userid='U3';
+DELETE from t_order_4 where userid='U3';
+DELETE from t_order_5 where userid='U3';
+DELETE from t_order_6 where userid='U3';
+DELETE from t_order_7 where userid='U3';
+DELETE from t_order_8 where userid='U3';
+DELETE from t_order_9 where userid='U3';

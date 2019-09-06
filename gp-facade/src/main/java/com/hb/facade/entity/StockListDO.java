@@ -1,6 +1,6 @@
 package com.hb.facade.entity;
 
-public class StockListDO {
+public class StockListDO extends BaseDO {
     private Integer id;
 
     private String code;
@@ -70,7 +70,6 @@ public class StockListDO {
                 ", full_code='" + full_code + '\'' +
                 ", type=" + type +
                 ", state=" + state +
-                '}';
+                '}' + "," + super.toString();
     }
-
 }

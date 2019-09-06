@@ -10,15 +10,11 @@ public interface StockListMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(StockListDO record);
-
     int insertSelective(StockListDO record);
 
     StockListDO selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(StockListDO record);
-
-    int updateByPrimaryKey(StockListDO record);
 
     List<StockListDO> getStockListByStockCodeSet(Set<String> stockCodeSet);
 
@@ -26,4 +22,9 @@ public interface StockListMapper {
 
     List<StockListDO> getAllStockList();
 
+    Integer findCount(@Param("stockListDO") StockListDO stockListDO);
+
+    List<StockListDO> findStockList(@Param("stockListDO") StockListDO stockListDO, @Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);
+
+    StockListDO findStock(@Param("stockListDO") StockListDO stockListDO);
 }

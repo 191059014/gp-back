@@ -2,7 +2,9 @@ package com.hb.facade.enumutil;
 
 public enum StockStateEnum {
 
-    stop(1, "停牌");
+    normal(1, "正常"),
+    stop(2, "停牌"),
+    high_risk(3, "高风险");
 
     private Integer value;
     private String desc;

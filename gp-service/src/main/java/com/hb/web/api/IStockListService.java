@@ -2,6 +2,7 @@ package com.hb.web.api;
 
 import com.hb.facade.entity.StockListDO;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,5 +17,19 @@ public interface IStockListService {
 
 
     Map<String, StockListDO> getStockMapBySet(Set<String> stockCodeSet);
+
+    Integer findCount(StockListDO stockListDO);
+
+    List<StockListDO> findStockList(StockListDO stockListDO, Integer pageNum, Integer pageSize);
+
+    int addStock(StockListDO stockListDO);
+
+    StockListDO findStock(StockListDO stockListDO);
+
+    int updateStockById(StockListDO stockListDO);
+
+    int deleteStockById(int id);
+
+    List<Map<String, Object>> getStockStatusList();
 
 }
