@@ -7,6 +7,7 @@ import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.DateUtils;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -143,7 +144,7 @@ public class StockTools {
                 break;
             }
         }
-        return delayDays - j;
+        return delayDays - j - 1;
     }
 
     /**
@@ -185,6 +186,12 @@ public class StockTools {
             return true;
         }
         return false;
+    }
+
+    public static void main(String[] args) throws ParseException {
+        Date date = DateUtils.str2date("2019-09-06", "yyyy-MM-DD");
+        int i = calcBackDays(new Date(), 1);
+        System.out.println(i);
     }
 
 }

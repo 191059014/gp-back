@@ -223,6 +223,10 @@ public class OrderDO extends BaseDO {
     public OrderDO() {
     }
 
+    public OrderDO(String orderId) {
+        this.orderId = orderId;
+    }
+
     public OrderDO(String orderId, String userId) {
         this.orderId = orderId;
         this.userId = userId;

@@ -315,16 +315,17 @@ public class OrderApp extends BaseApp {
         // 账户总金额=原账户总金额+利润+退还的递延金
         BigDecimal add = BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getAccountTotalMoney(), profit, backDelayMoney);
         customerFund.setAccountTotalMoney(add);
-        // 可用余额=原可用余额+利润+退还的递延金+策略本金
-        customerFund.setUsableMoney(BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getUsableMoney(), strategyOwnMoney, profit, backDelayMoney));
-        // 交易冻结金额=原交易冻结金额-策略本金
-        customerFund.setTradeFreezeMoney(BigDecimalUtils.subtract(customerFund.getTradeFreezeMoney(), strategyOwnMoney));
+        // 可用余额=原可用余额+利润+退还的递延金+策略本金+追加的信用金
+        BigDecimal appendMoney = orderDO.getAppendMoney();
+        customerFund.setUsableMoney(BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getUsableMoney(), strategyOwnMoney, profit, backDelayMoney, appendMoney));
+        // 交易冻结金额=原交易冻结金额-策略本金-追加的信用金
+        customerFund.setTradeFreezeMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTradeFreezeMoney(), strategyOwnMoney, appendMoney));
         // 总盈亏=原总盈亏+利润
         customerFund.setTotalProfitAndLossMoney(BigDecimalUtils.add(customerFund.getTotalProfitAndLossMoney(), profit));
-        // 累计持仓市值总金额
+        // 累计持仓市值总金额=原累计持仓市值总金额-持仓市值
         customerFund.setTotalStrategyMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyMoney(), strategyMoney));
-        // 累计持仓信用金总金额
-        customerFund.setTotalStrategyOwnMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney));
+        // 累计持仓信用金总金额=原累计持仓信用金总金额-持仓信用金-追加的信用金
+        customerFund.setTotalStrategyOwnMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney, appendMoney));
         customerFund.setUpdateTime(new Date());
         LOGGER.info(LogUtils.appLog("卖出-更新客户资金信息：{}"), customerFund);
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
@@ -436,6 +437,8 @@ public class OrderApp extends BaseApp {
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(customerFundUpdate);
         customerFundUpdate.setUsableMoney(BigDecimalUtils.subtract(customerFund.getUsableMoney(), appendMoney));
         customerFundUpdate.setTradeFreezeMoney(BigDecimalUtils.add(customerFund.getTradeFreezeMoney(), appendMoney));
+        // 累计持仓信用金=原累计持仓信用金+追加的信用金
+        customerFundUpdate.setTotalStrategyOwnMoney(BigDecimalUtils.add(customerFund.getTotalStrategyOwnMoney(), appendMoney));
         LOGGER.info(LogUtils.appLog("追加信用金-更新客户资金信息：{}"), customerFundUpdate);
         iCustomerFundService.updateByPrimaryKeySelective(customerFundUpdate);
 
