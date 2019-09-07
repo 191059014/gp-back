@@ -111,7 +111,7 @@ public class LoginApp extends BaseApp {
          * 4. 将token和用户信息放到缓存
          */
         updateUserCache(loginUser);
-        LOGGER.info(LogUtils.appLog("登陆，响应信息：{}"), loginRequestVO);
+        LOGGER.info(LogUtils.appLog("登陆，响应信息：{}"), loginResponseVO);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, loginResponseVO);
     }
 

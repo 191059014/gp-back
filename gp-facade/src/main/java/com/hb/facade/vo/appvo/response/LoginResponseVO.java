@@ -11,6 +11,7 @@ import java.io.Serializable;
  */
 public class LoginResponseVO implements Serializable {
 
+    private static final long serialVersionUID = -3100775369243847924L;
     /**
      * token
      */
