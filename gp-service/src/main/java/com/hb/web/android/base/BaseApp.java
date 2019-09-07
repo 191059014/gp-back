@@ -97,7 +97,7 @@ public class BaseApp {
      * @return 用户信息
      */
     public UserDO getUserCache() {
-        if (true) {
+        if (false) {
             UserDO u1 = new UserDO("U1");
             u1.setUserName("黄彪");
             u1.setInviterMobile("0000");
