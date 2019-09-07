@@ -1,1 +1,1 @@
-delete from t_offline_pay_check
+delete from t_offline_pay_check;
