@@ -168,11 +168,11 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
              * 更新用户资金信息
              */
             customerFund.setUpdateTime(new Date());
-            int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
             // 总资产减少
             customerFund.setAccountTotalMoney(BigDecimalUtils.subtract(customerFund.getAccountTotalMoney(), happenMoney));
             // 冻结资金减少
             customerFund.setFreezeMoney(BigDecimalUtils.subtract(customerFund.getFreezeMoney(), happenMoney));
+            int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
             LOGGER.info("更新用户资金信息：{}，结果：{}", customerFund, result);
             if (result <= 0) {
                 throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_FAILED);
@@ -246,8 +246,6 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
          * 更新流水
          */
         CustomerFundDetailDO customerFundDetailDO = iCustomerFundDetailService.findOne(new CustomerFundDetailDO(offlinePayChekDO.getDetailId()));
-        customerFundDetailDO.setCreateTime(DateUtils.getCurrentDate());
-        customerFundDetailDO.setCreateUserId(userId);
         customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
         customerFundDetailDO.setUpdateUserId(userId);
         customerFundDetailDO.setUnit(user.getUnit());
