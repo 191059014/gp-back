@@ -208,8 +208,9 @@ public class CustomerFundApp extends BaseApp {
      *
      * @return 客户资金分类汇总信息
      */
-    @ApiOperation(value = "查询客户资金分类汇总信息")
+    @ApiOperation(value = "查询客户资金分类汇总信息（不要使用，后面会删除）")
     @PostMapping("/getUserFundSubTotal")
+    @Deprecated
     public AppResultModel<UserFundSubTotalResponseVO> getUserFundSubTotal() {
         UserFundSubTotalResponseVO result = new UserFundSubTotalResponseVO();
         UserDO userCache = this.getCurrentUserCache();

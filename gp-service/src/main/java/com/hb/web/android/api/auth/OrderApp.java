@@ -157,6 +157,10 @@ public class OrderApp extends BaseApp {
         // 累计服务费=原累计服务费+服务费
         BigDecimal newTotalMessageServiceMoney = BigDecimalUtils.add(customerFund.getTotalMessageServiceMoney(), serviceMoney);
         updateCustomerFund.setTotalMessageServiceMoney(newTotalMessageServiceMoney);
+        // 累计持仓市值总金额
+        updateCustomerFund.setTotalStrategyMoney(BigDecimalUtils.add(customerFund.getTotalStrategyMoney(), strategyMoney));
+        // 累计持仓信用金总金额
+        updateCustomerFund.setTotalStrategyOwnMoney(BigDecimalUtils.add(customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney));
         // 更新时间
         updateCustomerFund.setUpdateTime(new Date());
         iCustomerFundService.updateByPrimaryKeySelective(updateCustomerFund);
@@ -317,6 +321,10 @@ public class OrderApp extends BaseApp {
         customerFund.setTradeFreezeMoney(BigDecimalUtils.subtract(customerFund.getTradeFreezeMoney(), strategyOwnMoney));
         // 总盈亏=原总盈亏+利润
         customerFund.setTotalProfitAndLossMoney(BigDecimalUtils.add(customerFund.getTotalProfitAndLossMoney(), profit));
+        // 累计持仓市值总金额
+        customerFund.setTotalStrategyMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyMoney(), strategyMoney));
+        // 累计持仓信用金总金额
+        customerFund.setTotalStrategyOwnMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney));
         customerFund.setUpdateTime(new Date());
         LOGGER.info(LogUtils.appLog("卖出-更新客户资金信息：{}"), customerFund);
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
@@ -536,6 +544,10 @@ public class OrderApp extends BaseApp {
         customerFund.setUsableMoney(BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getUsableMoney(), strategyOwnMoney, profit, backDelayMoney));
         customerFund.setTradeFreezeMoney(BigDecimalUtils.multiply(customerFund.getTradeFreezeMoney(), strategyMoney));
         customerFund.setTotalProfitAndLossMoney(BigDecimalUtils.add(customerFund.getTotalProfitAndLossMoney(), profit));
+        // 累计持仓市值总金额
+        customerFund.setTotalStrategyMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyMoney(), strategyMoney));
+        // 累计持仓信用金总金额
+        customerFund.setTotalStrategyOwnMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney));
         LOGGER.info(LogUtils.appLog("放弃订单-更新客户资金信息：{}"), customerFund);
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
 

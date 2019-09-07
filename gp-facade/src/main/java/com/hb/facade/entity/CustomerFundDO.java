@@ -99,13 +99,13 @@ public class CustomerFundDO extends BaseDO {
     private BigDecimal totalInAndOutMoney;
 
     /**
-     * 持仓累计总金额
+     * 累计持仓市值总金额
      */
     @SelfTableColumn(value = "totalStrategyMoney", length = 12, defaultValue = "0", comment = "累计出入金额")
     private BigDecimal totalStrategyMoney;
 
     /**
-     * 持仓累计信用金总金额
+     * 累计持仓信用金总金额
      */
     @SelfTableColumn(value = "totalStrategyOwnMoney", length = 12, defaultValue = "0", comment = "累计出入金额")
     private BigDecimal totalStrategyOwnMoney;
@@ -221,6 +221,22 @@ public class CustomerFundDO extends BaseDO {
         this.tradeFreezeMoney = tradeFreezeMoney;
     }
 
+    public BigDecimal getTotalStrategyMoney() {
+        return totalStrategyMoney;
+    }
+
+    public void setTotalStrategyMoney(BigDecimal totalStrategyMoney) {
+        this.totalStrategyMoney = totalStrategyMoney;
+    }
+
+    public BigDecimal getTotalStrategyOwnMoney() {
+        return totalStrategyOwnMoney;
+    }
+
+    public void setTotalStrategyOwnMoney(BigDecimal totalStrategyOwnMoney) {
+        this.totalStrategyOwnMoney = totalStrategyOwnMoney;
+    }
+
     @Override
     public String toString() {
         return "CustomerFundDO{" +
@@ -237,7 +253,9 @@ public class CustomerFundDO extends BaseDO {
                 ", totalProfitAndLossMoney=" + totalProfitAndLossMoney +
                 ", totalMessageServiceMoney=" + totalMessageServiceMoney +
                 ", totalInAndOutMoney=" + totalInAndOutMoney +
-                '}' + "," + super.toString();
+                ", totalStrategyMoney=" + totalStrategyMoney +
+                ", totalStrategyOwnMoney=" + totalStrategyOwnMoney +
+                '}' + super.toString();
     }
 
     /**
@@ -248,10 +266,14 @@ public class CustomerFundDO extends BaseDO {
         this.setUsableMoney(BigDecimal.ZERO);
         this.setAccountTotalMoney(BigDecimal.ZERO);
         this.setFreezeMoney(BigDecimal.ZERO);
+        this.setTradeFreezeMoney(BigDecimal.ZERO);
         this.setTotalInAndOutMoney(BigDecimal.ZERO);
         this.setTotalMessageServiceMoney(BigDecimal.ZERO);
         this.setTotalProfitAndLossMoney(BigDecimal.ZERO);
         this.setTotalWithdrawMoney(BigDecimal.ZERO);
+        this.setTotalMessageServiceMoney(BigDecimal.ZERO);
+        this.setTotalStrategyMoney(BigDecimal.ZERO);
+        this.setTotalStrategyOwnMoney(BigDecimal.ZERO);
     }
 
 }
