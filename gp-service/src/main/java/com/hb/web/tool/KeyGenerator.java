@@ -1,5 +1,6 @@
 package com.hb.web.tool;
 
+import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.DateUtils;
@@ -30,7 +31,7 @@ public class KeyGenerator {
     private static final Long SEQUENCE_MAX = 10000L;
 
     @Autowired
-    private RedisTools redisTools;
+    private RedisCacheServiceImpl redisCacheServiceImpl;
 
     /**
      * ########## 生成唯一ID ##########
@@ -42,13 +43,13 @@ public class KeyGenerator {
         String dataStr = DateUtils.date2str(DateUtils.getCurrentDate(), FORMAT_MS);
         String random = String.valueOf(new Random().nextInt(1000));
         random = StringUtils.fillZero(random, 4);
-        Long nextValue = redisTools.getNextValue(tableEnum.getSequenceKey());
+        Long nextValue = redisCacheServiceImpl.getNextValue(tableEnum.getSequenceKey());
         if (nextValue == null) {
             nextValue = 0L;
-            redisTools.set(tableEnum.getSequenceKey(), nextValue);
+            redisCacheServiceImpl.set(tableEnum.getSequenceKey(), nextValue);
         }
         if (nextValue.compareTo(SEQUENCE_MAX) > 0) {
-            redisTools.delete(tableEnum.getSequenceKey());
+            redisCacheServiceImpl.delete(tableEnum.getSequenceKey());
         }
         String sequenceId = String.valueOf(nextValue);
         sequenceId = StringUtils.fillZero(sequenceId, SEQUENCE_LENGTH);

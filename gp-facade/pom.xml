@@ -33,6 +33,11 @@
             <artifactId>unic-base</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.hb.unic</groupId>
+            <artifactId>unic-cache</artifactId>
+        </dependency>
+
         <!-- swagger2-->
         <dependency>
             <groupId>io.springfox</groupId>

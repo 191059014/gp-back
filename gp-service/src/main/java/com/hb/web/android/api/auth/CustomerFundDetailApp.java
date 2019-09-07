@@ -49,7 +49,7 @@ public class CustomerFundDetailApp extends BaseApp {
         QueryCustomerFundDetailResponseVO responseVO = new QueryCustomerFundDetailResponseVO();
         Date beginTime = requestVO.getTimeBegin() == null ? null : new Date(requestVO.getTimeBegin());
         Date endTime = requestVO.getTimeEnd() == null ? null : new Date(requestVO.getTimeEnd());
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         CustomerFundDetailDO query = new CustomerFundDetailDO();
         query.setUserId(userCache.getUserId());
         query.setFundType(requestVO.getFundType());

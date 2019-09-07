@@ -78,6 +78,11 @@ public class AgentDO extends BaseDO {
         this.agentId = agentId;
     }
 
+    public AgentDO(String agentId, String mobile) {
+        this.agentId = agentId;
+        this.mobile = mobile;
+    }
+
     public String getAgentId() {
         return agentId;
     }

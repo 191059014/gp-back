@@ -19,4 +19,24 @@ public class RedisKeyFactory {
         return new StringBuilder("mobile_verifycode_").append(mobile).toString();
     }
 
+    /**
+     * 获取用户信息缓存key
+     *
+     * @param userId 用户ID
+     * @return key
+     */
+    public static String getUserCacheKey(String userId) {
+        return new StringBuilder("user_info_").append(userId).toString();
+    }
+
+    /**
+     * 获取代理商信息缓存key
+     *
+     * @param mobile 代理商手机号
+     * @return key
+     */
+    public static String getAgentCacheKey(String mobile) {
+        return new StringBuilder("agent_info_").append(mobile).toString();
+    }
+
 }

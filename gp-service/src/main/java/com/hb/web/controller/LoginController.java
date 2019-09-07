@@ -9,7 +9,7 @@ import com.hb.web.base.BaseController;
 import com.hb.facade.common.ResponseData;
 import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.constant.GeneralConst;
-import com.hb.web.tool.RedisTools;
+import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +36,7 @@ public class LoginController extends BaseController {
     IAgentService iAgentService;
 
     @Autowired
-    RedisTools redisTools;
+    RedisCacheServiceImpl redisCacheServiceImpl;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
@@ -65,7 +65,7 @@ public class LoginController extends BaseController {
             return ResponseData.generateResponseData(ResponseEnum.PASSWORD_WRONG);
         }
         LOGGER.info("登陆成功，准备将用户信息放入缓存");
-        redisTools.set(GeneralConst.USER_SESSION_KEY + agent.getAgentId(), agent, GeneralConst.USER_SESSION_EXIRE_TIME);
+        redisCacheServiceImpl.set(GeneralConst.USER_SESSION_KEY + agent.getAgentId(), agent, GeneralConst.USER_SESSION_EXIRE_TIME);
         LOGGER.info("将用户信息放入缓存成功，过期时间为：{}秒", GeneralConst.USER_SESSION_EXIRE_TIME);
         return ResponseData.generateResponseData(ResponseEnum.LOGIN_SUCCESS, agent);
     }

@@ -72,9 +72,6 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean updateUserById(String userId, UserDO userDO) {
-        if (StringUtils.isNotBlank(userDO.getPassword())) {
-            userDO.setPassword(EncryptUtils.encode(userDO.getPassword()));
-        }
         userDO.setUpdateTime(DateUtils.getCurrentDate());
         return userMapper.updateUserById(userId, userDO);
     }

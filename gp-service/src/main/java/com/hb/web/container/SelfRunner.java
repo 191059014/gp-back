@@ -1,10 +1,8 @@
 package com.hb.web.container;
 
-import com.hb.unic.util.util.YamlUtils;
-import com.hb.web.tool.RedisTools;
+import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Properties;
 
 /**
  * ========== 项目启动之后 ==========
@@ -31,7 +27,7 @@ public class SelfRunner implements CommandLineRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(SelfRunner.class);
 
     @Autowired
-    private RedisTools redisTools;
+    private RedisCacheServiceImpl redisCacheServiceImpl;
 
     @Override
     public void run(String... args) throws Exception {
@@ -44,13 +40,13 @@ public class SelfRunner implements CommandLineRunner {
     @ApiOperation(value = "获取缓存")
     @GetMapping("/getProperty")
     public String getProperty(@RequestParam("key") String key) {
-        return redisTools.get(key);
+        return redisCacheServiceImpl.get(key);
     }
 
     @ApiOperation(value = "清除缓存")
     @GetMapping("/clearProperty")
     public Boolean clearProperty(@RequestParam("key") String key) {
-        return redisTools.delete(key);
+        return redisCacheServiceImpl.delete(key);
     }
 
 }

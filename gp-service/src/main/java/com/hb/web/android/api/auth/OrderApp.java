@@ -78,7 +78,7 @@ public class OrderApp extends BaseApp {
 //        if (!StockTools.stockOnLine()) {
 //            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
 //        }
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         String userId = userCache.getUserId();
         CustomerFundDO query = new CustomerFundDO(userId);
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(query);
@@ -96,7 +96,8 @@ public class OrderApp extends BaseApp {
         if (false) {
             stockModel = MockUtils.mockStock();
         } else {
-            stockModel = iStockService.queryStock(requestVO.getStockCode());
+            StockListDO stock = iStockListService.findStock(new StockListDO(requestVO.getStockCode()));
+            stockModel = iStockService.queryStock(stock.getFull_code());
         }
         LOGGER.info(LogUtils.appLog("买入，当前时间股票行情：{}"), stockModel);
         BigDecimal currentPrice = stockModel.getCurrentPrice();
@@ -178,7 +179,7 @@ public class OrderApp extends BaseApp {
         iCustomerFundDetailService.addOne(serviceAdd);
 
         alarmTools.alert("APP", "订单", "下单接口", "用户【" + userCache.getUserName() + "】下单成功，订单号：" + insertOrder.getOrderId());
-        LOGGER.info(LogUtils.appLog("股票下单成功：{}"),insertOrder);
+        LOGGER.info(LogUtils.appLog("股票下单成功：{}"), insertOrder);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
@@ -187,7 +188,7 @@ public class OrderApp extends BaseApp {
     public AppResultModel<OrderQueryResponseVO> queryOrder(@RequestBody QueryOrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("根据订单状态分页查询订单，入参：{}"), requestVO);
         OrderQueryResponseVO responseVO = new OrderQueryResponseVO();
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         OrderDO orderDO = new OrderDO();
         orderDO.setOrderStatus(requestVO.getOrderStatus());
         orderDO.setUserId(userCache.getUserId());
@@ -230,19 +231,39 @@ public class OrderApp extends BaseApp {
         if (StringUtils.isBlank(orderId)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
-        UserDO userCache = getUserCache();
-        String userId = userCache.getUserId();
         OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
-        BigDecimal strategyMoney = orderDO.getStrategyMoney();
-        BigDecimal strategyOwnMoney = orderDO.getStrategyOwnMoney();
         // 查询当前时间股票行情
         StockModel stockModel = null;
         if (false) {
             stockModel = MockUtils.mockStock();
         } else {
-            stockModel = iStockService.queryStock(orderDO.getStockCode());
+            StockListDO stock = iStockListService.findStock(new StockListDO(orderDO.getStockCode()));
+            stockModel = iStockService.queryStock(stock.getFull_code());
         }
         LOGGER.info(LogUtils.appLog("卖出，当前时间股票行情：{}"), stockModel);
+        UserDO userCache = getCurrentUserCache();
+        AgentDO agent = iAgentService.getAgentByInviterMobile(userCache.getInviterMobile());
+        completeOrder(orderDO, stockModel, userCache, agent);
+        /**
+         * 增加已结算流水 TODO
+         */
+        alarmTools.alert("APP", "订单", "平仓接口", "用户【" + userCache.getUserName() + "】卖出订单，订单号：" + orderId);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+    }
+
+    /**
+     * 平仓
+     *
+     * @param orderDO    订单信息
+     * @param stockModel 股票信息
+     * @param user       用户信息
+     * @param agent      代理商信息
+     */
+    private void completeOrder(OrderDO orderDO, StockModel stockModel, UserDO user, AgentDO agent) {
+        String userId = user.getUserId();
+        String userName = user.getUserName();
+        BigDecimal strategyMoney = orderDO.getStrategyMoney();
+        BigDecimal strategyOwnMoney = orderDO.getStrategyOwnMoney();
         BigDecimal currentPrice = stockModel.getCurrentPrice();
         /**
          * 更新订单信息
@@ -303,11 +324,10 @@ public class OrderApp extends BaseApp {
         /**
          * 增加退还递延金流水
          */
-        AgentDO agent = iAgentService.getAgentByInviterMobile(userCache.getInviterMobile());
         if (backDelayMoney.compareTo(BigDecimal.ZERO) > 0) {
             CustomerFundDetailDO backDelayDetail = new CustomerFundDetailDO();
             backDelayDetail.setUserId(userId);
-            backDelayDetail.setUserName(userCache.getUserName());
+            backDelayDetail.setUserName(userName);
             backDelayDetail.setAgentId(agent.getAgentId());
             backDelayDetail.setAgentName(agent.getAgentName());
             backDelayDetail.setHappenMoney(backDelayMoney);
@@ -317,12 +337,6 @@ public class OrderApp extends BaseApp {
             LOGGER.info(LogUtils.appLog("卖出-退还递延金流水：{}"), backDelayDetail);
             iCustomerFundDetailService.addOne(backDelayDetail);
         }
-
-        /**
-         * 增加已结算流水 TODO
-         */
-        alarmTools.alert("APP", "订单", "平仓接口", "用户【" + userCache.getUserName() + "】卖出订单，订单号：" + orderId);
-        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
     @ApiOperation(value = "递延")
@@ -330,7 +344,7 @@ public class OrderApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel delay(@RequestBody DelayRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("递延，入参：{}"), requestVO);
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         String userId = userCache.getUserId();
         String orderId = requestVO.getOrderId();
         Integer delayDays = requestVO.getDelayDays();
@@ -397,7 +411,7 @@ public class OrderApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel appendOrderMoney(@RequestBody AppendOrderMoneyRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("追加信用金，入参：{}"), requestVO);
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         String userId = userCache.getUserId();
         BigDecimal appendMoney = requestVO.getAppendMoney();
         String orderId = requestVO.getOrderId();
@@ -464,13 +478,14 @@ public class OrderApp extends BaseApp {
         if (StringUtils.isBlank(orderId)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         String userId = userCache.getUserId();
         OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
         BigDecimal strategyMoney = orderDO.getStrategyMoney();
         BigDecimal strategyOwnMoney = orderDO.getStrategyOwnMoney();
         // 查询当前时间股票行情
-        StockModel stockModel = iStockService.queryStock(orderDO.getStockCode());
+        StockListDO stock = iStockListService.findStock(new StockListDO(orderDO.getStockCode()));
+        StockModel stockModel = iStockService.queryStock(stock.getFull_code());
         LOGGER.info(LogUtils.appLog("放弃订单，当前时间股票行情：{}"), stockModel);
         BigDecimal currentPrice = stockModel.getCurrentPrice();
         /**

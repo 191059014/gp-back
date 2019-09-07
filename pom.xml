@@ -28,6 +28,7 @@
         <unic-util.version>0.0.1-SNAPSHOT</unic-util.version>
         <unic-logger.version>0.0.1-SNAPSHOT</unic-logger.version>
         <unic-base.version>0.0.1-SNAPSHOT</unic-base.version>
+        <unic-cache.version>0.0.1-SNAPSHOT</unic-cache.version>
 
         <!-- mybatis -->
         <mybatis.version>3.4.6</mybatis.version>
@@ -52,6 +53,11 @@
                 <groupId>com.hb.unic</groupId>
                 <artifactId>unic-util</artifactId>
                 <version>${unic-util.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hb.unic</groupId>
+                <artifactId>unic-cache</artifactId>
+                <version>${unic-cache.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.hb.unic</groupId>

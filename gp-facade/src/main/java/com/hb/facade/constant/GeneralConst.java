@@ -25,5 +25,9 @@ public class GeneralConst {
     public static final Integer RECORD_STATUS_N = 0;
     // 请求ip缓存key
     public static final String REQUEST_IP_KEY = "REQUEST_IP_";
+    // 用户缓存过期时间
+    public static final Long USER_INFO_EXPIRE_TIME = 30 * 24 * 60 * 60L;
+    // 代理商缓存过期时间
+    public static final Long AGENT_INFO_EXPIRE_TIME = 30 * 24 * 60 * 60L;
 
 }

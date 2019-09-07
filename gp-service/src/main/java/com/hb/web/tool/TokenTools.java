@@ -2,6 +2,7 @@ package com.hb.web.tool;
 
 import com.alibaba.fastjson.JSON;
 import com.hb.facade.entity.UserDO;
+import com.hb.unic.cache.service.ICacheService;
 import com.hb.unic.util.util.EncryptUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,24 +48,24 @@ public class TokenTools {
     /**
      * ########## 将token作为key放入缓存，用户信息作为value ##########
      *
-     * @param userDO     用户信息
-     * @param token      用户token
-     * @param redisTools redis操作类对象
+     * @param userDO            用户信息
+     * @param token             用户token
+     * @param redisCacheService redis操作类对象
      */
-    public static void set(UserDO userDO, String token, RedisTools redisTools) {
+    public static void set(UserDO userDO, String token, ICacheService redisCacheService) {
         String key = getTokenCacheKey(token);
-        redisTools.set(key, userDO, TOKEN_EXPIRE_TIME);
+        redisCacheService.set(key, userDO, TOKEN_EXPIRE_TIME);
     }
 
     /**
      * ########## 通过token获取用户信息 ##########
      *
-     * @param token      用户token
-     * @param redisTools redis操作类对象
+     * @param token             用户token
+     * @param redisCacheService redis操作类对象
      * @return key
      */
-    public static UserDO get(String token, RedisTools redisTools) {
-        String agentStr = redisTools.get(getTokenCacheKey(token));
+    public static UserDO get(String token, ICacheService redisCacheService) {
+        String agentStr = redisCacheService.get(getTokenCacheKey(token));
         if (StringUtils.isBlank(agentStr)) {
             return null;
         }

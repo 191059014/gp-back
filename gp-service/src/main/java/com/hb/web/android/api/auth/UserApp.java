@@ -12,13 +12,12 @@ import com.hb.remote.service.IRealNameAuth;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.helper.LogHelper;
-import com.hb.unic.util.util.CloneUtils;
+import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.android.api.noauth.LoginApp;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IUserService;
 import com.hb.facade.common.AppResponseCodeEnum;
 import com.hb.facade.common.AppResultModel;
-import com.hb.web.tool.TokenTools;
 import com.hb.web.util.LogUtils;
 import com.hb.facade.vo.appvo.request.BankCardRealNameAuthRequestVO;
 import com.hb.facade.vo.appvo.request.BankCardRequestVO;
@@ -60,7 +59,7 @@ public class UserApp extends BaseApp {
     @ApiOperation(value = "获取用户信息")
     @PostMapping("/getUser")
     public AppResultModel<UserDO> getUser() {
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         UserDO result = iUserService.findUser(new UserDO(userCache.getUserId()));
         if (result == null) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_EXIST_USER);
@@ -78,17 +77,14 @@ public class UserApp extends BaseApp {
         if (bankCardRequestVO == null || StringUtils.isBlank(bankCardRequestVO.getBankNo())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         // 更新用户银行卡信息
-        UserDO userDO = new UserDO(userCache.getUserId());
-        userDO.setBankName(bankCardRequestVO.getBankName());
-        userDO.setBankNo(bankCardRequestVO.getBankNo());
-        boolean result = iUserService.updateUserById(userCache.getUserId(), userDO);
+        userCache.setBankName(bankCardRequestVO.getBankName());
+        userCache.setBankNo(bankCardRequestVO.getBankNo());
+        boolean result = iUserService.updateUserById(userCache.getUserId(), userCache);
         if (result) {
-            // 查询用户最新信息
-            UserDO user = iUserService.findUser(new UserDO(userCache.getUserId()));
             // 更新缓存
-            TokenTools.set(user, getToken(), redisTools);
+            updateUserCache(userCache);
             LOGGER.info(LogUtils.appLog("绑定银行卡成功"));
             return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
         } else {
@@ -104,20 +100,22 @@ public class UserApp extends BaseApp {
         if (StringUtils.isAnyBlank(requestVO.getCardName(), requestVO.getCardName())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         try {
             IdCardAuthResult idCardAuthResult = realNameAuth.idCardAuth(requestVO.getCardNo(), requestVO.getCardName());
             if (idCardAuthResult == null || idCardAuthResult.getResult() == null) {
-                UserDO update = new UserDO();
-                update.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
-                iUserService.updateUserById(userCache.getUserId(), update);
+                userCache.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
+                iUserService.updateUserById(userCache.getUserId(), userCache);
+                // 更新缓存
+                updateUserCache(userCache);
                 return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
             }
             if (!StringUtils.equals(IdCardAuthResEnum.success.getCode(), idCardAuthResult.getCode())
                     || !idCardAuthResult.getResult().getResult().getIsok()) {
-                UserDO update = new UserDO();
-                update.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
-                iUserService.updateUserById(userCache.getUserId(), update);
+                userCache.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
+                iUserService.updateUserById(userCache.getUserId(), userCache);
+                // 更新缓存
+                updateUserCache(userCache);
                 return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
             }
             /**
@@ -126,15 +124,15 @@ public class UserApp extends BaseApp {
              * 2.更新真实姓名
              * 3.更新证件号码
              */
-            UserDO update = new UserDO();
-            update.setRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
-            update.setRealName(requestVO.getCardName());
-            update.setIdCardNo(requestVO.getCardNo());
-            boolean success = iUserService.updateUserById(userCache.getUserId(), update);
+            userCache.setRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
+            userCache.setRealName(requestVO.getCardName());
+            userCache.setIdCardNo(requestVO.getCardNo());
+            boolean success = iUserService.updateUserById(userCache.getUserId(), userCache);
             LOGGER.info(LogUtils.appLog("身份证实名认证，更新实名认证状态：{}"), success);
             if (!success) {
                 return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
             }
+            updateUserCache(userCache);
             return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
         } catch (Exception e) {
             LOGGER.error(LogUtils.appLog("身份证实名认证，异常：{}"), LogHelper.getStackTrace(e));
@@ -150,8 +148,7 @@ public class UserApp extends BaseApp {
         if (StringUtils.isAnyBlank(requestVO.getBankNo())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
-        UserDO userCache = getUserCache();
-        UserDO currentUser = iUserService.findUser(new UserDO(userCache.getUserId()));
+        UserDO currentUser = getCurrentUserCache();
         if (RealAuthStatusEnum.IS_AUTH.getValue().equals(currentUser.getRealAuthStatus())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_IDCARD_REALNAME_AUTH);
         }
@@ -168,15 +165,15 @@ public class UserApp extends BaseApp {
              * 1.更新银行卡实名认证状态
              * 2.更新银行卡号
              */
-            UserDO update = new UserDO();
-            update.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
-            update.setBankNo(requestVO.getBankNo());
-            update.setBankName(bankCardAuthResult.getResult().getBank());
-            boolean success = iUserService.updateUserById(userCache.getUserId(), update);
+            currentUser.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
+            currentUser.setBankNo(requestVO.getBankNo());
+            currentUser.setBankName(bankCardAuthResult.getResult().getBank());
+            boolean success = iUserService.updateUserById(currentUser.getUserId(), currentUser);
             LOGGER.info(LogUtils.appLog("银行卡实名认证，更新实名认证状态：{}"), success);
             if (!success) {
                 return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
             }
+            updateUserCache(currentUser);
             return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
         } catch (Exception e) {
             LOGGER.error(LogUtils.appLog("银行卡实名认证，异常：{}"), LogHelper.getStackTrace(e));
@@ -189,13 +186,37 @@ public class UserApp extends BaseApp {
     @PostMapping("/modify_user")
     public AppResultModel modifyUser(@RequestBody UserDO userDO) {
         LOGGER.info(LogUtils.appLog("修改用户信息,入参：{}"), userDO);
-        UserDO userCache = getUserCache();
-        UserDO clone = CloneUtils.clone(userDO, UserDO.class);
-        boolean success = iUserService.updateUserById(userCache.getUserId(), clone);
+        UserDO userCache = getCurrentUserCache();
+        if (StringUtils.isNotBlank(userDO.getUserName())) {
+            userCache.setUserName(userDO.getUserName());
+        }
+        if (StringUtils.isNotBlank(userDO.getPassword())) {
+            userCache.setPassword(userDO.getPassword());
+        }
+        if (StringUtils.isNotBlank(userDO.getIdCardNo())) {
+            userCache.setIdCardNo(userDO.getIdCardNo());
+        }
+        if (StringUtils.isNotBlank(userDO.getRealName())) {
+            userCache.setRealName(userDO.getRealName());
+        }
+        if (StringUtils.isNotBlank(userDO.getBankName())) {
+            userCache.setBankName(userDO.getBankName());
+        }
+        if (StringUtils.isNotBlank(userDO.getBankNo())) {
+            userCache.setBankNo(userDO.getBankNo());
+        }
+        if (StringUtils.isNotBlank(userDO.getRiskLevel())) {
+            userCache.setRiskLevel(userDO.getRiskLevel());
+        }
+        if (userDO.getRiskScore() != null) {
+            userCache.setRiskScore(userDO.getRiskScore());
+        }
+        boolean success = iUserService.updateUserById(userCache.getUserId(), userCache);
         LOGGER.info(LogUtils.appLog("修改用户信息：{}"), success);
         if (!success) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
+        updateUserCache(userCache);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
@@ -207,14 +228,16 @@ public class UserApp extends BaseApp {
         if (StringUtils.isBlank(newPassword)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
-        UserDO userCache = getUserCache();
-        UserDO update = new UserDO();
-        update.setPassword(newPassword);
-        boolean success = iUserService.updateUserById(userCache.getUserId(), update);
+        UserDO userCache = getCurrentUserCache();
+        if (StringUtils.isNotBlank(newPassword)) {
+            userCache.setPassword(EncryptUtils.encode(newPassword));
+        }
+        boolean success = iUserService.updateUserById(userCache.getUserId(), userCache);
         LOGGER.info(LogUtils.appLog("修改密码：{}"), success);
         if (!success) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
+        updateUserCache(userCache);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
@@ -222,7 +245,7 @@ public class UserApp extends BaseApp {
     @PostMapping("/get_cn_card_id")
     public AppResultModel<IDCardInfoResponseVO> getIdCardInfo() {
         LOGGER.info(LogUtils.appLog("获取身份证信息"));
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         UserDO query = new UserDO(userCache.getUserId());
         UserDO user = iUserService.findUser(query);
         LOGGER.info(LogUtils.appLog("获取身份证信息：{}"), user);

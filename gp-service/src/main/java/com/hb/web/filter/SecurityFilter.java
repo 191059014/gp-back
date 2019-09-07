@@ -1,15 +1,14 @@
 package com.hb.web.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.hb.unic.base.BaseContext;
-import com.hb.unic.logger.Logger;
-import com.hb.unic.logger.LoggerFactory;
 import com.hb.facade.common.ResponseData;
 import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.constant.GeneralConst;
-import com.hb.web.container.SelfRunner;
-import com.hb.web.container.SpringUtil;
-import com.hb.web.tool.RedisTools;
+import com.hb.unic.base.BaseContext;
+import com.hb.unic.base.container.BaseServiceLocator;
+import com.hb.unic.cache.service.ICacheService;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
@@ -35,7 +34,7 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        RedisTools redisTools = SpringUtil.getBean(RedisTools.class);
+        ICacheService redisCacheService = (ICacheService) BaseServiceLocator.getBean("redisCacheService");
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String blacklist = BaseContext.getValue("ip.blacklist");
@@ -51,7 +50,7 @@ public class SecurityFilter implements Filter {
         String requestURL = request.getRequestURL().toString();
         if (!requestURL.contains("/app")) {
             String cacheKey = GeneralConst.REQUEST_IP_KEY + userRealIpAddress;
-            String currentTimesStr = redisTools.get(cacheKey);
+            String currentTimesStr = redisCacheService.get(cacheKey);
             int currentTimes = StringUtils.isBlank(currentTimesStr) ? 0 : Integer.parseInt(currentTimesStr);
             int timeBetween = Integer.parseInt(BaseContext.getValue("request.timeBetween"));
             int maxTimes = Integer.parseInt(BaseContext.getValue("request.maxTimes"));
@@ -62,7 +61,7 @@ public class SecurityFilter implements Filter {
                 response.getWriter().write(JSON.toJSONString(responseData));
                 return;
             }
-            redisTools.set(cacheKey, ++currentTimes, timeBetween);
+            redisCacheService.set(cacheKey, ++currentTimes, timeBetween);
         }
 
         filterChain.doFilter(request, response);

@@ -1,9 +1,17 @@
 package com.hb.web.android.api.noauth;
 
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
+import com.hb.facade.common.RedisKeyFactory;
+import com.hb.facade.constant.AppConstant;
 import com.hb.facade.entity.AgentDO;
 import com.hb.facade.entity.UserDO;
 import com.hb.facade.enumutil.RealAuthStatusEnum;
+import com.hb.facade.vo.appvo.request.LoginRequestVO;
+import com.hb.facade.vo.appvo.request.MobileVerifyRequestVO;
+import com.hb.facade.vo.appvo.request.RegisterRequestVO;
 import com.hb.facade.vo.appvo.request.ResetPasswordRequestVO;
+import com.hb.facade.vo.appvo.response.LoginResponseVO;
 import com.hb.remote.constant.SMSTemplate;
 import com.hb.remote.constant.enumutil.SMSResEnum;
 import com.hb.remote.model.SMSSendResult;
@@ -14,19 +22,11 @@ import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IAgentService;
 import com.hb.web.api.IUserService;
-import com.hb.facade.common.AppResponseCodeEnum;
-import com.hb.facade.common.AppResultModel;
-import com.hb.facade.common.RedisKeyFactory;
-import com.hb.facade.constant.AppConstant;
 import com.hb.web.tool.CheckTools;
 import com.hb.web.tool.SecretTools;
 import com.hb.web.tool.TokenTools;
 import com.hb.web.tool.VerifyCodeTools;
 import com.hb.web.util.LogUtils;
-import com.hb.facade.vo.appvo.request.LoginRequestVO;
-import com.hb.facade.vo.appvo.request.MobileVerifyRequestVO;
-import com.hb.facade.vo.appvo.request.RegisterRequestVO;
-import com.hb.facade.vo.appvo.response.LoginResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -110,7 +110,7 @@ public class LoginApp extends BaseApp {
         /**
          * 4. 将token和用户信息放到缓存
          */
-        TokenTools.set(loginUser, token, redisTools);
+        updateUserCache(loginUser);
 
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, loginResponseVO);
     }
@@ -139,7 +139,7 @@ public class LoginApp extends BaseApp {
             LOGGER.info(LogUtils.appLog("注册用户，密码格式不正确"));
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PASSWORD_FORMAT);
         }
-        String mobileVerifyCodeCache = redisTools.get(RedisKeyFactory.getMobileVerifyKey(mobile));
+        String mobileVerifyCodeCache = redisCacheService.get(RedisKeyFactory.getMobileVerifyKey(mobile));
         LOGGER.info(LogUtils.appLog("注册用户，查询缓存中的手机验证码：{}"), mobileVerifyCodeCache);
         if (StringUtils.isBlank(mobileVerifyCodeCache) || !StringUtils.equals(mobileVerifyCode, mobileVerifyCodeCache)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.INVALID_MOBILE_VERIFYCODE);
@@ -182,7 +182,7 @@ public class LoginApp extends BaseApp {
         /**
          * 4. 将token和用户信息放到缓存
          */
-        TokenTools.set(userDO, token, redisTools);
+        updateUserCache(userDO);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, loginResponseVO);
     }
 
@@ -202,7 +202,7 @@ public class LoginApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
         // 将手机验证码放入缓存，默认时间
-        redisTools.set(RedisKeyFactory.getMobileVerifyKey(mobile), mobileVerifyCode, AppConstant.MOBILE_VERIFYCODE_EXPIRE_TIME * 60);
+        redisCacheService.set(RedisKeyFactory.getMobileVerifyKey(mobile), mobileVerifyCode, AppConstant.MOBILE_VERIFYCODE_EXPIRE_TIME * 60);
         LOGGER.info(LogUtils.appLog("获取手机验证码并将其放入缓存成功：{}"), mobileVerifyCode);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
@@ -218,7 +218,7 @@ public class LoginApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         String mobileVerifyKey = RedisKeyFactory.getMobileVerifyKey(phoneNum);
-        String mobileVerify = redisTools.get(mobileVerifyKey);
+        String mobileVerify = redisCacheService.get(mobileVerifyKey);
         LOGGER.info(LogUtils.appLog("重置密码从缓存里获取验证码：{}"), mobileVerify);
         if (mobileVerify == null) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.INVALID_MOBILE_VERIFYCODE);
@@ -226,14 +226,16 @@ public class LoginApp extends BaseApp {
         if (!StringUtils.equals(verify, mobileVerify)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_MOBILE_VERIFYCODE);
         }
-        UserDO userCache = getUserCache();
-        UserDO update = new UserDO();
-        update.setPassword(password);
-        boolean success = iUserService.updateUserById(userCache.getUserId(), update);
+        UserDO userCache = getCurrentUserCache();
+        if (StringUtils.isNotBlank(password)) {
+            userCache.setPassword(EncryptUtils.encode(password));
+        }
+        boolean success = iUserService.updateUserById(userCache.getUserId(), userCache);
         LOGGER.info(LogUtils.appLog("重置密码结果：{}"), success);
         if (!success) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
+        updateUserCache(userCache);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 

@@ -1,12 +1,14 @@
 package com.hb.web.controller;
 
 import com.hb.facade.entity.UserDO;
+import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.api.IUserService;
 import com.hb.web.base.BaseController;
 import com.hb.facade.common.ResponseData;
 import com.hb.facade.common.ResponseEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +60,9 @@ public class UserController extends BaseController {
     @ApiOperation(value = "修改用户")
     @PostMapping("/updateUser")
     public ResponseData updateUser(@RequestBody UserDO userDO) {
+        if (StringUtils.isNotBlank(userDO.getPassword())) {
+            userDO.setPassword(EncryptUtils.encode(userDO.getPassword()));
+        }
         boolean result = iUserService.updateUserById(userDO.getUserId(), userDO);
         if (result) {
             return ResponseData.generateResponseData(ResponseEnum.SUCCESS);

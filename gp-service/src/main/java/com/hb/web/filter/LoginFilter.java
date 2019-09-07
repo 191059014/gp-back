@@ -1,14 +1,14 @@
 package com.hb.web.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.hb.facade.entity.AgentDO;
-import com.hb.unic.logger.Logger;
-import com.hb.unic.logger.LoggerFactory;
 import com.hb.facade.common.ResponseData;
 import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.constant.GeneralConst;
-import com.hb.web.container.SpringUtil;
-import com.hb.web.tool.RedisTools;
+import com.hb.facade.entity.AgentDO;
+import com.hb.unic.base.container.BaseServiceLocator;
+import com.hb.unic.cache.service.ICacheService;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
@@ -51,8 +51,8 @@ public class LoginFilter implements Filter {
                     LOGGER.info("authorization from request is null, return");
                     return;
                 }
-                RedisTools redisTools = SpringUtil.getBean(RedisTools.class);
-                String agentCacheStr = redisTools.get(GeneralConst.USER_SESSION_KEY + authorization);
+                ICacheService redisCacheService = (ICacheService) BaseServiceLocator.getBean("redisCacheService");
+                String agentCacheStr = redisCacheService.get(GeneralConst.USER_SESSION_KEY + authorization);
                 if (StringUtils.isBlank(agentCacheStr)) {
                     ResponseData<Object> objectResponseData = ResponseData.generateResponseData(ResponseEnum.NO_SESSION);
                     response.setContentType("application/json;charset=UTF-8");
@@ -62,7 +62,7 @@ public class LoginFilter implements Filter {
                 }
                 // 追加用户过期时间
                 AgentDO agentCache = JSON.parseObject(agentCacheStr, AgentDO.class);
-                redisTools.set(GeneralConst.USER_SESSION_KEY + agentCache.getAgentId(), agentCache, GeneralConst.USER_SESSION_EXIRE_TIME);
+                redisCacheService.set(GeneralConst.USER_SESSION_KEY + agentCache.getAgentId(), agentCache, GeneralConst.USER_SESSION_EXIRE_TIME);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);

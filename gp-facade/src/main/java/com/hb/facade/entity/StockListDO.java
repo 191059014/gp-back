@@ -13,6 +13,13 @@ public class StockListDO extends BaseDO {
 
     private Integer state;
 
+    public StockListDO() {
+    }
+
+    public StockListDO(String code) {
+        this.code = code;
+    }
+
     public Integer getId() {
         return id;
     }

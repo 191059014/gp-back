@@ -8,7 +8,7 @@ import com.hb.unic.logger.LoggerFactory;
 import com.hb.facade.common.ResponseData;
 import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.constant.GeneralConst;
-import com.hb.web.tool.RedisTools;
+import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import com.hb.web.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,7 +37,7 @@ public class BaseController {
     public HttpServletResponse response;
 
     @Autowired
-    public RedisTools redisTools;
+    public RedisCacheServiceImpl redisCacheServiceImpl;
 
     @Autowired
     private AlarmTools alarmTools;
@@ -66,7 +66,7 @@ public class BaseController {
      */
     public AgentDO getAgentCache() {
         String authorization = request.getHeader("Authorization");
-        String agentCacheStr = redisTools.get(GeneralConst.USER_SESSION_KEY + authorization);
+        String agentCacheStr = redisCacheServiceImpl.get(GeneralConst.USER_SESSION_KEY + authorization);
         AgentDO agentDO = JSON.parseObject(agentCacheStr, AgentDO.class);
         return agentDO;
     }

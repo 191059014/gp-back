@@ -1,16 +1,16 @@
 package com.hb.web.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.hb.facade.entity.UserDO;
-import com.hb.unic.logger.Logger;
-import com.hb.unic.logger.LoggerFactory;
-import com.hb.unic.util.util.EncryptUtils;
 import com.hb.facade.common.AppResponseCodeEnum;
 import com.hb.facade.common.AppResultModel;
 import com.hb.facade.constant.AppConstant;
+import com.hb.facade.entity.UserDO;
+import com.hb.unic.base.container.BaseServiceLocator;
+import com.hb.unic.cache.service.ICacheService;
+import com.hb.unic.logger.Logger;
+import com.hb.unic.logger.LoggerFactory;
+import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.container.BodyReaderHttpServletRequestWrapper;
-import com.hb.web.container.SpringUtil;
-import com.hb.web.tool.RedisTools;
 import com.hb.web.tool.TokenTools;
 import com.hb.web.util.LogUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +46,7 @@ public class AppLoginFilter implements Filter {
         HttpServletRequestWrapper wrapper = null;
         // 排除登陆操作，其他的要经过登录认证
         String token = request.getHeader(AppConstant.TOKEN);
-        UserDO userDO = TokenTools.get(token, SpringUtil.getBean(RedisTools.class));
+        UserDO userDO = TokenTools.get(token, (ICacheService) BaseServiceLocator.getBean("redisCacheService"));
         if (userDO == null) {
             // token失效
             LOGGER.info(LogUtils.appLog("token[{}] is expired"), token);

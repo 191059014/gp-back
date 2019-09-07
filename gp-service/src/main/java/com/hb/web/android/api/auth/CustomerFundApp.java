@@ -71,7 +71,7 @@ public class CustomerFundApp extends BaseApp {
     @ApiOperation(value = "获取客户资金信息")
     @PostMapping("/getFundInfo")
     public AppResultModel<CustomerFundDO> getFundInfo() {
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         CustomerFundDO query = new CustomerFundDO(userCache.getUserId());
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(query);
         if (customerFund == null) {
@@ -91,7 +91,7 @@ public class CustomerFundApp extends BaseApp {
         if (rechargeRequestVO == null || StringUtils.isBlank(rechargeMoneyStr)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         BigDecimal rechargeMoney = new BigDecimal(rechargeMoneyStr);
         // 查询客户资金信息
         CustomerFundDO query = iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
@@ -156,7 +156,7 @@ public class CustomerFundApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel deposit(@RequestBody DepositRequestVO depositRequestVO) {
         LOGGER.info(LogUtils.appLog("提现，入参：{}"), depositRequestVO);
-        UserDO userCache = getUserCache();
+        UserDO userCache = getCurrentUserCache();
         AgentDO agent = iAgentService.getAgentByInviterMobile(userCache.getInviterMobile());
         BigDecimal depositMoney = depositRequestVO.getDepositMoney();
         /**
@@ -212,7 +212,7 @@ public class CustomerFundApp extends BaseApp {
     @PostMapping("/getUserFundSubTotal")
     public AppResultModel<UserFundSubTotalResponseVO> getUserFundSubTotal() {
         UserFundSubTotalResponseVO result = new UserFundSubTotalResponseVO();
-        UserDO userCache = this.getUserCache();
+        UserDO userCache = this.getCurrentUserCache();
         CustomerFundDO customerFund = this.iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
         result.setAccountTotalMoney(customerFund.getAccountTotalMoney());
         result.setUsableMoney(customerFund.getUsableMoney());
