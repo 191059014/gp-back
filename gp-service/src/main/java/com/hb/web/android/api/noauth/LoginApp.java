@@ -110,7 +110,8 @@ public class LoginApp extends BaseApp {
         /**
          * 4. 将token和用户信息放到缓存
          */
-        updateUserCache(loginUser);
+        TokenTools.set(loginUser, token, redisCacheService);
+        redisCacheManage.setUserCache(loginUser);
         LOGGER.info(LogUtils.appLog("登陆，响应信息：{}"), loginResponseVO);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, loginResponseVO);
     }
@@ -182,7 +183,8 @@ public class LoginApp extends BaseApp {
         /**
          * 4. 将token和用户信息放到缓存
          */
-        updateUserCache(userDO);
+        TokenTools.set(userDO, token, redisCacheService);
+        redisCacheManage.setUserCache(userDO);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, loginResponseVO);
     }
 
