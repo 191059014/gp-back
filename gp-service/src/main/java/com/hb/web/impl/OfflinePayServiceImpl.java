@@ -162,25 +162,25 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
             LOGGER.info(LogUtils.appLog("账户余额不足"));
             throw new BusinessException(ResponseEnum.NOT_ENOUGH_USEABLE_MONEY);
         }
+        UserDO user = iUserService.findUser(new UserDO(userId));
         if (OfflineCheckStatusEnum.PASS.getValue().equals(offlinePayChekDO.getCheckStatus())) {
             /**
              * 更新用户资金信息
-             * 可用余额减少
-             * 冻结资金增加
              */
             customerFund.setUpdateTime(new Date());
             int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
+            // 总资产减少
+            customerFund.setAccountTotalMoney(BigDecimalUtils.subtract(customerFund.getAccountTotalMoney(), happenMoney));
+            // 冻结资金减少
+            customerFund.setFreezeMoney(BigDecimalUtils.subtract(customerFund.getFreezeMoney(), happenMoney));
             LOGGER.info("更新用户资金信息：{}，结果：{}", customerFund, result);
             if (result <= 0) {
                 throw new BusinessException(ResponseEnum.ADD_CUSTOMER_FUND_FAILED);
             }
-            UserDO user = iUserService.findUser(new UserDO(userId));
             /**
              * 更新流水
              */
             CustomerFundDetailDO customerFundDetailDO = iCustomerFundDetailService.findOne(new CustomerFundDetailDO(offlinePayChekDO.getDetailId()));
-            customerFundDetailDO.setCreateTime(DateUtils.getCurrentDate());
-            customerFundDetailDO.setCreateUserId(userId);
             customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
             customerFundDetailDO.setUpdateUserId(userId);
             customerFundDetailDO.setUnit(user.getUnit());
@@ -195,11 +195,24 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
             /**
              * 恢复冻结资金到可用余额
              */
-            BigDecimal newFreezeMoney = BigDecimalUtils.subtract(freezeMoney, happenMoney);
-            customerFund.setFreezeMoney(newFreezeMoney);
-            BigDecimal newUsableMoney = BigDecimalUtils.add(usableMoney, happenMoney);
-            customerFund.setUsableMoney(newUsableMoney);
+            // 冻结资金减少
+            customerFund.setFreezeMoney(BigDecimalUtils.subtract(freezeMoney, happenMoney));
+            // 可用余额增加
+            customerFund.setUsableMoney(BigDecimalUtils.add(usableMoney, happenMoney));
             iCustomerFundService.updateByPrimaryKeySelective(customerFund);
+            /**
+             * 更新流水
+             */
+            CustomerFundDetailDO customerFundDetailDO = iCustomerFundDetailService.findOne(new CustomerFundDetailDO(offlinePayChekDO.getDetailId()));
+            customerFundDetailDO.setUpdateTime(DateUtils.getCurrentDate());
+            customerFundDetailDO.setUpdateUserId(userId);
+            customerFundDetailDO.setUnit(user.getUnit());
+            customerFundDetailDO.setCheckStatus(offlinePayChekDO.getCheckStatus());
+            int updateResult = iCustomerFundDetailService.updateByPrimaryKeySelective(customerFundDetailDO);
+            LOGGER.info("更新提现流水：{}，结果：{}", customerFundDetailDO, updateResult);
+            if (updateResult <= 0) {
+                throw new BusinessException(ResponseEnum.UPDATE_CUSTOMER_FUND_DETAIL_FAILED);
+            }
         }
 
     }
