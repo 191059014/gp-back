@@ -83,8 +83,9 @@ public class OrderApp extends BaseApp {
         CustomerFundDO query = new CustomerFundDO(userId);
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(query);
         BigDecimal strategyOwnMoney = requestVO.getStrategyOwnMoney();
+        BigDecimal strategyMoney = requestVO.getStrategyMoney();
         BigDecimal usableMoney = customerFund.getUsableMoney();
-        BigDecimal serviceMoney = StockTools.calcServiceMoney(strategyOwnMoney, SystemConfig.getAppJson().getServiceMoneyPercent());
+        BigDecimal serviceMoney = StockTools.calcServiceMoney(strategyMoney, SystemConfig.getAppJson().getServiceMoneyPercent());
         BigDecimal needMoney = BigDecimalUtils.add(strategyOwnMoney, serviceMoney);
         if (needMoney.compareTo(usableMoney) > 0) {
             // 余额不足
