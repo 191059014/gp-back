@@ -3,6 +3,8 @@ package com.hb.facade.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.unic.base.annotation.SelfTableClass;
 import com.hb.unic.base.annotation.SelfTableColumn;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
 
@@ -14,68 +16,49 @@ import java.math.BigDecimal;
  * @date 2019年06月09日 10时58分
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@ApiModel(description = "用户资金流水模型")
 @SelfTableClass(value = "t_customer_fund_detail", comment = "客户资金流水")
 public class CustomerFundDetailDO extends BaseDO {
 
     private static final long serialVersionUID = -4338910585836548024L;
 
-    /**
-     * 流水编号
-     */
+    @ApiModelProperty(value = "流水编号")
     @SelfTableColumn(value = "detailId", id = true, comment = "流水编号")
     private String detailId;
 
-    /**
-     * 客户编号
-     */
+    @ApiModelProperty(value = "客户编号")
     @SelfTableColumn(value = "userId", comment = "客户编号")
     private String userId;
 
-    /**
-     * 客户名称
-     */
+    @ApiModelProperty(value = "客户名称")
     @SelfTableColumn(value = "userName", comment = "客户名称")
     private String userName;
 
-    /**
-     * 代理商编号
-     */
+    @ApiModelProperty(value = "代理商编号")
     @SelfTableColumn(value = "agentId", comment = "代理商编号")
     private String agentId;
 
-    /**
-     * 代理商名称
-     */
+    @ApiModelProperty(value = "代理商名称")
     @SelfTableColumn(value = "agentName", comment = "代理商名称")
     private String agentName;
 
-    /**
-     * 发生金额
-     */
+    @ApiModelProperty(value = "发生金额")
     @SelfTableColumn(value = "happenMoney", length = 12, defaultValue = "0", comment = "发生金额")
     private BigDecimal happenMoney;
 
-    /**
-     * 发生后金额
-     */
+    @ApiModelProperty(value = "发生后金额")
     @SelfTableColumn(value = "afterHappenMoney", length = 12, defaultValue = "0", comment = "发生后金额")
     private BigDecimal afterHappenMoney;
 
-    /**
-     * 资金类型
-     */
+    @ApiModelProperty(value = "资金类型")
     @SelfTableColumn(value = "fundType", length = 1, comment = "资金类型")
     private Integer fundType;
 
-    /**
-     * 审核状态
-     */
+    @ApiModelProperty(value = "审核状态")
     @SelfTableColumn(value = "checkStatus", length = 1, comment = "审核状态")
     private Integer checkStatus;
 
-    /**
-     * 备注
-     */
+    @ApiModelProperty(value = "备注")
     @SelfTableColumn(value = "remark", comment = "备注")
     private String remark;
 

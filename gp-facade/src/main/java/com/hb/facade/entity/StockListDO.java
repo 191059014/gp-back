@@ -1,6 +1,7 @@
 package com.hb.facade.entity;
 
 public class StockListDO extends BaseDO {
+
     private Integer id;
 
     private String code;
