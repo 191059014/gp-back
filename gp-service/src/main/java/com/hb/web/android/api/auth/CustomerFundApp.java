@@ -222,9 +222,11 @@ public class CustomerFundApp extends BaseApp {
         List<OrderDO> orderList = this.iOrderService.findByUserIdAndOrderStatus(userCache.getUserId(), orderStatuSet);
         BigDecimal totalStrategyMoney = BigDecimal.ZERO;
         BigDecimal totalStrategyOwnMoney = BigDecimal.ZERO;
-        for (OrderDO orderDO : orderList) {
-            totalStrategyMoney = BigDecimalUtils.add(totalStrategyMoney, orderDO.getStrategyMoney());
-            totalStrategyOwnMoney = BigDecimalUtils.add(totalStrategyOwnMoney, orderDO.getStrategyOwnMoney());
+        if (CollectionUtils.isNotEmpty(orderList)) {
+            for (OrderDO orderDO : orderList) {
+                totalStrategyMoney = BigDecimalUtils.add(totalStrategyMoney, orderDO.getStrategyMoney());
+                totalStrategyOwnMoney = BigDecimalUtils.add(totalStrategyOwnMoney, orderDO.getStrategyOwnMoney());
+            }
         }
         result.setTotalStrategyMoney(totalStrategyMoney);
         result.setTotalStrategyOwnMoney(totalStrategyOwnMoney);

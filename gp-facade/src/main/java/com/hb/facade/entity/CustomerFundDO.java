@@ -98,6 +98,18 @@ public class CustomerFundDO extends BaseDO {
     @SelfTableColumn(value = "totalInAndOutMoney", length = 12, defaultValue = "0", comment = "累计出入金额")
     private BigDecimal totalInAndOutMoney;
 
+    /**
+     * 持仓累计总金额
+     */
+    @SelfTableColumn(value = "totalStrategyMoney", length = 12, defaultValue = "0", comment = "累计出入金额")
+    private BigDecimal totalStrategyMoney;
+
+    /**
+     * 持仓累计信用金总金额
+     */
+    @SelfTableColumn(value = "totalStrategyOwnMoney", length = 12, defaultValue = "0", comment = "累计出入金额")
+    private BigDecimal totalStrategyOwnMoney;
+
     public CustomerFundDO() {
     }
 
