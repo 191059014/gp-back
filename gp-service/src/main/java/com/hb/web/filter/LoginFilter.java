@@ -5,6 +5,7 @@ import com.hb.facade.common.ResponseData;
 import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.constant.GeneralConst;
 import com.hb.facade.entity.AgentDO;
+import com.hb.facade.tool.RedisCacheManage;
 import com.hb.unic.base.container.BaseServiceLocator;
 import com.hb.unic.cache.service.ICacheService;
 import com.hb.unic.logger.Logger;
@@ -63,6 +64,8 @@ public class LoginFilter implements Filter {
                 // 追加用户过期时间
                 AgentDO agentCache = JSON.parseObject(agentCacheStr, AgentDO.class);
                 redisCacheService.set(GeneralConst.USER_SESSION_KEY + agentCache.getAgentId(), agentCache, GeneralConst.USER_SESSION_EXIRE_TIME);
+                RedisCacheManage redisCacheManage = BaseServiceLocator.getBean(RedisCacheManage.class);
+                redisCacheManage.setAgentCache(agentCache);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);
@@ -77,7 +80,7 @@ public class LoginFilter implements Filter {
     private boolean needLogin(String url) {
         Set<String> greenSet = new HashSet<String>() {
             {
-                add("/component/login/login");
+                add("/controller/login/login");
             }
         };
         if (!greenSet.contains(url)) {

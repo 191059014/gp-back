@@ -30,6 +30,12 @@ public class AgentDO extends BaseDO {
     private String agentName;
 
     /**
+     * 真实姓名
+     */
+    @SelfTableColumn(value = "realName", comment = "真实姓名")
+    private String realName;
+
+    /**
      * 密码
      */
     @SelfTableColumn(value = "password", comment = "密码")
@@ -64,6 +70,12 @@ public class AgentDO extends BaseDO {
      */
     @SelfTableColumn(value = "realAuthStatus", length = 1, defaultValue = "0", comment = "实名认证状态")
     private Integer realAuthStatus;
+
+    /**
+     * 银行卡实名认证状态
+     */
+    @SelfTableColumn(value = "bankRealAuthStatus", length = 1, defaultValue = "0", comment = "银行卡实名认证状态")
+    private Integer bankRealAuthStatus;
 
     /**
      * 手机号
@@ -155,6 +167,22 @@ public class AgentDO extends BaseDO {
         this.mobile = mobile;
     }
 
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public Integer getBankRealAuthStatus() {
+        return bankRealAuthStatus;
+    }
+
+    public void setBankRealAuthStatus(Integer bankRealAuthStatus) {
+        this.bankRealAuthStatus = bankRealAuthStatus;
+    }
+
     @Override
     public String toString() {
         return "AgentDO{" +
@@ -167,6 +195,8 @@ public class AgentDO extends BaseDO {
                 ", idCardNo='" + idCardNo + '\'' +
                 ", realAuthStatus='" + realAuthStatus + '\'' +
                 ", mobile='" + mobile + '\'' +
+                ", realName='" + realName + '\'' +
+                ", bankRealAuthStatus='" + bankRealAuthStatus + '\'' +
                 '}' + "," + super.toString();
     }
 }

@@ -18,7 +18,7 @@ public class GeneralConst {
     // 用户缓存信息的key
     public static final String USER_SESSION_KEY = "LOGIN_USER_INFO_";
     // 用户缓存信息过期时间
-    public static final Long USER_SESSION_EXIRE_TIME = 10 * 60L;
+    public static final Long USER_SESSION_EXIRE_TIME = 30 * 60L;
     // 数据有效状态，1-有效
     public static final Integer RECORD_STATUS_Y = 1;
     // 数据有效状态，0-无效

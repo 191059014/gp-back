@@ -43,10 +43,11 @@ public interface IAgentService {
     /**
      * ########## 添加代理商 ##########
      *
-     * @param agentDO 代理商信息
+     * @param agentDO    代理商信息
+     * @param agentCache 当前代理商
      * @return Integer
      */
-    Integer addAgent(AgentDO agentDO);
+    Integer addAgent(AgentDO agentDO, AgentDO agentCache);
 
     /**
      * ########## 查找代理商 ##########
@@ -88,4 +89,22 @@ public interface IAgentService {
      * @return 代理人信息
      */
     AgentDO getAgentByInviterMobile(String inviterMobile);
+
+    /**
+     * 实名认证
+     *
+     * @param idCardNo 身份证号
+     * @param realName 真实姓名
+     * @param agentDO  代理商信息
+     */
+    void realNameAuth(String idCardNo, String realName, AgentDO agentDO);
+
+    /**
+     * 绑定银行卡
+     *
+     * @param bankNo   银行卡号
+     * @param bankName 银行名称
+     * @param agentDO  代理商信息
+     */
+    void bindBankCard(String bankNo, String bankName, AgentDO agentDO);
 }

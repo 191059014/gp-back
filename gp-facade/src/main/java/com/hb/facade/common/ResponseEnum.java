@@ -12,7 +12,7 @@ public enum ResponseEnum {
     UNKONW("00000", "不确定"),
 
     SUCCESS("10000", "操作成功"),
-    ERROR_PARAM_VERIFY("99996", "参数校验不通过"),
+    ERROR_PARAM_VERIFY("99996", "必要参数为空"),
     REQUEST_IN_BLACKLIST("99997", "当前IP已纳入黑名单，禁止访问"),
     REQUEST_TOO_OFTEN("99998", "当前操作太过频繁，请稍后再试"),
     ERROR("99999", "操作失败，请稍后再试"),
@@ -30,12 +30,17 @@ public enum ResponseEnum {
     /**
      * 登陆相关
      */
+    LOGIN_SUCCESS("90100", "登录成功"),
     USERNAME_WRONG("90101", "用户名不正确"),
     PASSWORD_WRONG("90102", "密码不正确"),
     USERNAME_NOT_NULL("90103", "用户名不能为空"),
     PASSWORD_NOT_NULL("90104", "密码不能为空"),
     MOBILE_ALREADY_EXIST("90105", "手机号已经注册过"),
-    LOGIN_SUCCESS("90100", "登录成功"),
+    OLD_PASSWORD_WRONG("90106", "原密码不正确"),
+    PLEASE_REALNAME_AUTH("90107", "请先进行身份证实名认证"),
+    REALNAME_AUTH_FAILED("90108", "身份证实名认证不通过"),
+    BANKCARD_AUTH_FAILED("90109", "银行卡实名认证不通过"),
+    PARAM_TYPE_ERROR("90110", "参数格式不正确"),
     NO_SESSION("90199", "缓存过期，请重新登陆");
 
 

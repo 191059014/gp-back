@@ -43,7 +43,7 @@ public class FilterConfig {
         filterRegistrationBean.setOrder(3);
         filterRegistrationBean.setFilter(new LoginFilter());
         filterRegistrationBean.setName("loginFilter");
-        filterRegistrationBean.addUrlPatterns("/component/*");
+        filterRegistrationBean.addUrlPatterns("/controller/*");
         return filterRegistrationBean;
     }
 

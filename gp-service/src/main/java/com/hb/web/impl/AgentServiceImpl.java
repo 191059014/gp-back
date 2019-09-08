@@ -1,5 +1,15 @@
 package com.hb.web.impl;
 
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
+import com.hb.facade.common.ResponseEnum;
+import com.hb.facade.enumutil.RealAuthStatusEnum;
+import com.hb.remote.constant.enumutil.BankCardAuthResEnum;
+import com.hb.remote.constant.enumutil.IdCardAuthResEnum;
+import com.hb.remote.model.BankCardAuthResult;
+import com.hb.remote.model.IdCardAuthResult;
+import com.hb.remote.service.IRealNameAuth;
+import com.hb.web.exception.BusinessException;
 import com.hb.web.mapper.AgentMapper;
 import com.hb.facade.entity.AgentDO;
 import com.hb.facade.enumutil.AgentLevelEnum;
@@ -48,6 +58,9 @@ public class AgentServiceImpl implements IAgentService {
     @Autowired
     private IPermissionService iPermissionService;
 
+    @Autowired
+    private IRealNameAuth realNameAuth;
+
     @Override
     public List<Map<String, Object>> getAgentLevelList() {
         List<Map<String, Object>> resultList = new ArrayList<>();
@@ -71,13 +84,13 @@ public class AgentServiceImpl implements IAgentService {
     }
 
     @Override
-    public Integer addAgent(AgentDO agentDO) {
+    public Integer addAgent(AgentDO agentDO, AgentDO agentCache) {
         // 密码加密
         agentDO.setPassword(EncryptUtils.encode(agentDO.getPassword()));
         // TODO
-        agentDO.setCreateUserId(null);
+        agentDO.setCreateUserId(agentCache.getAgentId());
         // TODO
-        agentDO.setUpdateUserId(null);
+        agentDO.setUpdateUserId(agentCache.getAgentId());
         // 状态
         agentDO.setRecordStatus(GeneralConst.RECORD_STATUS_Y);
         if (unit == null) {
@@ -97,9 +110,6 @@ public class AgentServiceImpl implements IAgentService {
 
     @Override
     public Integer updateAgentById(String agentId, AgentDO agentDO) {
-        if (StringUtils.isNotBlank(agentDO.getPassword())) {
-            agentDO.setPassword(EncryptUtils.encode(agentDO.getPassword()));
-        }
         agentDO.setUpdateTime(DateUtils.getCurrentDate());
         return agentMapper.updateAgentById(agentId, agentDO);
     }
@@ -139,6 +149,58 @@ public class AgentServiceImpl implements IAgentService {
             agent = new AgentDO();
         }
         return agent;
+    }
+
+    @Override
+    public void realNameAuth(String idCardNo, String realName, AgentDO agentDO) {
+        IdCardAuthResult idCardAuthResult = realNameAuth.idCardAuth(idCardNo, realName);
+        AgentDO update = new AgentDO();
+        update.setIdCardNo(idCardNo);
+        update.setRealName(realName);
+        if (idCardAuthResult == null || idCardAuthResult.getResult() == null) {
+            update.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
+            agentMapper.updateAgentById(agentDO.getAgentId(), update);
+            throw new BusinessException(ResponseEnum.REALNAME_AUTH_FAILED);
+        }
+        if (!StringUtils.equals(IdCardAuthResEnum.success.getCode(), idCardAuthResult.getCode())
+                || !idCardAuthResult.getResult().getResult().getIsok()) {
+            update.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
+            agentMapper.updateAgentById(agentDO.getAgentId(), update);
+            throw new BusinessException(ResponseEnum.REALNAME_AUTH_FAILED);
+        }
+        update.setRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
+        Integer updateResult = agentMapper.updateAgentById(agentDO.getAgentId(), update);
+        if (updateResult <= 0) {
+            throw new BusinessException(ResponseEnum.ERROR);
+        }
+    }
+
+    @Override
+    public void bindBankCard(String bankNo, String bankName, AgentDO agentDO) {
+        AgentDO agent = agentMapper.findAgent(new AgentDO(agentDO.getAgentId()));
+        AgentDO update = new AgentDO(agentDO.getAgentId());
+        update.setBankNo(bankNo);
+        update.setBankName(bankName);
+        if (RealAuthStatusEnum.IS_AUTH.getValue().compareTo(agent.getRealAuthStatus()) != 0) {
+            throw new BusinessException(ResponseEnum.PLEASE_REALNAME_AUTH);
+        }
+        BankCardAuthResult bankCardAuthResult = realNameAuth.bankCardAuth(bankNo, agent.getIdCardNo(), agent.getRealName());
+        if (bankCardAuthResult == null || bankCardAuthResult.getResult() == null) {
+            update.setBankRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
+            agentMapper.updateAgentById(agentDO.getAgentId(), update);
+            throw new BusinessException(ResponseEnum.BANKCARD_AUTH_FAILED);
+        }
+        if (!StringUtils.equals(BankCardAuthResEnum.success.getCode(), bankCardAuthResult.getCode())) {
+            update.setBankRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
+            agentMapper.updateAgentById(agentDO.getAgentId(), update);
+            throw new BusinessException(ResponseEnum.BANKCARD_AUTH_FAILED);
+        }
+        update.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
+        update.setBankName(bankCardAuthResult.getResult().getBank());
+        Integer updateResult = agentMapper.updateAgentById(agentDO.getAgentId(), update);
+        if (updateResult <= 0) {
+            throw new BusinessException(ResponseEnum.ERROR);
+        }
     }
 
 
