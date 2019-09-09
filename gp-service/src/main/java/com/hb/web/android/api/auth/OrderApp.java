@@ -123,14 +123,15 @@ public class OrderApp extends BaseApp {
         // 服务费
         insertOrder.setServiceMoney(serviceMoney);
         // 递延天数
-        int defaultDelayDays = 1;
-        insertOrder.setDelayDays(defaultDelayDays);
+        insertOrder.setDelayDays(1);
         // 递延费
         insertOrder.setDelayMoney(BigDecimal.ZERO);
+        // 已递延天数
+        insertOrder.setAlreadyDelayDays(0);
         // 剩余递延天数
-        insertOrder.setResidueDelayDays(defaultDelayDays);
+        insertOrder.setResidueDelayDays(1);
         // 递延到期时间
-        insertOrder.setDelayEndTime(StockTools.calcSellDate(buyTime, defaultDelayDays));
+        insertOrder.setDelayEndTime(StockTools.calcSellDate(buyTime, 1));
         insertOrder.setUnit(userCache.getUnit());
         // 委托价格
         insertOrder.setEntrustPrice(requestVO.getBuyPrice());
@@ -295,8 +296,12 @@ public class OrderApp extends BaseApp {
         // 盈亏率
         orderDO.setProfitRate(StockTools.calcOrderProfitRate(profit, strategyMoney));
         int backDays = StockTools.calcBackDays(orderDO.getCreateTime(), orderDO.getDelayDays());
-        if (DateUtils.getDaysBetween(new Date(), orderDO.getBuyTime()) == 0) {
+        if (DateUtils.getDaysBetween(new Date(), orderDO.getBuyTime()) == 0 || DateUtils.getDaysBetween(new Date(), orderDO.getDelayEndTime()) == 0) {
+            // 当前或者是卖出日期，退还为0，已递延为递延总天数-1-退换天数
             backDays = 0;
+            orderDO.setAlreadyDelayDays(orderDO.getDelayDays() - 1);
+        } else {
+            orderDO.setAlreadyDelayDays(orderDO.getDelayDays() - 1 - backDays);
         }
         LOGGER.info(LogUtils.appLog("卖出，需要退还的递延金的天数：{}"), backDays);
         BigDecimal backDelayMoney = BigDecimal.ZERO;
@@ -327,17 +332,16 @@ public class OrderApp extends BaseApp {
         // 账户总金额=原账户总金额+利润+退还的递延金
         BigDecimal add = BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getAccountTotalMoney(), profit, backDelayMoney);
         customerFund.setAccountTotalMoney(add);
-        // 可用余额=原可用余额+利润+退还的递延金+策略本金+追加的信用金
-        BigDecimal appendMoney = orderDO.getAppendMoney();
-        customerFund.setUsableMoney(BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getUsableMoney(), strategyOwnMoney, profit, backDelayMoney, appendMoney));
-        // 交易冻结金额=原交易冻结金额-策略本金-追加的信用金
-        customerFund.setTradeFreezeMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTradeFreezeMoney(), strategyOwnMoney, appendMoney));
+        // 可用余额=原可用余额+利润+退还的递延金+策略本金
+        customerFund.setUsableMoney(BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getUsableMoney(), strategyOwnMoney, profit, backDelayMoney));
+        // 交易冻结金额=原交易冻结金额-策略本金
+        customerFund.setTradeFreezeMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTradeFreezeMoney(), strategyOwnMoney));
         // 总盈亏=原总盈亏+利润
         customerFund.setTotalProfitAndLossMoney(BigDecimalUtils.add(customerFund.getTotalProfitAndLossMoney(), profit));
         // 累计持仓市值总金额=原累计持仓市值总金额-持仓市值
         customerFund.setTotalStrategyMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyMoney(), strategyMoney));
-        // 累计持仓信用金总金额=原累计持仓信用金总金额-持仓信用金-追加的信用金
-        customerFund.setTotalStrategyOwnMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney, appendMoney));
+        // 累计持仓信用金总金额=原累计持仓信用金总金额-持仓信用金
+        customerFund.setTotalStrategyOwnMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney));
         customerFund.setUpdateTime(new Date());
         LOGGER.info(LogUtils.appLog("卖出-更新客户资金信息：{}"), customerFund);
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
@@ -460,7 +464,7 @@ public class OrderApp extends BaseApp {
          */
         OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
         OrderDO orderUpdate = new OrderDO(orderId, null);
-        orderUpdate.setAppendMoney(BigDecimalUtils.add(orderDO.getAppendMoney(), appendMoney));
+        orderUpdate.setStrategyOwnMoney(BigDecimalUtils.add(orderDO.getStrategyOwnMoney(), appendMoney));
         BigDecimal stopLossMoney = requestVO.getStopLossMoney();
         if (stopLossMoney != null && BigDecimal.ZERO.compareTo(stopLossMoney) != 0) {
             orderUpdate.setStopLossMoney(stopLossMoney);

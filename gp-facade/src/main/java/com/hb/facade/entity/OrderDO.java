@@ -157,6 +157,12 @@ public class OrderDO extends BaseDO {
     @SelfTableColumn(value = "delayDays", length = 12, comment = "递延天数")
     private Integer delayDays;
     /**
+     * 已递延天数
+     */
+    @ApiModelProperty(value = "已递延天数")
+    @SelfTableColumn(value = "alreadyDelayDays", length = 12, comment = "已递延天数")
+    private Integer alreadyDelayDays;
+    /**
      * 剩余递延天数
      */
     @ApiModelProperty(value = "剩余递延天数")
@@ -181,12 +187,6 @@ public class OrderDO extends BaseDO {
     @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
     @SelfTableColumn(value = "delayEndTime", defaultValue = "CURRENT_TIMESTAMP", comment = "递延到期时间")
     private Date delayEndTime;
-    /**
-     * 追加信用金
-     */
-    @ApiModelProperty(value = "追加信用金")
-    @SelfTableColumn(value = "delayMoney", length = 12, defaultValue = "0", comment = "追加信用金")
-    private BigDecimal appendMoney;
     /**
      * 委托价格
      */
@@ -392,14 +392,6 @@ public class OrderDO extends BaseDO {
         this.delayDays = delayDays;
     }
 
-    public BigDecimal getAppendMoney() {
-        return appendMoney;
-    }
-
-    public void setAppendMoney(BigDecimal appendMoney) {
-        this.appendMoney = appendMoney;
-    }
-
     public Date getBuyTime() {
         return buyTime;
     }
@@ -480,6 +472,14 @@ public class OrderDO extends BaseDO {
         this.backDelayMoney = backDelayMoney;
     }
 
+    public Integer getAlreadyDelayDays() {
+        return alreadyDelayDays;
+    }
+
+    public void setAlreadyDelayDays(Integer alreadyDelayDays) {
+        this.alreadyDelayDays = alreadyDelayDays;
+    }
+
     @Override
     public String toString() {
         return "OrderDO{" +
@@ -504,11 +504,11 @@ public class OrderDO extends BaseDO {
                 ", serviceMoney=" + serviceMoney +
                 ", delayMoney=" + delayMoney +
                 ", delayDays=" + delayDays +
+                ", alreadyDelayDays=" + alreadyDelayDays +
                 ", residueDelayDays=" + residueDelayDays +
                 ", backDelayDays=" + backDelayDays +
                 ", backDelayMoney=" + backDelayMoney +
                 ", delayEndTime=" + delayEndTime +
-                ", appendMoney=" + appendMoney +
                 ", entrustPrice=" + entrustPrice +
                 ", entrustNumber=" + entrustNumber +
                 ", sellNumber=" + sellNumber +
