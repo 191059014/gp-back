@@ -408,7 +408,7 @@ public class OrderApp extends BaseApp {
         int newResidueDelayDays = Math.addExact(orderDO.getResidueDelayDays(), delayDays);
         orderUpdate.setResidueDelayDays(newResidueDelayDays);
         // 计算新的递延到期时间
-        orderDO.setDelayEndTime(StockTools.calcSellDate(orderDO.getBuyTime(), newDelayDays));
+        orderUpdate.setDelayEndTime(StockTools.calcSellDate(orderDO.getBuyTime(), newDelayDays));
         // 更新递延金
         orderUpdate.setDelayMoney(BigDecimalUtils.add(orderDO.getDelayMoney(), delayMoney));
         LOGGER.info(LogUtils.appLog("递延-更新订单信息：{}"), orderUpdate);
