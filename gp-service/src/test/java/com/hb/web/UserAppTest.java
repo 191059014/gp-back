@@ -1,6 +1,12 @@
 package com.hb.web;
 
+import com.hb.facade.enumutil.SourceTypeEnum;
+import com.hb.unic.util.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * ========== Description ==========
@@ -11,18 +17,19 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class UserAppTest {
 
-    public static void main(String[] args) {
-        String realName = "张三丰";
-        if (!StringUtils.isBlank(realName)) {
-            realName = StringUtils.repeat("*", realName.length() - 1) + realName.substring(realName.length() - 1);
-        }
-        System.out.println(realName);
-
-        String idCardNo = "421127199303041739";
-        if (StringUtils.isNotBlank(idCardNo)) {
-            idCardNo = idCardNo.substring(0, idCardNo.length() - 6) + StringUtils.repeat("*", 6);
-        }
-        System.out.println(idCardNo);
+    public static void main(String[] args) throws ParseException {
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(new Date());
+        int nowDate = c1.get(Calendar.DATE);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(DateUtils.str2date("2019-09-10 00:19:27",DateUtils.DEFAULT_FORMAT));
+        int buyDate = c2.get(Calendar.DATE);
+        Calendar c3 = Calendar.getInstance();
+        c3.setTime(DateUtils.str2date("2019-09-11 14:50:00",DateUtils.DEFAULT_FORMAT));
+        int delayEndDate = c3.get(Calendar.DATE);
+        System.out.println(nowDate);
+        System.out.println(buyDate);
+        System.out.println(delayEndDate);
     }
 
 }
