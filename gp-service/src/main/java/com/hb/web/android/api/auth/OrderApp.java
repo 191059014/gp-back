@@ -251,7 +251,7 @@ public class OrderApp extends BaseApp {
         /**
          * 增加已结算流水 TODO
          */
-        alarmTools.alert("APP", "订单", "平仓接口", "用户【" + userCache.getUserName() + "】卖出订单，订单号：" + orderId);
+        alarmTools.alert("APP", "订单", "平仓接口", "用户【" + userCache.getUserName() + "】卖出订单，订单号：" + orderId+"，卖出价格："+stockModel.getCurrentPrice());
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
