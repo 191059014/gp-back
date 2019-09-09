@@ -87,19 +87,15 @@ public class AgentServiceImpl implements IAgentService {
     public Integer addAgent(AgentDO agentDO, AgentDO agentCache) {
         // 密码加密
         agentDO.setPassword(EncryptUtils.encode(agentDO.getPassword()));
-        // TODO
         agentDO.setCreateUserId(agentCache.getAgentId());
-        // TODO
         agentDO.setUpdateUserId(agentCache.getAgentId());
         // 状态
         agentDO.setRecordStatus(GeneralConst.RECORD_STATUS_Y);
-        if (unit == null) {
+        if (agentDO.getUnit() == null) {
             agentDO.setAgentLevel(AgentLevelEnum.FIRST.getValue());
         } else {
             agentDO.setAgentLevel(AgentLevelEnum.SECOND.getValue());
         }
-        agentDO.setUnit(unit);
-
         return agentMapper.insertSelective(agentDO);
     }
 

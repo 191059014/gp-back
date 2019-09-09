@@ -124,6 +124,8 @@ public class OrderApp extends BaseApp {
         // 递延天数
         int defaultDelayDays = 1;
         insertOrder.setDelayDays(defaultDelayDays);
+        // 递延费
+        insertOrder.setDelayMoney(BigDecimal.ZERO);
         // 剩余递延天数
         insertOrder.setResidueDelayDays(defaultDelayDays);
         // 递延到期时间
@@ -255,7 +257,7 @@ public class OrderApp extends BaseApp {
         /**
          * 增加已结算流水 TODO
          */
-        alarmTools.alert("APP", "订单", "平仓接口", "用户【" + userCache.getUserName() + "】卖出订单，订单号：" + orderId+"，卖出价格："+stockModel.getCurrentPrice());
+        alarmTools.alert("APP", "订单", "平仓接口", "用户【" + userCache.getUserName() + "】卖出订单，订单号：" + orderId + "，卖出价格：" + stockModel.getCurrentPrice());
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
