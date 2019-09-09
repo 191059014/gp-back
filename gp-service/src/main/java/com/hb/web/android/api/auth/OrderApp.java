@@ -16,6 +16,7 @@ import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.CloneUtils;
+import com.hb.unic.util.util.DateUtils;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.*;
 import com.hb.web.mock.MockUtils;
@@ -294,6 +295,9 @@ public class OrderApp extends BaseApp {
         // 盈亏率
         orderDO.setProfitRate(StockTools.calcOrderProfitRate(profit, strategyMoney));
         int backDays = StockTools.calcBackDays(orderDO.getCreateTime(), orderDO.getDelayDays());
+        if (DateUtils.getDaysBetween(new Date(), orderDO.getBuyTime()) == 0) {
+            backDays = 0;
+        }
         LOGGER.info(LogUtils.appLog("卖出，需要退还的递延金的天数：{}"), backDays);
         BigDecimal backDelayMoney = BigDecimal.ZERO;
         // 退换的递延天数
