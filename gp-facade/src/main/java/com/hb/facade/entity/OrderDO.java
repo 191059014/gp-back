@@ -153,8 +153,8 @@ public class OrderDO extends BaseDO {
     /**
      * 递延天数
      */
-    @ApiModelProperty(value = "递延天数")
-    @SelfTableColumn(value = "delayDays", length = 12, comment = "递延天数")
+    @ApiModelProperty(value = "总共可递延天数")
+    @SelfTableColumn(value = "delayDays", length = 12, comment = "总共可递延天数")
     private Integer delayDays;
     /**
      * 已递延天数
