@@ -10,6 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class RedisCacheManage {
 
@@ -62,6 +65,38 @@ public class RedisCacheManage {
         }
         AgentDO agentDO = JSON.parseObject(json, AgentDO.class);
         return agentDO;
+    }
+
+    /**
+     * 设置涨停或者跌停的股票缓存
+     *
+     * @param stockCode 股票代码
+     */
+    public void setUpOrLowerStopStockCache(String stockCode) {
+        String s = redisCacheService.get(RedisKeyFactory.getUpOrLowStopStockCacheKey());
+        Set<String> set = null;
+        if (StringUtils.isBlank(s)) {
+            set = new HashSet<>();
+            set.add(stockCode);
+        } else {
+            set = JSON.parseObject(s, Set.class);
+            set.add(stockCode);
+        }
+        redisCacheService.set(RedisKeyFactory.getUpOrLowStopStockCacheKey(), set, GeneralConst.UP_OR_LOW_STOP_STOCK_EXPIRE_TIME);
+    }
+
+    /**
+     * 获取涨停或者跌停的股票缓存
+     *
+     * @return 股票代码集合
+     */
+    public Set<String> getUpOrLowerStopStockCache() {
+        String s = redisCacheService.get(RedisKeyFactory.getUpOrLowStopStockCacheKey());
+        if (StringUtils.isBlank(s)) {
+            return new HashSet<>();
+        }
+        Set set = JSON.parseObject(s, Set.class);
+        return set;
     }
 
 }

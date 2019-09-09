@@ -39,4 +39,13 @@ public class RedisKeyFactory {
         return new StringBuilder("agent_info_").append(mobile).toString();
     }
 
+    /**
+     * 涨停或者跌停的股票信息缓存key
+     *
+     * @return 缓存key
+     */
+    public static String getUpOrLowStopStockCacheKey() {
+        return new StringBuilder("up_or_lower_stop_stock").toString();
+    }
+
 }

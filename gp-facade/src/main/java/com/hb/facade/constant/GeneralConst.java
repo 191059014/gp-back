@@ -29,5 +29,6 @@ public class GeneralConst {
     public static final Long USER_INFO_EXPIRE_TIME = 30 * 24 * 60 * 60L;
     // 代理商缓存过期时间
     public static final Long AGENT_INFO_EXPIRE_TIME = 30 * 24 * 60 * 60L;
-
+    // 涨停或者跌停的股票缓存过期时间，8个小时
+    public static final Long UP_OR_LOW_STOP_STOCK_EXPIRE_TIME = 8 * 60 * 60L;
 }

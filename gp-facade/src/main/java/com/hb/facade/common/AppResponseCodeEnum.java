@@ -60,7 +60,8 @@ public enum AppResponseCodeEnum {
     NOT_ENOUGH_MONEY(2001, "您的账户余额不足，请及时充值"),
     NOT_ENOUGH_USEABLE_MONEY(2002, "您的账户余额不足，无法提现"),
     NOT_IDCARD_REALNAME_AUTH(2003, "请先进行身份证实名认证"),
-    NOT_TRADE_TIME(2004, "非交易时间，禁止交易");
+    NOT_TRADE_TIME(2004, "非交易时间，禁止交易"),
+    UP_OR_LOW_STOP(2005, "该股票为涨停或者跌停的股票，禁止买入");
 
     /**
      * 响应码

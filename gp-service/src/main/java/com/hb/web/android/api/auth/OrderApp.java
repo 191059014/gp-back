@@ -78,6 +78,10 @@ public class OrderApp extends BaseApp {
 //        if (!StockTools.stockOnLine()) {
 //            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
 //        }
+        Set<String> upOrLowerStopStock = redisCacheManage.getUpOrLowerStopStockCache();
+        if (upOrLowerStopStock.contains(requestVO.getStockCode())) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.UP_OR_LOW_STOP);
+        }
         UserDO userCache = getCurrentUserCache();
         String userId = userCache.getUserId();
         CustomerFundDO query = new CustomerFundDO(userId);
