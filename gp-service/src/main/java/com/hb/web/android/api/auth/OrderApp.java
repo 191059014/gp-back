@@ -25,6 +25,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,6 +71,9 @@ public class OrderApp extends BaseApp {
 
     @Autowired
     private IStockListService iStockListService;
+
+    @Value("${gpweb.delayDays.max}")
+    private int delayDaysMax;
 
     @ApiOperation(value = "股票下单")
     @PostMapping("/order")
@@ -386,12 +390,16 @@ public class OrderApp extends BaseApp {
         if (StringUtils.isBlank(orderId) || delayDays == null || delayDays.intValue() <= 0) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
+        OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
+        int newDelayDays = Math.addExact(orderDO.getDelayDays(), delayDays);
+        if (newDelayDays > delayDaysMax) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_UNKNOW.getCode(), "总递延天数超过最大限度：" + delayDaysMax + "天");
+        }
         /**
          * 判断可以余额是否足够递延
          */
         CustomerFundDO customerFundUpdate = new CustomerFundDO(userId);
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(customerFundUpdate);
-        OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
         BigDecimal delayMoney = StockTools.calcDelayMoney(orderDO.getStrategyMoney(), delayDays, SystemConfig.getAppJson().getDelayMoneyPercent());
         if (customerFund.getUsableMoney().compareTo(delayMoney) < 0) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_MONEY);
@@ -402,7 +410,6 @@ public class OrderApp extends BaseApp {
          */
         OrderDO orderUpdate = new OrderDO(orderId, null);
         // 更新订单递延天数
-        int newDelayDays = Math.addExact(orderDO.getDelayDays(), delayDays);
         orderUpdate.setDelayDays(newDelayDays);
         // 更新订单剩余递延天数
         int newResidueDelayDays = Math.addExact(orderDO.getResidueDelayDays(), delayDays);
