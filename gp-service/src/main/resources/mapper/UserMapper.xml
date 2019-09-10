@@ -182,7 +182,7 @@
                 updateUserId=#{userDO.updateUserId},
             </if>
             <if test="userDO.recordStatus != null and userDO.recordStatus !=''">
-                recordStatus=#{recordStatus},
+                recordStatus=#{userDO.recordStatus},
             </if>
         </trim>
         where userId=#{userId}
