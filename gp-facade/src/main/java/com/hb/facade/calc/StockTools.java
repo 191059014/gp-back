@@ -176,6 +176,25 @@ public class StockTools {
     }
 
     /**
+     * 判断今天是否是买入当天
+     *
+     * @param buyTime 买入时间
+     * @return true为是
+     */
+    public static boolean todayIsBuyDate(Date buyTime) {
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(new Date());
+        int nowDate = c1.get(Calendar.DATE);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(buyTime);
+        int buyDate = c2.get(Calendar.DATE);
+        if (nowDate == buyDate) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 判断是不是周末或者 节假日
      *
      * @param date 时间
@@ -189,9 +208,7 @@ public class StockTools {
     }
 
     public static void main(String[] args) throws ParseException {
-        Date date = DateUtils.str2date("2019-09-06", "yyyy-MM-DD");
-        int i = calcBackDays(new Date(), 1);
-        System.out.println(i);
+        boolean specialHoliday = SystemConfig.isSpecialHoliday(new Date());
     }
 
 }
