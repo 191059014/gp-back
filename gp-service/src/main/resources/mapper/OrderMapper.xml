@@ -425,12 +425,67 @@
         <include refid="selectByConditionSql"/>
     </select>
 
-    <select id="findByUserIdAndOrderStatus" resultType="com.hb.facade.entity.OrderDO">
-        select * from t_order where userId=#{userId} and orderStatus in
+    <select id="findByUserIdSetAndOrderStatus" resultType="com.hb.facade.entity.OrderDO">
+        select * from t_order where 1=1
+        and userId= in
+        <foreach collection="userIdSet" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+        and orderStatus in
         <foreach collection="orderStatuSet" item="orderStatus" open="(" close=")" separator=",">
             #{orderStatus}
         </foreach>
         and recordStatus=1
+    </select>
+
+    <select id="findByUserIdSetAndOrderStatusAndTimeBetweenPages" resultType="com.hb.facade.entity.OrderDO">
+        select * from t_order where 1=1
+        <if test="userIdSet != null">
+            and userId in
+            <foreach collection="userIdSet" item="userId" open="(" close=")" separator=",">
+                #{userId}
+            </foreach>
+        </if>
+        <if test="orderStatuSet != null">
+            and orderStatus in
+            <foreach collection="orderStatuSet" item="orderStatus" open="(" close=")" separator=",">
+                #{orderStatus}
+            </foreach>
+        </if>
+        <if test="timeBegin != null">
+            and buyTime > #{timeBegin}
+        </if>
+        <if test="timeEnd != null">
+            and #{timeEnd} > buyTime
+        </if>
+        and recordStatus=1
+        order by buyTime desc
+        <if test="startRow != null and pageSize != 0">
+            limit #{startRow},#{pageSize}
+        </if>
+    </select>
+    <select id="findByUserIdSetAndOrderStatusAndTimeBetweenPagesCount" resultType="java.lang.Integer">
+        select count(1) from t_order where 1=1
+        <if test="userIdSet != null">
+            and userId in
+            <foreach collection="userIdSet" item="userId" open="(" close=")" separator=",">
+                #{userId}
+            </foreach>
+        </if>
+        <if test="orderStatuSet != null">
+            and orderStatus in
+            <foreach collection="orderStatuSet" item="orderStatus" open="(" close=")" separator=",">
+                #{orderStatus}
+            </foreach>
+        </if>
+        <if test="timeBegin != null">
+            and buyTime > #{timeBegin}
+        </if>
+        <if test="timeEnd != null">
+            and #{timeEnd} > buyTime
+        </if>
+        and recordStatus=1
+        order by buyTime desc
     </select>
 
     <sql id="selectByConditionSql">

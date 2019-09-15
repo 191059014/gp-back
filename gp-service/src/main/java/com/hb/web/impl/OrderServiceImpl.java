@@ -4,13 +4,11 @@ import com.hb.web.mapper.OrderMapper;
 import com.hb.facade.entity.OrderDO;
 import com.hb.facade.enumutil.OrderStatusEnum;
 import com.hb.facade.enumutil.TableEnum;
-import com.hb.facade.vo.appvo.request.HotStockVO;
 import com.hb.unic.util.helper.PageHelper;
 import com.hb.unic.util.util.DateUtils;
 import com.hb.web.api.IOrderService;
 import com.hb.web.tool.KeyGenerator;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,11 +65,21 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public List<OrderDO> findByUserIdAndOrderStatus(String userId, Set<Integer> orderStatuSet) {
-        if (StringUtils.isBlank(userId) || CollectionUtils.isEmpty(orderStatuSet)) {
+    public List<OrderDO> findByUserIdSetAndOrderStatus(Set<String> userIdSet, Set<Integer> orderStatuSet) {
+        if (CollectionUtils.isEmpty(userIdSet) || CollectionUtils.isEmpty(orderStatuSet)) {
             return null;
         }
-        return orderMapper.findByUserIdAndOrderStatus(userId, orderStatuSet);
+        return orderMapper.findByUserIdSetAndOrderStatus(userIdSet, orderStatuSet);
+    }
+
+    @Override
+    public List<OrderDO> findByUserIdSetAndOrderStatusAndTimeBetweenPages(Set<String> userIdSet, Set<Integer> orderStatuSet, Date timeBegin, Date timeEnd, Integer pageNum, Integer pageSize) {
+        return orderMapper.findByUserIdSetAndOrderStatusAndTimeBetweenPages(userIdSet, orderStatuSet, timeBegin, timeEnd, pageNum, pageSize);
+    }
+
+    @Override
+    public int findByUserIdSetAndOrderStatusAndTimeBetweenPagesCount(Set<String> userIdSet, Set<Integer> orderStatuSet, Date timeBegin, Date timeEnd) {
+        return orderMapper.findByUserIdSetAndOrderStatusAndTimeBetweenPagesCount(userIdSet, orderStatuSet, timeBegin, timeEnd);
     }
 
     @Override

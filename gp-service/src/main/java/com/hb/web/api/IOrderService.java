@@ -2,6 +2,7 @@ package com.hb.web.api;
 
 import com.hb.facade.entity.OrderDO;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +28,11 @@ public interface IOrderService {
 
     List<OrderDO> findListPages(OrderDO orderDO, Integer startRow, Integer pageSize);
 
-    List<OrderDO> findByUserIdAndOrderStatus(String userId, Set<Integer> orderStatuSet);
+    List<OrderDO> findByUserIdSetAndOrderStatus(Set<String> userIdSet, Set<Integer> orderStatuSet);
+
+    List<OrderDO> findByUserIdSetAndOrderStatusAndTimeBetweenPages(Set<String> userIdSet, Set<Integer> orderStatuSet, Date timeBegin, Date timeEnd, Integer pageNum, Integer pageSize);
+
+    int findByUserIdSetAndOrderStatusAndTimeBetweenPagesCount(Set<String> userIdSet, Set<Integer> orderStatuSet, Date timeBegin, Date timeEnd);
 
     Integer findCount(OrderDO orderDO);
 

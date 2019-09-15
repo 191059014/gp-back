@@ -220,7 +220,9 @@ public class CustomerFundApp extends BaseApp {
         result.setTotalProfitAndLossMoney(customerFund.getTotalProfitAndLossMoney());
         Set<Integer> orderStatuSet = new HashSet<>();
         orderStatuSet.add(OrderStatusEnum.IN_THE_POSITION.getValue());
-        List<OrderDO> orderList = this.iOrderService.findByUserIdAndOrderStatus(userCache.getUserId(), orderStatuSet);
+        Set<String> userIdSet = new HashSet<>();
+        userIdSet.add(userCache.getUserId());
+        List<OrderDO> orderList = this.iOrderService.findByUserIdSetAndOrderStatus(userIdSet, orderStatuSet);
         BigDecimal totalStrategyMoney = BigDecimal.ZERO;
         BigDecimal totalStrategyOwnMoney = BigDecimal.ZERO;
         if (CollectionUtils.isNotEmpty(orderList)) {

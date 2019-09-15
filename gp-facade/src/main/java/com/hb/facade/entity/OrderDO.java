@@ -169,15 +169,15 @@ public class OrderDO extends BaseDO {
     @SelfTableColumn(value = "residueDelayDays", length = 12, comment = "剩余递延天数")
     private Integer residueDelayDays;
     /**
-     * 退换递延天数
+     * 退还递延天数
      */
-    @ApiModelProperty(value = "退换递延天数")
+    @ApiModelProperty(value = "退还递延天数")
     @SelfTableColumn(value = "backDelayDays", length = 12, comment = "退换递延天数")
     private Integer backDelayDays;
     /**
      * 退还递延金额
      */
-    @ApiModelProperty(value = "退换递延金额")
+    @ApiModelProperty(value = "退还递延金额")
     @SelfTableColumn(value = "backDelayMoney", length = 12, comment = "退换递延金额")
     private BigDecimal backDelayMoney;
     /**

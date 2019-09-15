@@ -15,7 +15,7 @@ import java.util.Date;
  * @version BaseDO.java, v1.0
  * @date 2019年06月09日 08时48分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseDO implements Serializable {
 
     /**
