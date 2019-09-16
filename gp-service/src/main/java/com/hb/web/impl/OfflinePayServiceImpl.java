@@ -20,6 +20,7 @@ import com.hb.web.exception.BusinessException;
 import com.hb.web.mapper.OfflinePayCheckMapper;
 import com.hb.web.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +61,9 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
     @Autowired
     private AlarmTools alarmTools;
 
+    @Value("${gpweb.unit}")
+    private Integer unit;
+
     @Override
     public List<Map<String, Object>> getOfflineCheckStatusList() {
         List<Map<String, Object>> resultList = new ArrayList<>();
@@ -98,6 +102,7 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
 
     @Override
     public List<OfflinePayChekDO> findList(OfflinePayChekDO offlinePayChekDO, Integer pageNum, Integer pageSize) {
+        offlinePayChekDO.setUnit(unit);
         return offlinePayCheckMapper.findList(offlinePayChekDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
@@ -108,6 +113,7 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
 
     @Override
     public Integer findCount(OfflinePayChekDO offlinePayChekDO) {
+        offlinePayChekDO.setUnit(unit);
         return offlinePayCheckMapper.findCount(offlinePayChekDO);
     }
 

@@ -75,11 +75,13 @@ public class AgentServiceImpl implements IAgentService {
 
     @Override
     public List<AgentDO> findAgentList(AgentDO agentDO, Integer pageNum, Integer pageSize) {
+        agentDO.setUnit(unit);
         return agentMapper.findAgentList(agentDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(AgentDO agentDO) {
+        agentDO.setUnit(unit);
         return agentMapper.findCount(agentDO);
     }
 

@@ -14,6 +14,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,13 +39,18 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IRolePermissionService iRolePermissionService;
 
+    @Value("${gpweb.unit}")
+    private Integer unit;
+
     @Override
     public List<UserDO> findUserList(UserDO userDO, Integer pageNum, Integer pageSize) {
+        userDO.setUnit(unit);
         return userMapper.findUserPageList(userDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(UserDO userDO) {
+        userDO.setUnit(unit);
         return userMapper.findCount(userDO);
     }
 
@@ -59,12 +65,12 @@ public class UserServiceImpl implements IUserService {
         userDO.setPassword(EncryptUtils.encode(userDO.getPassword()));
         // 创建时间
         userDO.setCreateTime(DateUtils.getCurrentDate());
-        // TODO
-        userDO.setCreateUserId(null);
+        // 创建用户ID
+        userDO.setCreateUserId(userDO.getUserId());
         // 修改时间
         userDO.setUpdateTime(DateUtils.getCurrentDate());
-        // TODO
-        userDO.setUpdateUserId(null);
+        // 更新用户ID
+        userDO.setUpdateUserId(userDO.getUserId());
         // 状态
         userDO.setRecordStatus(GeneralConst.RECORD_STATUS_Y);
         return userMapper.insertSelective(userDO);

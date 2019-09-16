@@ -28,17 +28,18 @@ public class AgentFundServiceImpl implements IAgentFundService {
 
     @Override
     public List<AgentFundDO> findAgentFundList(AgentFundDO agentFundDO, Integer pageNum, Integer pageSize) {
+        agentFundDO.setUnit(unit);
         return agentFundMapper.findAgentFundList(agentFundDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(AgentFundDO agentFundDO) {
+        agentFundDO.setUnit(unit);
         return agentFundMapper.findCount(agentFundDO);
     }
 
     @Override
     public int addAgentFund(AgentFundDO agentFundDO) {
-        agentFundDO.setUnit(unit);
         return agentFundMapper.insertSelective(agentFundDO);
     }
 

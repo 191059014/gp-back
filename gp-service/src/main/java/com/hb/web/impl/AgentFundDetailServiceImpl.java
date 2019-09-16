@@ -7,6 +7,7 @@ import com.hb.facade.vo.webvo.request.AgentFundDetailRequestVO;
 import com.hb.unic.util.helper.PageHelper;
 import com.hb.web.api.IAgentFundDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,13 +28,18 @@ public class AgentFundDetailServiceImpl implements IAgentFundDetailService {
     @Autowired
     private AgentFundDetailMapper agentFundDetailMapper;
 
+    @Value("${gpweb.unit}")
+    private Integer unit;
+
     @Override
     public List<AgentFundDeailDO> findAgentFundDetailList(AgentFundDetailRequestVO agentFundDetailRequestVO, Integer pageNum, Integer pageSize) {
+        agentFundDetailRequestVO.setUnit(unit);
         return agentFundDetailMapper.findAgentFundDetailList(agentFundDetailRequestVO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(AgentFundDetailRequestVO agentFundDetailRequestVO) {
+        agentFundDetailRequestVO.setUnit(unit);
         return agentFundDetailMapper.findCount(agentFundDetailRequestVO);
     }
 

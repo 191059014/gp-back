@@ -10,6 +10,7 @@ import com.hb.web.api.IOrderService;
 import com.hb.web.tool.KeyGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,6 +30,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     private KeyGenerator keyGenerator;
+
+    @Value("${gpweb.unit}")
+    private Integer unit;
 
     @Override
     public int deleteByPrimaryKey(String orderId) {
@@ -55,12 +59,13 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public List<OrderDO> findAppPageList(OrderDO orderDO, Integer pageNum, Integer pageSize) {
+    public List<OrderDO> findPageList(OrderDO orderDO, Integer pageNum, Integer pageSize) {
+        orderDO.setUnit(unit);
         return orderMapper.findList(orderDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
-    public List<OrderDO> findListPages(OrderDO orderDO, Integer startRow, Integer pageSize) {
+    public List<OrderDO> findAppListPages(OrderDO orderDO, Integer startRow, Integer pageSize) {
         return orderMapper.findList(orderDO, startRow, pageSize);
     }
 
@@ -84,6 +89,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Integer findCount(OrderDO orderDO) {
+        orderDO.setUnit(unit);
         return orderMapper.findCount(orderDO);
     }
 

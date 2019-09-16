@@ -32,6 +32,10 @@ public class AgentFundDetailRequestVO implements Serializable {
      * 创建时间止期
      */
     private Date createTimeEnd;
+    /**
+     * 代理商编制
+     */
+    private Integer unit;
 
     public String getAgentName() {
         return agentName;
@@ -65,6 +69,14 @@ public class AgentFundDetailRequestVO implements Serializable {
         this.createTimeEnd = createTimeEnd;
     }
 
+    public Integer getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Integer unit) {
+        this.unit = unit;
+    }
+
     @Override
     public String toString() {
         return "AgentFundDetailRequestVO{" +
@@ -72,6 +84,7 @@ public class AgentFundDetailRequestVO implements Serializable {
                 ", type='" + type + '\'' +
                 ", createTimeStart=" + createTimeStart +
                 ", createTimeEnd=" + createTimeEnd +
+                ", unit=" + unit +
                 '}';
     }
 }

@@ -14,6 +14,7 @@ import com.hb.facade.common.ResponseData;
 import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.vo.webvo.response.AgentQueryResponseVO;
 import com.hb.web.exception.BusinessException;
+import com.hb.web.tool.CheckTools;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
@@ -73,6 +74,12 @@ public class AgentController extends BaseController {
         AgentDO query = new AgentDO();
         query.setMobile(agentDO.getMobile());
         AgentDO queryAgent = iAgentService.findAgent(query);
+        if (StringUtils.isAnyBlank(agentDO.getAgentName(), agentDO.getMobile(), agentDO.getPassword())) {
+            return ResponseData.generateResponseData(ResponseEnum.ERROR_PARAM_VERIFY);
+        }
+        if (!CheckTools.isMobile(agentDO.getMobile())) {
+            return ResponseData.generateResponseData(ResponseEnum.MOBILE_ERROR);
+        }
         if (queryAgent != null) {
             return ResponseData.generateResponseData(ResponseEnum.MOBILE_ALREADY_EXIST);
         }

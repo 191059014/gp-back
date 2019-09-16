@@ -5,6 +5,7 @@ import com.hb.facade.entity.CustomerFundDO;
 import com.hb.unic.util.helper.PageHelper;
 import com.hb.web.api.ICustomerFundService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,13 +23,18 @@ public class CustomerFundServiceImpl implements ICustomerFundService {
     @Autowired
     private CustomerFundMapper customerFundMapper;
 
+    @Value("${gpweb.unit}")
+    private Integer unit;
+
     @Override
     public List<CustomerFundDO> findCustomerFundList(CustomerFundDO customerFundDO, Integer pageNum, Integer pageSize) {
+        customerFundDO.setUnit(unit);
         return customerFundMapper.findCustomerFundList(customerFundDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(CustomerFundDO customerFundDO) {
+        customerFundDO.setUnit(unit);
         return customerFundMapper.findCount(customerFundDO);
     }
 

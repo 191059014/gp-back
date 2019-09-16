@@ -191,6 +191,7 @@ public class OrderApp extends BaseApp {
         serviceAdd.setAfterHappenMoney(serviceMoney);
         serviceAdd.setFundType(FundTypeEnum.SERVICE.getValue());
         serviceAdd.setRemark(FundTypeEnum.SERVICE.getDesc());
+        serviceAdd.setUnit(userCache.getUnit());
         LOGGER.info(LogUtils.appLog("下单接口-新增服务费资金流水：{}"), serviceAdd);
         iCustomerFundDetailService.addOne(serviceAdd);
 
@@ -208,7 +209,7 @@ public class OrderApp extends BaseApp {
         OrderDO orderDO = new OrderDO();
         orderDO.setOrderStatus(requestVO.getOrderStatus());
         orderDO.setUserId(userCache.getUserId());
-        List<OrderDO> list = iOrderService.findListPages(orderDO, requestVO.getStartRow(), requestVO.getPageNum());
+        List<OrderDO> list = iOrderService.findAppListPages(orderDO, requestVO.getStartRow(), requestVO.getPageNum());
         Set<String> stockCodeSet = list.stream().map(OrderDO::getStockCode).collect(Collectors.toSet());
         Map<String, StockListDO> stockMap = iStockListService.getStockMapBySet(stockCodeSet);
         List<QueryOrderPageResponseVO> orderList = new ArrayList<>();

@@ -24,9 +24,9 @@ public interface IOrderService {
 
     int updateByPrimaryKeySelective(OrderDO record);
 
-    List<OrderDO> findAppPageList(OrderDO orderDO, Integer pageNum, Integer pageSize);
+    List<OrderDO> findPageList(OrderDO orderDO, Integer pageNum, Integer pageSize);
 
-    List<OrderDO> findListPages(OrderDO orderDO, Integer startRow, Integer pageSize);
+    List<OrderDO> findAppListPages(OrderDO orderDO, Integer startRow, Integer pageSize);
 
     List<OrderDO> findByUserIdSetAndOrderStatus(Set<String> userIdSet, Set<Integer> orderStatuSet);
 

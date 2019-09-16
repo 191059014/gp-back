@@ -130,6 +130,9 @@
         <if test="agentFundDetailRequestVO.createTimeEnd != null">
             and #{agentFundDetailRequestVO.createTimeEnd} > createTime
         </if>
+        <if test="agentFundDetailRequestVO.unit != null">
+            and unit=#{agentFundDetailRequestVO.unit}
+        </if>
     </sql>
 
 
