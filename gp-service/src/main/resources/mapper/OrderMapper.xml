@@ -427,7 +427,7 @@
 
     <select id="findByUserIdSetAndOrderStatus" resultType="com.hb.facade.entity.OrderDO">
         select * from t_order where 1=1
-        and userId= in
+        and userId in
         <foreach collection="userIdSet" item="userId" open="(" close=")" separator=",">
             #{userId}
         </foreach>
@@ -501,7 +501,7 @@
         <if test="orderDO.orderStatus != null and orderDO.orderStatus != ''">
             and orderStatus=#{orderDO.orderStatus}
         </if>
-        <if test="orderDO.unit != null and orderDO.unit != ''">
+        <if test="orderDO.unit != null">
             and unit=#{orderDO.unit}
         </if>
         and recordStatus=1
