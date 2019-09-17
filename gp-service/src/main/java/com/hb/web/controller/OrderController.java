@@ -2,6 +2,7 @@ package com.hb.web.controller;
 
 import com.hb.facade.entity.OrderDO;
 import com.hb.facade.entity.UserDO;
+import com.hb.facade.enumutil.OrderStatusEnum;
 import com.hb.unic.util.util.CloneUtils;
 import com.hb.web.api.IOrderService;
 import com.hb.web.api.IUserService;
@@ -42,6 +43,7 @@ public class OrderController {
     @PostMapping("/getOrderListPage")
     public ResponseData<List<OrderQueryResponseVO>> getOrderListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody OrderDO orderDO) {
         List<OrderQueryResponseVO> resultList = new ArrayList<>();
+        orderDO.setOrderStatus(OrderStatusEnum.IN_THE_POSITION.getValue());
         List<OrderDO> orderList = iOrderService.findPageList(orderDO, pageNum, pageSize);
         Integer count = iOrderService.findCount(orderDO);
         if (CollectionUtils.isNotEmpty(orderList)) {
