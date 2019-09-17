@@ -20,6 +20,6 @@ public class QueryOrderPageResponseVO extends OrderDO {
     public String toString() {
         return "QueryOrderPageResponseVO{" +
                 "stockState=" + stockState +
-                '}';
+                '}' + super.toString();
     }
 }
