@@ -1,9 +1,9 @@
 # 清除账户资金信息
 UPDATE test.t_customer_fund
-SET accountTotalMoney = 0,
+SET accountTotalMoney = 100000,
  freezeMoney = 0,
- usableMoney = 0,
- totalRechargeMoney = 0,
+ usableMoney = 100000,
+ totalRechargeMoney = 100000,
  totalWithdrawMoney = 0,
  totalProfitAndLossMoney = 0,
  totalMessageServiceMoney = 0,
