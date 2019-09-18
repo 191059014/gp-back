@@ -8,6 +8,8 @@ SET accountTotalMoney = 0,
  totalProfitAndLossMoney = 0,
  totalMessageServiceMoney = 0,
  totalInAndOutMoney = 0,
- tradeFreezeMoney = 0
+ tradeFreezeMoney = 0,
+ totalStrategyMoney = 0,
+ totalStrategyOwnMoney = 0
 WHERE
 	userId = 'U1';
