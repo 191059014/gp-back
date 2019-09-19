@@ -249,9 +249,9 @@ public class OrderApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
-        if (StockTools.todayIsBuyDate(orderDO.getBuyTime())) {
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.BUYDATE_CANNOT_SELL);
-        }
+//        if (StockTools.todayIsBuyDate(orderDO.getBuyTime())) {
+//            return AppResultModel.generateResponseData(AppResponseCodeEnum.BUYDATE_CANNOT_SELL);
+//        }
         // 查询当前时间股票行情
         StockModel stockModel = null;
         if (false) {
