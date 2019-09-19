@@ -38,7 +38,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 menu-word-list">
             <a>首页</a>
             <a>新手任务</a>
-            <a href="download.html">软件下载</a>
+            <a @click="loadCenterContent('view/download.html')" href="#">软件下载</a>
         </div>
     </div>
     <div class="row">
@@ -64,18 +64,20 @@
 
         </div>
     </div>
+    <div class="row center-content">
 
+    </div>
     <div class="bottom">
         <div class="row bottom-center">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 word-list">
                 <a href="www.baidu.com">关于我们</a>
                 <a href="www.baidu.com">平台简介</a>
                 <a href="www.baidu.com">新手任务</a>
-                <a href="download.html">软件下载</a>
+                <a href="view/download.html">软件下载</a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 download-content">
                 <img class="download-img" src="img/download.png"/>
-                <div class="download-content-word">手机App下载 </div>
+                <div class="download-content-word">手机App下载</div>
             </div>
         </div>
         <div class="row copyright">
@@ -97,10 +99,17 @@
                 $('#myCarousel').carousel({
                     interval: 3000
                 })
+            },
+            loadShouye: function () {
+                $('.center-content').load('view/shouye.html');
+            },
+            loadCenterContent: function (url) {
+                $('.center-content').load(url);
             }
         },
         mounted() {
             this.cycle();
+            this.loadShouye();
         }
     })
 

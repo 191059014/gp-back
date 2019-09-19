@@ -1,0 +1,10 @@
+.introduceRow{
+    padding: 10px;
+}
+.introduceRow img{
+    width: 50px;
+    height: 50px;
+}
+.img-word{
+    display: inline-block
+}

@@ -261,7 +261,8 @@ public class CustomerFundApp extends BaseApp {
         List<Rank> rankList = new ArrayList<>();
         for (CustomerFundDO customerFundDO : fundList) {
             Rank rank = new Rank();
-            rank.setUserName(userMap.get(customerFundDO.getUserId()).getUserName());
+            String userName = userMap.get(customerFundDO.getUserId()) == null ? null : userMap.get(customerFundDO.getUserId()).getUserName();
+            rank.setUserName(userName);
             rank.setTotalProfitAndLossMoney(customerFundDO.getTotalProfitAndLossMoney());
             rankList.add(rank);
         }
