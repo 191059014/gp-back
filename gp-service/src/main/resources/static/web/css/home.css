@@ -1,6 +1,7 @@
-body{
+body {
     background-image: url('../img/background.png');
 }
+
 #app {
     overflow-x: hidden;
     overflow-y: auto;
@@ -61,7 +62,7 @@ div.menu-logo > img {
 
 .bottom {
     position: relative;
-    /*bottom: 0;*/
+    bottom: 0;
     background-color: black;
     color: white;
     width: 100%;
@@ -86,7 +87,7 @@ div.menu-logo > img {
     color: wheat;
 }
 
-.download-content-word{
+.download-content-word {
     padding-top: 0.5rem;
     padding-left: 1.5rem;
 }
@@ -110,43 +111,53 @@ div.menu-logo > img {
         padding-top: 5px;
         padding-bottom: 5px;
     }
+
     div.menu-logo > img {
         height: 40px;
         width: 40px;
     }
-    .word-split{
+
+    .word-split {
         display: block;
     }
-    .word-douhao{
+
+    .word-douhao {
         visibility: hidden;
     }
+
     .menu-logo-word {
-        padding-top: 0rem;
+        display: none;
     }
+
     .logo-word {
         font-size: 1.5rem;
         font-weight: bold;
     }
+
     .menu-word-list {
         padding-top: 0.5rem;
         padding-left: 5px;
     }
+
     .menu-word-list a {
         display: inline-block;
-        font-size: 1rem;
+        font-size: 2rem;
         margin-left: 5%;
         color: black;
         font-weight: bold;
         text-decoration: none;
     }
+
     .download-img {
         height: 50px;
         width: 50px;
     }
-    .bottom-center{
+
+    .bottom-center {
         padding: 0;
     }
-    .download-content-word{
+
+    .download-content-word {
         padding-top: 0.2rem;
         padding-left: 0;
     }

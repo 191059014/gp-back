@@ -33,22 +33,16 @@
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 menu-logo-word">
             <div class="logo-word">鑫贝策略</div>
-            <div><a href="www.baidu.com">www.baidu.com</a></div>
+            <div><a href="www.yuanlinb.com">www.yuanlinb.com</a></div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 menu-word-list">
-            <a>首页</a>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-10 menu-word-list">
+            <a @click="loadCenterContent('view/shouye.html')" href="#">首页</a>
             <a>新手任务</a>
             <a @click="loadCenterContent('view/download.html')" href="#">软件下载</a>
         </div>
     </div>
     <div class="row">
         <div id="myCarousel" class="carousel slide">
-            <!-- 轮播（Carousel）指标 -->
-            <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-                <li data-target="#myCarousel" data-slide-to="2"></li>
-            </ol>
             <!-- 轮播（Carousel）项目 -->
             <div class="carousel-inner">
                 <div class="item active">
@@ -100,16 +94,13 @@
                     interval: 3000
                 })
             },
-            loadShouye: function () {
-                $('.center-content').load('view/shouye.html');
-            },
             loadCenterContent: function (url) {
                 $('.center-content').load(url);
             }
         },
         mounted() {
             this.cycle();
-            this.loadShouye();
+            this.loadCenterContent('view/shouye.html');
         }
     })
 
