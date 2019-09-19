@@ -94,9 +94,9 @@ public class OfflinePayController {
             Map<String, UserDO> userMap = iUserService.getUserMapByUserIdSet(userIdSet);
             for (OfflinePayChekDO payChekDO : list) {
                 OfflinePayCheckResponseVO clone = CloneUtils.clone(payChekDO, OfflinePayCheckResponseVO.class);
-                String userName = userMap.get(payChekDO.getUserId()) == null ? null : userMap.get(payChekDO.getUserId()).getUserName();
-                clone.setUserName(userName);
-                clone.setMobile(userMap.get(payChekDO.getUserId()).getMobile());
+                UserDO userDO = userMap.get(payChekDO.getUserId());
+                clone.setUserName(userDO == null ? null : userDO.getUserName());
+                clone.setMobile(userDO == null ? null : userDO.getMobile());
                 resultList.add(clone);
             }
         }
