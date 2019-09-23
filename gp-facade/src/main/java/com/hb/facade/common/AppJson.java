@@ -17,6 +17,8 @@ public class AppJson implements Serializable {
     private BigDecimal delayMoneyPercent;
     // 节假日
     private Set<String> specialHoliday;
+    // 银行卡对公账号
+    private String publicBankAccountNum;
 
     public BigDecimal getStopMaxPercent() {
         return stopMaxPercent;
@@ -58,6 +60,14 @@ public class AppJson implements Serializable {
         this.specialHoliday = specialHoliday;
     }
 
+    public String getPublicBankAccountNum() {
+        return publicBankAccountNum;
+    }
+
+    public void setPublicBankAccountNum(String publicBankAccountNum) {
+        this.publicBankAccountNum = publicBankAccountNum;
+    }
+
     @Override
     public String toString() {
         return "AppJson{" +
@@ -66,6 +76,7 @@ public class AppJson implements Serializable {
                 ", serviceMoneyPercent=" + serviceMoneyPercent +
                 ", delayMoneyPercent=" + delayMoneyPercent +
                 ", specialHoliday=" + specialHoliday +
+                ", publicBankAccountNum=" + publicBankAccountNum +
                 '}';
     }
 }

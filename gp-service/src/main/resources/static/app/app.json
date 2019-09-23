@@ -8,5 +8,6 @@
   "stopMinPercent": 0.8,
   "serviceMoneyPercent":0.005,
   "delayMoneyPercent":0.002,
-  "specialHoliday":["20190913","20191001","20191002","20191003","20191004","20191007"]
+  "specialHoliday":["20190913","20191001","20191002","20191003","20191004","20191007"],
+  "publicBankAccountNum ":"123456789"
 }
