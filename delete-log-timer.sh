@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-cd /data/
-rm -f gpback.out gpweb.out gpbatch.out
-echo `date "+%Y-%m-%d %H:%M:%S"` "delete gpback.out gpweb.out gpbatch.out [path:/data/]" >> /timer/timer.log
-find /log/ -mtime +3 -name "gp*.log*" -exec rm -rf {} \
-echo `date "+%Y-%m-%d %H:%M:%S"` "删除3天前的日志文件 [path:/log/]" >> /timer/timer.log
+
+find /data/ -mtime +1 -name "*.out" -exec rm -rf {} \;
+echo `date "+%Y-%m-%d %H:%M:%S"` "delete *.out [path:/data/]" >> /timer/timer.log
+find /log/gpbatch/ -mtime +1 -name "*.log" -exec rm -rf {} \;
+echo `date "+%Y-%m-%d %H:%M:%S"` "delete *.log [path:/log/gpbatch/]" >> /timer/timer.log
 echo "=======================================" >> /timer/timer.log

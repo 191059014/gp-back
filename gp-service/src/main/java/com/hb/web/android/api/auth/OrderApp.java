@@ -128,7 +128,10 @@ public class OrderApp extends BaseApp {
         insertOrder.setServiceMoney(serviceMoney);
         // 递延天数
         insertOrder.setDelayDays(1);
-        // 递延费
+        // 一天的递延费
+        BigDecimal delayMoneyUnitPrice = BigDecimalUtils.multiply(strategyMoney, SystemConfig.getAppJson().getDelayMoneyPercent());
+        insertOrder.setDelayMoneyUnitPrice(delayMoneyUnitPrice);
+        // 递延总费用
         insertOrder.setDelayMoney(BigDecimal.ZERO);
         // 已递延天数
         insertOrder.setAlreadyDelayDays(0);

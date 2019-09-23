@@ -17,6 +17,7 @@
         <result column="profitRate" property="profitRate" jdbcType="DECIMAL"/>
         <result column="strategyOwnMoney" property="strategyOwnMoney" jdbcType="DECIMAL"/>
         <result column="serviceMoney" property="serviceMoney" jdbcType="DECIMAL"/>
+        <result column="delayMoneyUnitPrice" property="delayMoneyUnitPrice" jdbcType="DECIMAL"/>
         <result column="delayMoney" property="delayMoney" jdbcType="DECIMAL"/>
         <result column="strategyMoney" property="strategyMoney" jdbcType="DECIMAL"/>
         <result column="stopEarnMoney" property="stopEarnMoney" jdbcType="DECIMAL"/>
@@ -106,6 +107,9 @@
             </if>
             <if test="serviceMoney != null">
                 serviceMoney,
+            </if>
+            <if test="delayMoneyUnitPrice != null">
+                delayMoneyUnitPrice,
             </if>
             <if test="delayMoney != null">
                 delayMoney,
@@ -220,6 +224,9 @@
             </if>
             <if test="serviceMoney != null">
                 #{serviceMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="delayMoneyUnitPrice != null">
+                #{delayMoneyUnitPrice,jdbcType=DECIMAL},
             </if>
             <if test="delayMoney != null">
                 #{delayMoney,jdbcType=DECIMAL},
@@ -337,6 +344,9 @@
             </if>
             <if test="serviceMoney != null">
                 serviceMoney = #{serviceMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="delayMoneyUnitPrice != null">
+                delayMoneyUnitPrice = #{delayMoneyUnitPrice,jdbcType=DECIMAL},
             </if>
             <if test="delayMoney != null">
                 delayMoney = #{delayMoney,jdbcType=DECIMAL},
