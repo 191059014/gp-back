@@ -35,7 +35,7 @@ public class BaseDO implements Serializable {
      * 更新时间
      */
     @JsonFormat(pattern = DateUtils.DEFAULT_FORMAT, timezone = DateUtils.DEFAULT_TIMEZONE)
-    @SelfTableColumn(value = "updateTime", defaultValue = "CURRENT_TIMESTAMP", comment = "更新时间")
+    @SelfTableColumn(value = "updateTime", defaultValue = "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", comment = "更新时间")
     private Date updateTime;
 
     /**

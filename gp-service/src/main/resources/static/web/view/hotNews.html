@@ -6,33 +6,43 @@
     <meta name='viewport' content='width=device-width initial-scale=1'>
     <title>热点资讯</title>
 
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Vue.js -->
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <!-- jQuery文件 在bootstrap.min.js之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <style>
         body {
-            text-align: center;
-            background-color: black;
-            color: white;
+            background-color: white;
+            padding: 10px 10px;
         }
 
-        .img-list {
-            width: 300px;
-            height: 500px;
+        .news-item {
+            border-bottom: solid 1px gainsboro;
+        }
+
+        .lead {
+            text-indent: 3rem;
         }
     </style>
 
 </head>
 <body>
 
-<h2>一、注册</h2>
-<img class="img-list" src="../img/zhuce.png"/>
-<h2>二、登录</h2>
-<img class="img-list" src="../img/denglu.png"/>
-<h2>三、实名认证</h2>
-
-<h2>四、绑定银行卡</h2>
-
-<h2>五、充值</h2>
-
-<h2>六、发布策略</h2>
+<div>
+    <div class="news-item">
+        <h4>引导主体副本</h4>
+        <p class="lead small">
+            这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。</p>
+        <p class="text-right small">
+            时间：2019-09-23 22:48:00
+        </p>
+    </div>
+</div>
 
 </body>
 </html>
