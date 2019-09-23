@@ -80,9 +80,9 @@ public class OrderApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel order(@RequestBody OrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("股票下单，入参：{}"), requestVO);
-//        if (!StockTools.stockOnLine()) {
-//            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
-//        }
+        if (!StockTools.stockOnLine()) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
+        }
         Set<String> upOrLowerStopStock = redisCacheManage.getUpOrLowerStopStockCache();
         if (upOrLowerStopStock.contains(requestVO.getStockCode())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.UP_OR_LOW_STOP);
@@ -241,17 +241,17 @@ public class OrderApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel sellOrder(@RequestBody SellOrderRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("卖出，入参：{}"), requestVO);
-//        if (!StockTools.stockOnLine()) {
-//            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
-//        }
+        if (!StockTools.stockOnLine()) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_TRADE_TIME);
+        }
         String orderId = requestVO.getOrderId();
         if (StringUtils.isBlank(orderId)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         OrderDO orderDO = iOrderService.selectByPrimaryKey(orderId);
-//        if (StockTools.todayIsBuyDate(orderDO.getBuyTime())) {
-//            return AppResultModel.generateResponseData(AppResponseCodeEnum.BUYDATE_CANNOT_SELL);
-//        }
+        if (StockTools.todayIsBuyDate(orderDO.getBuyTime())) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.BUYDATE_CANNOT_SELL);
+        }
         // 查询当前时间股票行情
         StockModel stockModel = null;
         if (false) {
