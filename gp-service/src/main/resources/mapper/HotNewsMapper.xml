@@ -28,7 +28,7 @@
     <select id="findHotNewsList" resultType="com.hb.facade.entity.HotNewsDO">
         select * from t_hotnews where 1=1
         <include refid="selectByConditionSql"/>
-        order by createtime desc
+        order by updateTime desc
         <if test="pageSize != null and pageSize != 0">
             limit #{startRow},#{pageSize}
         </if>

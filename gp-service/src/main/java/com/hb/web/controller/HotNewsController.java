@@ -2,8 +2,10 @@ package com.hb.web.controller;
 
 import com.hb.facade.common.ResponseData;
 import com.hb.facade.common.ResponseEnum;
+import com.hb.facade.entity.AgentDO;
 import com.hb.facade.entity.HotNewsDO;
 import com.hb.web.api.IHotNewsService;
+import com.hb.web.base.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import java.util.List;
 @Api(tags = "[WEB]热点资讯")
 @RestController
 @RequestMapping("controller/hotNews")
-public class HotNewsController {
+public class HotNewsController extends BaseController {
 
     @Autowired
     private IHotNewsService iHotNewsService;
@@ -37,7 +39,8 @@ public class HotNewsController {
     @ApiOperation(value = "添加热点资讯信息")
     @PostMapping("/addHotNews")
     public ResponseData addHotNews(@RequestBody HotNewsDO hotNewsDO) {
-        int result = iHotNewsService.addHotNews(hotNewsDO);
+        AgentDO agentCache = getAgentCache();
+        int result = iHotNewsService.addHotNews(hotNewsDO, agentCache);
         if (result > 0) {
             return ResponseData.generateResponseData(ResponseEnum.SUCCESS);
         } else {
@@ -48,7 +51,8 @@ public class HotNewsController {
     @ApiOperation(value = "修改热点资讯信息")
     @PostMapping("/updateHotNewsById")
     public ResponseData updateHotNewsById(@RequestBody HotNewsDO hotNewsDO) {
-        int result = iHotNewsService.updateByPrimaryKeySelective(hotNewsDO);
+        AgentDO agentCache = getAgentCache();
+        int result = iHotNewsService.updateByPrimaryKeySelective(hotNewsDO, agentCache);
         if (result > 0) {
             return ResponseData.generateResponseData(ResponseEnum.SUCCESS);
         } else {
@@ -57,10 +61,21 @@ public class HotNewsController {
     }
 
     @ApiOperation(value = "查询最新的热点资讯")
-    @PostMapping("/findLastestHotNewsList")
+    @GetMapping("/findLastestHotNewsList")
     public ResponseData<List<HotNewsDO>> findLastestHotNewsList() {
-        List<HotNewsDO> hotNewsList = iHotNewsService.findLastestHotNewsList(1, 10);
+        List<HotNewsDO> hotNewsList = iHotNewsService.findLastestHotNewsList(0, 10);
         return ResponseData.generateResponseData(ResponseEnum.SUCCESS, hotNewsList);
+    }
+
+    @ApiOperation(value = "删除热点资讯信息")
+    @GetMapping("/deleteById")
+    public ResponseData deleteById(@RequestParam("id") Integer id) {
+        int result = iHotNewsService.deleteById(id);
+        if (result > 0) {
+            return ResponseData.generateResponseData(ResponseEnum.SUCCESS);
+        } else {
+            return ResponseData.generateResponseData(ResponseEnum.ERROR);
+        }
     }
 
 }

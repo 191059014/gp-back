@@ -1,5 +1,6 @@
 package com.hb.web.impl;
 
+import com.hb.facade.entity.AgentDO;
 import com.hb.facade.entity.HotNewsDO;
 import com.hb.unic.util.helper.PageHelper;
 import com.hb.web.api.IHotNewsService;
@@ -26,18 +27,26 @@ public class HotNewsServiceImpl implements IHotNewsService {
     }
 
     @Override
-    public int addHotNews(HotNewsDO hotNewsDO) {
+    public int addHotNews(HotNewsDO hotNewsDO, AgentDO agentDO) {
+        hotNewsDO.setCreateUserId(agentDO.getAgentId());
+        hotNewsDO.setUpdateUserId(agentDO.getAgentId());
         return hotNewsMapper.insertSelective(hotNewsDO);
     }
 
     @Override
-    public int updateByPrimaryKeySelective(HotNewsDO hotNewsDO) {
-        return hotNewsMapper.insertSelective(hotNewsDO);
+    public int updateByPrimaryKeySelective(HotNewsDO hotNewsDO, AgentDO agentDO) {
+        hotNewsDO.setUpdateUserId(agentDO.getAgentId());
+        return hotNewsMapper.updateByPrimaryKeySelective(hotNewsDO);
     }
 
     @Override
     public List<HotNewsDO> findLastestHotNewsList(Integer startRow, Integer pageSize) {
         return hotNewsMapper.findHotNewsList(new HotNewsDO(), startRow, pageSize);
+    }
+
+    @Override
+    public int deleteById(Integer id) {
+        return hotNewsMapper.deleteByPrimaryKey(id);
     }
 
 }

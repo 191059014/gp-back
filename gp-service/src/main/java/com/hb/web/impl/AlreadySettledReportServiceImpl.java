@@ -1,11 +1,14 @@
 package com.hb.web.impl;
 
+import com.hb.facade.calc.StockTools;
 import com.hb.facade.entity.AgentDO;
 import com.hb.facade.entity.OrderDO;
 import com.hb.facade.entity.UserDO;
 import com.hb.facade.enumutil.OrderStatusEnum;
 import com.hb.facade.vo.webvo.request.HoldReportQueryRequestVO;
+import com.hb.facade.vo.webvo.response.AlreadySettledResponseVO;
 import com.hb.unic.util.helper.PageHelper;
+import com.hb.unic.util.util.CloneUtils;
 import com.hb.unic.util.util.DateUtils;
 import com.hb.web.api.IAlreadySettledReportService;
 import com.hb.web.api.IExportExcelService;
@@ -13,6 +16,7 @@ import com.hb.web.api.IOrderService;
 import com.hb.web.api.IUserService;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,28 +76,29 @@ public class AlreadySettledReportServiceImpl extends AbstractExportExcelService 
         List<List<Object>> dataList = new ArrayList<>();
         for (Map<String, Object> map : queryDataList) {
             UserDO userDO = (UserDO) map.get("user");
-            OrderDO orderDO = (OrderDO) map.get("order");
+            AlreadySettledResponseVO orderInfo = (AlreadySettledResponseVO) map.get("order");
             List<Object> list = new ArrayList<>();
-            list.add(orderDO.getOrderId());
+            list.add(orderInfo.getOrderId());
             list.add(userDO.getUserName());
-            list.add(orderDO.getStockCode());
-            list.add(orderDO.getStockName());
-            list.add(orderDO.getBuyNumber());
-            list.add(orderDO.getBuyPrice());
-            list.add(DateUtils.date2str(orderDO.getBuyTime(), DateUtils.DEFAULT_FORMAT));
-            list.add(orderDO.getStrategyOwnMoney());
-            list.add(orderDO.getStrategyMoney());
-            list.add(orderDO.getStopEarnMoney());
-            list.add(orderDO.getStopLossMoney());
-            list.add(orderDO.getServiceMoney());
-            list.add(orderDO.getDelayMoney());
-            list.add(orderDO.getAlreadyDelayDays());
-            list.add(DateUtils.date2str(orderDO.getDelayEndTime(), DateUtils.DEFAULT_FORMAT));
-            list.add(orderDO.getSellPrice());
-            list.add(DateUtils.date2str(orderDO.getSellTime(), DateUtils.DEFAULT_FORMAT));
-            list.add(orderDO.getBackDelayMoney());
-            list.add(orderDO.getProfit());
-            list.add(orderDO.getProfitRate());
+            list.add(orderInfo.getStockCode());
+            list.add(orderInfo.getStockName());
+            list.add(orderInfo.getBuyNumber());
+            list.add(orderInfo.getBuyPrice());
+            list.add(DateUtils.date2str(orderInfo.getBuyTime(), DateUtils.DEFAULT_FORMAT));
+            list.add(orderInfo.getStrategyOwnMoney());
+            list.add(orderInfo.getStrategyMoney());
+            list.add(orderInfo.getStopEarnMoney());
+            list.add(orderInfo.getStopLossMoney());
+            list.add(orderInfo.getServiceMoney());
+            list.add(orderInfo.getDelayMoney());
+            list.add(orderInfo.getAlreadyDelayDays());
+            list.add(DateUtils.date2str(orderInfo.getDelayEndTime(), DateUtils.DEFAULT_FORMAT));
+            list.add(orderInfo.getSellPrice());
+            list.add(DateUtils.date2str(orderInfo.getSellTime(), DateUtils.DEFAULT_FORMAT));
+            list.add(orderInfo.getBackDelayMoney());
+            list.add(orderInfo.getProfit());
+            list.add(orderInfo.getProfitRate());
+            list.add(orderInfo.getNetProfit());
             dataList.add(list);
         }
         return dataList;
@@ -113,7 +118,7 @@ public class AlreadySettledReportServiceImpl extends AbstractExportExcelService 
     public List<String> getTitles() {
         List<String> titleList = Arrays.asList("订单ID", "客户姓名", "股票代码", "股票名称", "买入股数", "买入价格", "买入时间"
                 , "策略本金", "策略金额", "止盈价格", "止损价格", "信息服务费", "递延金", "已递延天数", "递延到期时间"
-                , "卖出价格", "卖出时间", "退还递延金额", "利润", "盈亏率");
+                , "卖出价格", "卖出时间", "退还递延金额", "利润", "盈亏率", "净利润");
         return titleList;
     }
 
@@ -145,7 +150,10 @@ public class AlreadySettledReportServiceImpl extends AbstractExportExcelService 
         orderList.forEach(orderDO -> {
             Map<String, Object> map = new HashedMap();
             map.put("user", userDOMap.get(orderDO.getUserId()));
-            map.put("order", orderDO);
+            AlreadySettledResponseVO responseVO = new AlreadySettledResponseVO();
+            BeanUtils.copyProperties(orderDO, responseVO);
+            responseVO.setNetProfit(StockTools.calcOrderNetProfit(orderDO.getProfit(), orderDO.getServiceMoney(), orderDO.getDelayMoney()));
+            map.put("order", responseVO);
             queryDataList.add(map);
         });
         return queryDataList;

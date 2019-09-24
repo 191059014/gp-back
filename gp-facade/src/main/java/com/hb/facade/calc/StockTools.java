@@ -211,4 +211,15 @@ public class StockTools {
         boolean specialHoliday = SystemConfig.isSpecialHoliday(new Date());
     }
 
+    /**
+     * 计算纯利润
+     *
+     * @param profit       利润
+     * @param serviceMoney 服务费
+     * @param delayMoney   递延费
+     * @return 纯利润
+     */
+    public static BigDecimal calcOrderNetProfit(BigDecimal profit, BigDecimal serviceMoney, BigDecimal delayMoney) {
+        return BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, profit, serviceMoney, delayMoney);
+    }
 }

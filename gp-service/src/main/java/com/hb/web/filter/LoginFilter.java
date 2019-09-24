@@ -81,6 +81,7 @@ public class LoginFilter implements Filter {
         Set<String> greenSet = new HashSet<String>() {
             {
                 add("/controller/login/login");
+                add("/controller/hotNews/findLastestHotNewsList");
             }
         };
         if (!greenSet.contains(url)) {
