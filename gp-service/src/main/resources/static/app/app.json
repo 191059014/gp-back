@@ -21,7 +21,7 @@
     "20191004",
     "20191007"
   ],
-  "publicBankAccountNum ": "123456789",
+  "publicBankAccountNum": "123456789",
   "apkDownloadUrl": "http://121.40.94.96:8080/web/view/download.html",
   "payQrcodeImage": "http://121.40.94.96:8090/web/img/payment.png"
 }
