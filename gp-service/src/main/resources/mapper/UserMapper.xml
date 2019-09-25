@@ -46,6 +46,9 @@
             <if test="riskScore != null">
                 riskScore,
             </if>
+            <if test="iconPath != null">
+                iconPath,
+            </if>
             <if test="createTime != null">
                 createTime,
             </if>
@@ -105,6 +108,9 @@
             </if>
             <if test="riskScore != null">
                 #{riskScore,jdbcType=INTEGER},
+            </if>
+            <if test="iconPath != null">
+                #{iconPath,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},

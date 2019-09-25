@@ -41,6 +41,11 @@ public class RegisterRequestVO implements Serializable {
      */
     private String inviterMobile;
 
+    /**
+     * 用户图像路径
+     */
+    private String iconPath;
+
     public String getUserName() {
         return userName;
     }
@@ -81,6 +86,14 @@ public class RegisterRequestVO implements Serializable {
         this.inviterMobile = inviterMobile;
     }
 
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
     @Override
     public String toString() {
         return "RegisterRequestVO{" +
@@ -89,6 +102,7 @@ public class RegisterRequestVO implements Serializable {
                 ", mobile='" + mobile + '\'' +
                 ", mobileVerifyCode='" + mobileVerifyCode + '\'' +
                 ", inviterMobile='" + inviterMobile + '\'' +
+                ", iconPath='" + iconPath + '\'' +
                 '}';
     }
 }

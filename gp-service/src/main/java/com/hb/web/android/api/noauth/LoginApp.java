@@ -165,6 +165,7 @@ public class LoginApp extends BaseApp {
         userDO.setPassword(password);
         userDO.setMobile(mobile);
         userDO.setInviterMobile(inviterMobile);
+        userDO.setIconPath(registerRequestVO.getIconPath());
         userDO.setUnit(agentQuery.getUnit());
         userDO.setRealAuthStatus(RealAuthStatusEnum.NO_AUTH.getValue());
         userDO.setBankRealAuthStatus(RealAuthStatusEnum.NO_AUTH.getValue());

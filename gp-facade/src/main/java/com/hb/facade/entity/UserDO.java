@@ -94,6 +94,12 @@ public class UserDO extends BaseDO {
     @SelfTableColumn(value = "riskScore", length = 3, defaultValue = "0", comment = "风险评测得分")
     private Integer riskScore;
 
+    /**
+     * 用户图像路径
+     */
+    @SelfTableColumn(value = "iconPath", comment = "用户图像路径")
+    private String iconPath;
+
     public UserDO() {
     }
 
@@ -205,6 +211,14 @@ public class UserDO extends BaseDO {
         this.riskScore = riskScore;
     }
 
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
     @Override
     public String toString() {
         return "UserDO{" +
@@ -221,6 +235,7 @@ public class UserDO extends BaseDO {
                 ", inviterMobile=" + inviterMobile +
                 ", riskLevel='" + riskLevel + '\'' +
                 ", riskScore='" + riskScore + '\'' +
+                ", iconPath='" + iconPath + '\'' +
                 '}' + "," + super.toString();
     }
 }
