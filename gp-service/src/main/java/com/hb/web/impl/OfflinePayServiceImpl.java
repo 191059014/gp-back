@@ -130,12 +130,14 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(OfflinePayChekDO offlinePayChekDO) {
-        if (FundTypeEnum.RECHARGE.getValue().equals(offlinePayChekDO.getFundType())) {
-            // 充值
-            rechargeMoney(offlinePayChekDO);
-        } else if (FundTypeEnum.DEPOSIT.getValue().equals(offlinePayChekDO.getFundType())) {
-            // 提现
-            depositMoney(offlinePayChekDO);
+        if (unit == null) {
+            if (FundTypeEnum.RECHARGE.getValue().equals(offlinePayChekDO.getFundType())) {
+                // 充值
+                rechargeMoney(offlinePayChekDO);
+            } else if (FundTypeEnum.DEPOSIT.getValue().equals(offlinePayChekDO.getFundType())) {
+                // 提现
+                depositMoney(offlinePayChekDO);
+            }
         }
         // 更新线下支付信息
         if (OfflineCheckStatusEnum.PASS.getValue().equals(offlinePayChekDO.getCheckStatus())) {
