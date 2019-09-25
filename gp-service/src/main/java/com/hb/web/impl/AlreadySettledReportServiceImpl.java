@@ -46,23 +46,6 @@ public class AlreadySettledReportServiceImpl extends AbstractExportExcelService 
     }
 
     @Override
-    public int findCount(HoldReportQueryRequestVO requestVO) {
-        UserDO userQuery = new UserDO();
-        userQuery.setUserName(requestVO.getUserName());
-        userQuery.setMobile(requestVO.getMobile());
-        List<UserDO> userList = iUserService.findUserList(userQuery, null, null);
-        if (CollectionUtils.isEmpty(userList)) {
-            return 0;
-        }
-        Map<String, UserDO> userDOMap = userList.stream().collect(Collectors.toMap(UserDO::getUserId, user -> user, (k1, k2) -> k2));
-        Set<Integer> orderStatusSet = new HashSet<>();
-        orderStatusSet.add(OrderStatusEnum.ALREADY_SELL.getValue());
-        Set<String> userIdSet = userDOMap == null ? null : userDOMap.keySet();
-        int count = iOrderService.findByUserIdSetAndOrderStatusAndTimeBetweenPagesCount(userIdSet, orderStatusSet, requestVO.getOrderTimeStart(), requestVO.getOrderTimeEnd());
-        return count;
-    }
-
-    @Override
     public void exportExcel(HttpServletResponse response, HoldReportQueryRequestVO requestVO, Integer pageNum, Integer pageSize) {
         doExport(response, getOrderListPages(requestVO, pageNum, pageSize));
     }
@@ -134,6 +117,8 @@ public class AlreadySettledReportServiceImpl extends AbstractExportExcelService 
         UserDO userQuery = new UserDO();
         userQuery.setUserName(requestVO.getUserName());
         userQuery.setMobile(requestVO.getMobile());
+        userQuery.setUnit(requestVO.getUnit());
+        userQuery.setInviterMobile(requestVO.getInviterMobile());
         List<UserDO> userList = iUserService.findUserList(userQuery, null, null);
         if (CollectionUtils.isEmpty(userList)) {
             return null;
@@ -157,6 +142,25 @@ public class AlreadySettledReportServiceImpl extends AbstractExportExcelService 
             queryDataList.add(map);
         });
         return queryDataList;
+    }
+
+    @Override
+    public int findCount(HoldReportQueryRequestVO requestVO) {
+        UserDO userQuery = new UserDO();
+        userQuery.setUserName(requestVO.getUserName());
+        userQuery.setMobile(requestVO.getMobile());
+        userQuery.setUnit(requestVO.getUnit());
+        userQuery.setInviterMobile(requestVO.getInviterMobile());
+        List<UserDO> userList = iUserService.findUserList(userQuery, null, null);
+        if (CollectionUtils.isEmpty(userList)) {
+            return 0;
+        }
+        Map<String, UserDO> userDOMap = userList.stream().collect(Collectors.toMap(UserDO::getUserId, user -> user, (k1, k2) -> k2));
+        Set<Integer> orderStatusSet = new HashSet<>();
+        orderStatusSet.add(OrderStatusEnum.ALREADY_SELL.getValue());
+        Set<String> userIdSet = userDOMap == null ? null : userDOMap.keySet();
+        int count = iOrderService.findByUserIdSetAndOrderStatusAndTimeBetweenPagesCount(userIdSet, orderStatusSet, requestVO.getOrderTimeStart(), requestVO.getOrderTimeEnd());
+        return count;
     }
 
 }

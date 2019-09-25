@@ -223,7 +223,7 @@
             <![CDATA[ and userId = #{userDO.userId} ]]>
         </if>
         <if test="userDO.userName != null and userDO.userName !=''">
-            <![CDATA[ and userName = #{userDO.userName} ]]>
+            <![CDATA[ and userName like concat('%',#{userDO.userName},'%') ]]>
         </if>
         <if test="userDO.realName != null and userDO.realName !=''">
             <![CDATA[ and realName = #{userDO.realName} ]]>

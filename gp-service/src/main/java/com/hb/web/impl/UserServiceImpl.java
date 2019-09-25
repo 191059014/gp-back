@@ -44,7 +44,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<UserDO> findUserList(UserDO userDO, Integer pageNum, Integer pageSize) {
-        userDO.setUnit(unit);
+        if (userDO.getUnit() == null) {
+            userDO.setUnit(unit);
+        }
         return userMapper.findUserPageList(userDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
