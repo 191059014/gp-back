@@ -1,7 +1,5 @@
 package com.hb.facade.vo.appvo.request;
 
-import com.hb.unic.util.util.BigDecimalUtils;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 

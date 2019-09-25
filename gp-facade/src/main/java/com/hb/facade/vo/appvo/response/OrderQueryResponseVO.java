@@ -1,5 +1,6 @@
 package com.hb.facade.vo.appvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.facade.entity.OrderDO;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.List;
  * @version com.hb.facade.vo.appvo.response.OrderQueryResponseVO.java, v1.0
  * @date 2019年07月06日 17时36分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderQueryResponseVO implements Serializable {
     /**
      * serialVersionUID

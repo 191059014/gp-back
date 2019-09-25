@@ -11,7 +11,7 @@ import com.hb.unic.base.annotation.SelfTableColumn;
  * @version com.hb.web.model.sys.RoleDO.java, v1.0
  * @date 2019年06月03日 11时28分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SelfTableClass(value = "t_role", comment = "角色表")
 public class RoleDO extends BaseDO {
     // serialVersionUID

@@ -1,5 +1,6 @@
 package com.hb.facade.vo.webvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.facade.entity.OrderDO;
 
 /**
@@ -9,7 +10,10 @@ import com.hb.facade.entity.OrderDO;
  * @version com.hb.facade.vo.webvo.response.OrderQueryResponseVO.java, v1.0
  * @date 2019年06月26日 20时45分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderQueryResponseVO extends OrderDO {
+
+    private static final long serialVersionUID = 4693283276664661854L;
 
     private String mobile;
 

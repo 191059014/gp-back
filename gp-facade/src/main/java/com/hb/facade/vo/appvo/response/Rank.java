@@ -1,11 +1,14 @@
 package com.hb.facade.vo.appvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * 排行榜信息
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Rank implements Serializable {
 
     private static final long serialVersionUID = 6789833457642451973L;

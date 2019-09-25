@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  * @version CustomerFundDO.java, v1.0
  * @date 2019年06月09日 10时44分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(description = "用户资金模型")
 @SelfTableClass(value = "t_customer_fund", comment = "客户资金信息")
 public class CustomerFundDO extends BaseDO {

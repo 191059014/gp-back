@@ -11,7 +11,7 @@ import com.hb.unic.base.annotation.SelfTableColumn;
  * @version com.hb.web.model.sys.AgentRoleDO.java, v1.0
  * @date 2019年06月03日 11时33分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SelfTableClass(value = "t_agent_role", comment = "代理商角色关联表")
 public class AgentRoleDO extends BaseDO {
     // serialVersionUID

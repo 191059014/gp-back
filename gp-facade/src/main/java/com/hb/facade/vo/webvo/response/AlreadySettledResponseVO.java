@@ -1,9 +1,11 @@
 package com.hb.facade.vo.webvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.facade.entity.OrderDO;
 
 import java.math.BigDecimal;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AlreadySettledResponseVO extends OrderDO {
 
     private static final long serialVersionUID = 7723672309552320575L;

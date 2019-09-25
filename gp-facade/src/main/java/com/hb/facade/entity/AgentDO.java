@@ -11,7 +11,7 @@ import com.hb.unic.base.annotation.SelfTableColumn;
  * @version AgentDO.java, v1.0
  * @date 2019年06月16日 12时06分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SelfTableClass(value = "t_agent", comment = "代理商")
 public class AgentDO extends BaseDO {
 

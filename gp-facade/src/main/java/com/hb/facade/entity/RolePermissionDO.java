@@ -11,7 +11,7 @@ import com.hb.unic.base.annotation.SelfTableColumn;
  * @version com.hb.web.model.sys.RolePermissionDO.java, v1.0
  * @date 2019年06月03日 11时47分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SelfTableClass(value = "t_role_permission", comment = "角色权限关联表")
 public class RolePermissionDO extends BaseDO {
     // serialVersionUID

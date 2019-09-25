@@ -1,5 +1,7 @@
 package com.hb.facade.vo.webvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @version com.hb.facade.vo.webvo.response.RoleTreeResponseVO.java, v1.0
  * @date 2019年07月18日 19时31分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RoleTreeResponseVO implements Serializable {
 
     private String id;

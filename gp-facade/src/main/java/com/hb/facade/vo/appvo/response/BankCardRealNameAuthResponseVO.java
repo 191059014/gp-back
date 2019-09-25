@@ -1,5 +1,7 @@
 package com.hb.facade.vo.appvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @version com.hb.facade.vo.appvo.response.BankCardRealNameAuthResponseVO.java, v1.0
  * @date 2019年08月14日 00时06分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BankCardRealNameAuthResponseVO implements Serializable {
 
     private static final long serialVersionUID = -6026825235609570687L;

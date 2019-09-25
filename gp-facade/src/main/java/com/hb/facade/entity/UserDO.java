@@ -11,7 +11,7 @@ import com.hb.unic.base.annotation.SelfTableColumn;
  * @version com.hb.web.model.sys.UserDO.java, v1.0
  * @date 2019年06月03日 11时15分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SelfTableClass(value = "t_user", comment = "用户表")
 public class UserDO extends BaseDO {
 

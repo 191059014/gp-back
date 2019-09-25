@@ -1,5 +1,6 @@
 package com.hb.facade.vo.appvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.facade.entity.OfflinePayChekDO;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.List;
  * @version com.hb.facade.vo.appvo.response.OfflinePayQueryResponseVO.java, v1.0
  * @date 2019年07月06日 17时44分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OfflinePayQueryResponseVO implements Serializable {
     /**
      * serialVersionUID

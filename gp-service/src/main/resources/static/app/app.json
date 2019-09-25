@@ -1,7 +1,8 @@
 {
   "android": {
     "versionCode": 1,
-    "versionName": "1.0.0"
+    "versionName": "1.0.0",
+    "apkDownloadUrl": "http://121.40.94.96:8080/web/apk/app.apk"
   },
   "deposit": [
     5,
@@ -21,7 +22,10 @@
     "20191004",
     "20191007"
   ],
-  "publicBankAccountNum": "123456789",
-  "apkDownloadUrl": "http://121.40.94.96:8080/web/view/download.html",
-  "payQrcodeImage": "http://121.40.94.96:8090/web/img/payment.png"
+  "publicBankAccount": {
+    "bankName": "中国银行",
+    "bankNum": "123456789",
+    "bankAddress": "武汉市武昌区**支行"
+  },
+  "payQrcodeImage": "http://www.yuanlinb.com:8090/web/img/payment.png"
 }

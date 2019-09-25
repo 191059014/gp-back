@@ -11,7 +11,7 @@ import com.hb.unic.base.annotation.SelfTableColumn;
  * @version com.hb.web.model.sys.PermissionDO.java, v1.0
  * @date 2019年06月03日 11时39分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SelfTableClass(value = "t_permission", comment = "权限表")
 public class PermissionDO extends BaseDO {
     // serialVersionUID

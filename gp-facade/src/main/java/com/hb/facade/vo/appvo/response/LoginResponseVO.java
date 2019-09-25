@@ -1,5 +1,7 @@
 package com.hb.facade.vo.appvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @version LoginResponseVO.java, v1.0
  * @date 2019年06月22日 13时18分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginResponseVO implements Serializable {
 
     private static final long serialVersionUID = -3100775369243847924L;

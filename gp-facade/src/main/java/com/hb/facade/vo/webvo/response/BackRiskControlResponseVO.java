@@ -1,8 +1,11 @@
 package com.hb.facade.vo.webvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BackRiskControlResponseVO implements Serializable {
 
     private static final long serialVersionUID = 4434185138728811147L;

@@ -1,7 +1,9 @@
 package com.hb.facade.vo.appvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.facade.entity.OrderDO;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QueryOrderPageResponseVO extends OrderDO {
 
     private static final long serialVersionUID = -7217872689708178108L;

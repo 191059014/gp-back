@@ -1,5 +1,7 @@
 package com.hb.facade.vo.appvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @version com.hb.facade.vo.appvo.response.IDCardInfoResponseVO.java, v1.0
  * @date 2019年08月27日 08时21分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class IDCardInfoResponseVO implements Serializable {
 
     private static final long serialVersionUID = 7142950834207332359L;

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @version OfflinePayChekDO.java, v1.0
  * @date 2019年06月09日 11时24分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SelfTableClass(value = "t_offline_pay_check", comment = "线下支付审核")
 public class OfflinePayChekDO extends BaseDO {
 

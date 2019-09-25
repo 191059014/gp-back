@@ -1,5 +1,7 @@
 package com.hb.facade.vo.appvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -10,6 +12,7 @@ import java.math.BigDecimal;
  * @version com.hb.facade.vo.appvo.response.UserFundSubTotalResponseVO.java, v1.0
  * @date 2019年07月20日 16时18分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserFundSubTotalResponseVO implements Serializable {
     // serialVersionUID
     private static final long serialVersionUID = -4421345602768323767L;

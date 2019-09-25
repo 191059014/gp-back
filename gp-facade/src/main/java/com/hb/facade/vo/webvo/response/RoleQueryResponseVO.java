@@ -1,6 +1,7 @@
 package com.hb.facade.vo.webvo.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.unic.util.util.DateUtils;
 
 import java.io.Serializable;
@@ -14,7 +15,10 @@ import java.util.Set;
  * @version com.hb.facade.vo.webvo.response.RoleQueryResponseVO.java, v1.0
  * @date 2019年07月18日 17时00分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RoleQueryResponseVO implements Serializable {
+
+    private static final long serialVersionUID = 2663779652288614459L;
 
     private Integer roleId;
     private String roleName;

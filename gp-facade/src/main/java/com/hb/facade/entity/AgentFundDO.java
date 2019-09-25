@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @version AgentFundDO.java, v1.0
  * @date 2019年06月09日 10时12分
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SelfTableClass(value = "t_agent_fund", comment = "代理商资金")
 public class AgentFundDO extends BaseDO {
 

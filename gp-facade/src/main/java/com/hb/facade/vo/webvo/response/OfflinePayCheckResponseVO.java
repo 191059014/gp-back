@@ -1,5 +1,6 @@
 package com.hb.facade.vo.webvo.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hb.facade.entity.OfflinePayChekDO;
 
 /**
@@ -9,6 +10,7 @@ import com.hb.facade.entity.OfflinePayChekDO;
  * @version com.hb.facade.vo.webvo.response.OfflinePayCheckResponseVO.java, v1.0
  * @date 2019年06月24日 23时30分
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OfflinePayCheckResponseVO extends OfflinePayChekDO {
 
     /**
