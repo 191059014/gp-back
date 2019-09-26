@@ -3,6 +3,6 @@
 /src/main/resources/application-dev.properties merge=ours
 /src/main/resources/config/application-sjdbc-config-dev.properties merge=ours
 /src/main/resources/logback-spring.xml merge=ours
-/src/main/resources/config/service-gp-config.yml
-/src/main/resources/static/web/img/payment.png
-/src/main/resources/static/app/app.json
+/src/main/resources/config/service-gp-config.yml merge=ours
+/src/main/resources/static/web/img/payment.png merge=ours
+/src/main/resources/static/app/app.json merge=ours
