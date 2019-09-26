@@ -166,7 +166,7 @@ public class LoginApp extends BaseApp {
         userDO.setMobile(mobile);
         userDO.setInviterMobile(inviterMobile);
         userDO.setIconPath(registerRequestVO.getIconPath());
-        userDO.setUnit(agentQuery.getUnit());
+        userDO.setUnit(existAgent.getUnit());
         userDO.setRealAuthStatus(RealAuthStatusEnum.NO_AUTH.getValue());
         userDO.setBankRealAuthStatus(RealAuthStatusEnum.NO_AUTH.getValue());
         // 添加用户
@@ -235,6 +235,38 @@ public class LoginApp extends BaseApp {
         }
         boolean success = iUserService.updateUserById(userCache.getUserId(), userCache);
         LOGGER.info(LogUtils.appLog("重置密码结果：{}"), success);
+        if (!success) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        updateUserCache(userCache);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
+    }
+
+    @ApiOperation(value = "重置支付密码")
+    @PostMapping("/reset_pay_password")
+    public AppResultModel resetPayPassword(@RequestBody ResetPasswordRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("重置支付密码，入参：{}"), requestVO);
+        String phoneNum = requestVO.getPhoneNum();
+        String verify = requestVO.getVerify();
+        String payPassword = requestVO.getPayPassword();
+        if (StringUtils.isAnyBlank(phoneNum, verify, payPassword)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+        }
+        String mobileVerifyKey = RedisKeyFactory.getMobileVerifyKey(phoneNum);
+        String mobileVerify = redisCacheService.get(mobileVerifyKey);
+        LOGGER.info(LogUtils.appLog("重置支付密码从缓存里获取验证码：{}"), mobileVerify);
+        if (mobileVerify == null) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.INVALID_MOBILE_VERIFYCODE);
+        }
+        if (!StringUtils.equals(verify, mobileVerify)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_MOBILE_VERIFYCODE);
+        }
+        UserDO userCache = getCurrentUserCache();
+        if (StringUtils.isNotBlank(payPassword)) {
+            userCache.setPayPassword(EncryptUtils.encode(payPassword));
+        }
+        boolean success = iUserService.updateUserById(userCache.getUserId(), userCache);
+        LOGGER.info(LogUtils.appLog("重置支付密码结果：{}"), success);
         if (!success) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }

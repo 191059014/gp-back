@@ -19,6 +19,8 @@ public class DepositRequestVO implements Serializable {
 
     private BigDecimal depositMoney;
 
+    private String payPassword;
+
     public BigDecimal getDepositMoney() {
         return depositMoney;
     }
@@ -27,10 +29,19 @@ public class DepositRequestVO implements Serializable {
         this.depositMoney = depositMoney;
     }
 
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword;
+    }
+
     @Override
     public String toString() {
         return "DepositRequestVO{" +
                 "depositMoney=" + depositMoney +
+                "payPassword=" + payPassword +
                 '}';
     }
 }

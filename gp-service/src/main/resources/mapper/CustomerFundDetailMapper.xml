@@ -84,6 +84,9 @@
         <if test="endTime != null">
             <![CDATA[ and #{endTime} > createTime ]]>
         </if>
+        <if test="customerFundDetailDO.unit != null and customerFundDetailDO.unit !=''">
+            <![CDATA[ and unit = #{customerFundDetailDO.unit} ]]>
+        </if>
         and recordStatus = "1"
     </sql>
 
