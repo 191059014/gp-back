@@ -165,6 +165,10 @@ public class CustomerFundApp extends BaseApp {
          * 冻结资金
          */
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
+        if (customerFund==null) {
+            LOGGER.info(LogUtils.appLog("客户资金查询为空"));
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_MONEY);
+        }
         BigDecimal freezeMoney = customerFund.getFreezeMoney();
         BigDecimal usableMoney = customerFund.getUsableMoney();
         if (depositMoney.compareTo(usableMoney) > 0) {

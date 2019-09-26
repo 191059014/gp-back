@@ -166,7 +166,7 @@ public class LoginApp extends BaseApp {
         userDO.setMobile(mobile);
         userDO.setInviterMobile(inviterMobile);
         userDO.setIconPath(registerRequestVO.getIconPath());
-        userDO.setUnit(agentQuery.getUnit());
+        userDO.setUnit(existAgent.getUnit());
         userDO.setRealAuthStatus(RealAuthStatusEnum.NO_AUTH.getValue());
         userDO.setBankRealAuthStatus(RealAuthStatusEnum.NO_AUTH.getValue());
         // 添加用户
