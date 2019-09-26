@@ -3,6 +3,7 @@ package com.hb.web.android.api.noauth;
 import com.hb.facade.common.AppResponseCodeEnum;
 import com.hb.facade.common.AppResultModel;
 import com.hb.facade.vo.appvo.request.ResourceRequestVO;
+import com.hb.facade.vo.appvo.response.UserIconPathResponseVO;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.helper.JsonFileParseHelper;
@@ -65,13 +66,13 @@ public class ResourceApp extends BaseApp {
      */
     @ApiOperation(value = "随机获取用户图像路径")
     @PostMapping("/getUserIconPathsRandom")
-    public AppResultModel<Set<String>> getUserIconPathRandom() {
+    public AppResultModel<UserIconPathResponseVO> getUserIconPathRandom() {
         Set<String> pathSet = new HashSet<>();
         while (pathSet.size() < 9) {
             pathSet.add(basePath + RandomUtils.getRandomBetween(1, 16));
         }
         LOGGER.info(LogUtils.appLog("随机获取用户图像路径，出参：{}"), pathSet);
-        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, pathSet);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, new UserIconPathResponseVO(pathSet));
     }
 
 
