@@ -23,6 +23,10 @@ public class BankCardRequestVO implements Serializable {
      * 银行卡号
      */
     private String bankNo;
+    /**
+     * 支付密码
+     */
+    private String payPassword;
 
     public String getBankName() {
         return bankName;
@@ -40,11 +44,20 @@ public class BankCardRequestVO implements Serializable {
         this.bankNo = bankNo;
     }
 
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword;
+    }
+
     @Override
     public String toString() {
         return "BankCardRequestVO{" +
                 "bankName='" + bankName + '\'' +
                 ", bankNo='" + bankNo + '\'' +
+                ", payPassword='" + payPassword + '\'' +
                 '}';
     }
 

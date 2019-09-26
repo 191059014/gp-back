@@ -14,6 +14,7 @@ import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.DateUtils;
+import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.*;
 import com.hb.web.util.LogUtils;
@@ -87,12 +88,15 @@ public class CustomerFundApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel recharge(@RequestBody RechargeRequestVO rechargeRequestVO) throws Exception {
         LOGGER.info(LogUtils.appLog("充值，入参：{}"), String.valueOf(rechargeRequestVO));
-        String rechargeMoneyStr = rechargeRequestVO.getRechargeMoney();
-        if (rechargeRequestVO == null || StringUtils.isBlank(rechargeMoneyStr)) {
+        BigDecimal rechargeMoney = rechargeRequestVO.getRechargeMoney();
+        String payPassword = rechargeRequestVO.getPayPassword();
+        if (BigDecimal.ZERO.compareTo(rechargeMoney) >= 0 || StringUtils.isBlank(payPassword)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         UserDO userCache = getCurrentUserCache();
-        BigDecimal rechargeMoney = new BigDecimal(rechargeMoneyStr);
+        if (!StringUtils.equals(userCache.getPayPassword(), EncryptUtils.encode(payPassword))) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PAY_PASSWORD);
+        }
         // 查询客户资金信息
         CustomerFundDO query = iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
         CustomerFundDO addOrUpdate = new CustomerFundDO();
@@ -158,9 +162,16 @@ public class CustomerFundApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel deposit(@RequestBody DepositRequestVO depositRequestVO) {
         LOGGER.info(LogUtils.appLog("提现，入参：{}"), depositRequestVO);
-        UserDO userCache = getCurrentUserCache();
-        AgentDO agent = iAgentService.getAgentByInviterMobile(userCache.getInviterMobile());
         BigDecimal depositMoney = depositRequestVO.getDepositMoney();
+        String payPassword = depositRequestVO.getPayPassword();
+        if (BigDecimal.ZERO.compareTo(depositMoney) >= 0 || StringUtils.isBlank(payPassword)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+        }
+        UserDO userCache = getCurrentUserCache();
+        if (!StringUtils.equals(userCache.getPayPassword(), EncryptUtils.encode(payPassword))) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PAY_PASSWORD);
+        }
+        AgentDO agent = iAgentService.getAgentByInviterMobile(userCache.getInviterMobile());
         /**
          * 冻结资金
          */

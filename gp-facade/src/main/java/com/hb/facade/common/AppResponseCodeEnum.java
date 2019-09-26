@@ -62,7 +62,8 @@ public enum AppResponseCodeEnum {
     NOT_IDCARD_REALNAME_AUTH(2003, "请先进行身份证实名认证"),
     NOT_TRADE_TIME(2004, "非交易时间，禁止交易"),
     UP_OR_LOW_STOP(2005, "该股票为高风险股票，禁止买入"),
-    BUYDATE_CANNOT_SELL(2006, "买入当天禁止卖出");
+    BUYDATE_CANNOT_SELL(2006, "买入当天禁止卖出"),
+    ERROR_PAY_PASSWORD(2007, "支付密码错误");
 
     /**
      * 响应码

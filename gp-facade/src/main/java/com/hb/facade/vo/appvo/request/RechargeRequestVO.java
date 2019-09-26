@@ -1,6 +1,7 @@
 package com.hb.facade.vo.appvo.request;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * ========== 充值 ==========
@@ -19,20 +20,31 @@ public class RechargeRequestVO implements Serializable {
     /**
      * rechargeMoney
      */
-    private String rechargeMoney;
+    private BigDecimal rechargeMoney;
 
-    public String getRechargeMoney() {
+    private String payPassword;
+
+    public BigDecimal getRechargeMoney() {
         return rechargeMoney;
     }
 
-    public void setRechargeMoney(String rechargeMoney) {
+    public void setRechargeMoney(BigDecimal rechargeMoney) {
         this.rechargeMoney = rechargeMoney;
+    }
+
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword;
     }
 
     @Override
     public String toString() {
         return "RechargeRequestVO{" +
                 ", rechargeMoney='" + rechargeMoney + '\'' +
+                ", payPassword='" + payPassword + '\'' +
                 '}';
     }
 }
