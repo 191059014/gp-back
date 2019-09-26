@@ -1,0 +1,8 @@
+### 排除某些文件的合并 ###
+/src/main/resources/application.properties merge=ours
+/src/main/resources/application-dev.properties merge=ours
+/src/main/resources/config/application-sjdbc-config-dev.properties merge=ours
+/src/main/resources/logback-spring.xml merge=ours
+/src/main/resources/config/service-gp-config.yml
+/src/main/resources/static/web/img/payment.png
+/src/main/resources/static/app/app.json
