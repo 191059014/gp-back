@@ -16,7 +16,7 @@ public class RedisKeyFactory {
      * @return 缓存key
      */
     public static String getMobileVerifyKey(String mobile) {
-        return new StringBuilder("mobile_verifycode_").append(mobile).toString();
+        return new StringBuilder("mobile_verifycode:").append(mobile).toString();
     }
 
     /**
@@ -26,7 +26,7 @@ public class RedisKeyFactory {
      * @return key
      */
     public static String getUserCacheKey(String userId) {
-        return new StringBuilder("user_info_").append(userId).toString();
+        return new StringBuilder("user_info:").append(userId).toString();
     }
 
     /**
@@ -36,7 +36,7 @@ public class RedisKeyFactory {
      * @return key
      */
     public static String getAgentCacheKey(String mobile) {
-        return new StringBuilder("agent_info_").append(mobile).toString();
+        return new StringBuilder("agent_info:").append(mobile).toString();
     }
 
     /**
