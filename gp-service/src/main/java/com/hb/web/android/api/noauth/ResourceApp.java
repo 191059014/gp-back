@@ -69,7 +69,7 @@ public class ResourceApp extends BaseApp {
     public AppResultModel<UserIconPathResponseVO> getUserIconPathRandom() {
         Set<String> pathSet = new HashSet<>();
         while (pathSet.size() < 9) {
-            pathSet.add(basePath + RandomUtils.getRandomBetween(1, 16));
+            pathSet.add(basePath + RandomUtils.getRandomBetween(1, 16) + ".jpg");
         }
         LOGGER.info(LogUtils.appLog("随机获取用户图像路径，出参：{}"), pathSet);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, new UserIconPathResponseVO(pathSet));
