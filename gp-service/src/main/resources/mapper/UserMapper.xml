@@ -175,6 +175,12 @@
             <if test="userDO.riskScore != null and userDO.riskScore !=''">
                 riskScore=#{userDO.riskScore},
             </if>
+            <if test="userDO.iconPath != null and userDO.iconPath !=''">
+                iconPath=#{userDO.iconPath},
+            </if>
+            <if test="userDO.payPassword != null and userDO.payPassword !=''">
+                payPassword=#{userDO.payPassword},
+            </if>
             <if test="userDO.createTime != null">
                 createTime=#{userDO.createTime},
             </if>

@@ -74,13 +74,21 @@ public class UserApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel bindBankCard(@RequestBody BankCardRequestVO bankCardRequestVO) {
         LOGGER.info(LogUtils.appLog("绑定银行卡，入参：{}"), String.valueOf(bankCardRequestVO));
-        if (bankCardRequestVO == null || StringUtils.isBlank(bankCardRequestVO.getBankNo())) {
+        if (bankCardRequestVO == null || StringUtils.isAnyBlank(bankCardRequestVO.getBankNo(), bankCardRequestVO.getPayPassword())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+        }
+        // 实名认证
+        BankCardRealNameAuthRequestVO bankCardRealNameAuthRequestVO = new BankCardRealNameAuthRequestVO();
+        bankCardRealNameAuthRequestVO.setBankNo(bankCardRequestVO.getBankNo());
+        AppResultModel appResultModel = bankCardRealNameAuth(bankCardRealNameAuthRequestVO);
+        if (!AppResponseCodeEnum.SUCCESS.getCode().equals(appResultModel.getCode())) {
+            return appResultModel;
         }
         UserDO userCache = getCurrentUserCache();
         // 更新用户银行卡信息
         userCache.setBankName(bankCardRequestVO.getBankName());
         userCache.setBankNo(bankCardRequestVO.getBankNo());
+        userCache.setPayPassword(bankCardRequestVO.getPayPassword());
         boolean result = iUserService.updateUserById(userCache.getUserId(), userCache);
         if (result) {
             // 更新缓存

@@ -16,6 +16,7 @@ public class ResetPasswordRequestVO implements Serializable {
     private String phoneNum;
     private String verify;
     private String password;
+    private String payPassword;
 
     public String getPhoneNum() {
         return phoneNum;
@@ -41,12 +42,21 @@ public class ResetPasswordRequestVO implements Serializable {
         this.password = password;
     }
 
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword;
+    }
+
     @Override
     public String toString() {
         return "ResetPasswordRequestVO{" +
                 "phoneNum='" + phoneNum + '\'' +
                 ", verify='" + verify + '\'' +
                 ", password='" + password + '\'' +
+                ", payPassword='" + payPassword + '\'' +
                 '}';
     }
 }

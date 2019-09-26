@@ -20,7 +20,7 @@ public class TokenTools {
     /**
      * token缓存的key
      */
-    private static final String TOKEN_CACHE_KEY_PREFIX = "token_";
+    private static final String TOKEN_CACHE_KEY_PREFIX = "token:";
 
     /**
      * token缓存的过期时间
