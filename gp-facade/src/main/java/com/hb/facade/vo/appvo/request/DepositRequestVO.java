@@ -41,7 +41,7 @@ public class DepositRequestVO implements Serializable {
     public String toString() {
         return "DepositRequestVO{" +
                 "depositMoney=" + depositMoney +
-                "payPassword=" + payPassword +
+                ",payPassword=" + payPassword +
                 '}';
     }
 }
