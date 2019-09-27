@@ -31,12 +31,20 @@
 
         .align-left {
             display: inline-block;
-            width: 48%;
+            width: 38%;
         }
 
         .align-right {
             display: inline-block;
-            width: 48%;
+            width: 60%;
+        }
+
+        .word-small {
+            font-size: 1.5rem;
+        }
+
+        h4 {
+            font-weight: bold;
         }
     </style>
 
@@ -46,8 +54,8 @@
 <div id="app">
     <div class="news-item" v-for="hotNews in hotNewsList">
         <h4>{{hotNews.title}}</h4>
-        <p class="lead small">{{hotNews.content}}</p>
-        <p class="small">
+        <p class="lead word-small">{{hotNews.content}}</p>
+        <p class="word-small">
             <span class="align-left">实时资讯</span>
             <span class="text-right align-right">时间：{{hotNews.updateTime}}</span>
         </p>

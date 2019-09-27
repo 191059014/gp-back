@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 股票工具类
@@ -89,18 +90,19 @@ public class StockTools {
      */
     public static boolean stockOnLine() {
         Date currentDate = DateUtils.getCurrentDate();
-        if (isSpecialHoliday(currentDate)) return false;
-        Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
-        int week = c.get(Calendar.DAY_OF_WEEK);
-        if (week == Calendar.SATURDAY || week == Calendar.SUNDAY) {
+        LOGGER.info("stockOnLine#当前时间：{}", DateUtils.date2str(currentDate, DateUtils.DEFAULT_FORMAT));
+        if (isSpecialHoliday(currentDate)) {
+            LOGGER.info("stockOnLine#当前时间是非交易日");
             return false;
         }
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         String nowStr = hour + "" + minute;
         int now = Integer.parseInt(nowStr);
-        if ((now >= 930 && now <= 1130) || (now >= 1300 && now <= 1500)) {
+        LOGGER.info("stockOnLine#当前时间数字：{}", now);
+        if ((now >= 930 && now <= 1130) || (now >= 1300 && now <= 1455)) {
             return true;
         }
         return false;
@@ -182,9 +184,11 @@ public class StockTools {
      * @return true为是
      */
     public static boolean todayIsBuyDate(Date buyTime) {
+        // 当前时间
         Calendar c1 = Calendar.getInstance();
         c1.setTime(new Date());
         int nowDate = c1.get(Calendar.DATE);
+        // 买入时间
         Calendar c2 = Calendar.getInstance();
         c2.setTime(buyTime);
         int buyDate = c2.get(Calendar.DATE);
@@ -208,7 +212,7 @@ public class StockTools {
     }
 
     public static void main(String[] args) throws ParseException {
-        boolean specialHoliday = SystemConfig.isSpecialHoliday(new Date());
+
     }
 
     /**

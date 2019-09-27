@@ -1,8 +1,11 @@
 package com.hb.web.android.api.auth;
 
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
+import com.hb.facade.common.RedisKeyFactory;
 import com.hb.facade.entity.UserDO;
 import com.hb.facade.enumutil.RealAuthStatusEnum;
-import com.hb.facade.vo.appvo.request.ModifyPasswordRequestVO;
+import com.hb.facade.vo.appvo.request.*;
 import com.hb.facade.vo.appvo.response.IDCardInfoResponseVO;
 import com.hb.remote.constant.enumutil.BankCardAuthResEnum;
 import com.hb.remote.constant.enumutil.IdCardAuthResEnum;
@@ -16,12 +19,7 @@ import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.android.api.noauth.LoginApp;
 import com.hb.web.android.base.BaseApp;
 import com.hb.web.api.IUserService;
-import com.hb.facade.common.AppResponseCodeEnum;
-import com.hb.facade.common.AppResultModel;
 import com.hb.web.util.LogUtils;
-import com.hb.facade.vo.appvo.request.BankCardRealNameAuthRequestVO;
-import com.hb.facade.vo.appvo.request.BankCardRequestVO;
-import com.hb.facade.vo.appvo.request.IdCardRealNameAuthRequestVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -270,6 +268,37 @@ public class UserApp extends BaseApp {
         responseVO.setCardNo(idCardNo);
         responseVO.setStatus(user.getRealAuthStatus());
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS, responseVO);
+    }
+
+    @ApiOperation(value = "重置支付密码")
+    @PostMapping("/reset_pay_password")
+    public AppResultModel resetPayPassword(@RequestBody ResetPasswordRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("重置支付密码，入参：{}"), requestVO);
+        String verify = requestVO.getVerify();
+        String payPassword = requestVO.getPayPassword();
+        UserDO userCache = getCurrentUserCache();
+        if (StringUtils.isAnyBlank(verify, payPassword)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+        }
+        String mobileVerifyKey = RedisKeyFactory.getMobileVerifyKey(userCache.getMobile());
+        String mobileVerify = redisCacheService.get(mobileVerifyKey);
+        LOGGER.info(LogUtils.appLog("重置支付密码从缓存里获取验证码：{}"), mobileVerify);
+        if (mobileVerify == null) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.INVALID_MOBILE_VERIFYCODE);
+        }
+        if (!StringUtils.equals(verify, mobileVerify)) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_MOBILE_VERIFYCODE);
+        }
+        if (StringUtils.isNotBlank(payPassword)) {
+            userCache.setPayPassword(EncryptUtils.encode(payPassword));
+        }
+        boolean success = iUserService.updateUserById(userCache.getUserId(), userCache);
+        LOGGER.info(LogUtils.appLog("重置支付密码结果：{}"), success);
+        if (!success) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+        }
+        updateUserCache(userCache);
+        return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
 }

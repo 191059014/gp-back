@@ -3,6 +3,8 @@ package com.hb.facade.common;
 import com.alibaba.fastjson.JSON;
 import com.hb.unic.util.helper.JsonFileParseHelper;
 import com.hb.unic.util.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,8 @@ import java.util.Date;
 
 @Component
 public class SystemConfig implements InitializingBean {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SystemConfig.class);
 
     // app.json
     private static AppJson appJson = null;
@@ -45,6 +49,7 @@ public class SystemConfig implements InitializingBean {
         String month = StringUtils.fillZero(calendar.get(Calendar.MONTH) + 1 + "", 2);
         String day = StringUtils.fillZero(calendar.get(Calendar.DATE) + "", 2);
         String now = new StringBuilder().append(year).append(month).append(day).toString();
+        LOGGER.info("isSpecialHoliday#now：{}" + now);
         if (appJson.getSpecialHoliday().contains(now)) {
             return true;
         }

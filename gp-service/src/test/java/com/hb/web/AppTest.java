@@ -2,6 +2,7 @@ package com.hb.web;
 
 import static org.junit.Assert.assertTrue;
 
+import com.hb.facade.calc.StockTools;
 import com.hb.facade.entity.HotNewsDO;
 import com.hb.unic.base.tool.DbTools;
 import com.hb.unic.util.util.RandomUtils;
@@ -36,5 +37,10 @@ public class AppTest {
             set.add(RandomUtils.getRandomBetween(1, 16));
         }
         System.out.println(set);
+    }
+
+    @Test
+    public void testStockOnLine() {
+
     }
 }

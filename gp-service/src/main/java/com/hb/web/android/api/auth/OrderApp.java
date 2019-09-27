@@ -452,6 +452,7 @@ public class OrderApp extends BaseApp {
         customerFundDetailAdd.setAfterHappenMoney(delayMoney);
         customerFundDetailAdd.setFundType(FundTypeEnum.DELAY.getValue());
         customerFundDetailAdd.setRemark(FundTypeEnum.DELAY.getDesc());
+        customerFundDetailAdd.setUnit(userCache.getUnit());
         LOGGER.info(LogUtils.appLog("递延-新增资金流水：{}"), customerFundDetailAdd);
         iCustomerFundDetailService.addOne(customerFundDetailAdd);
 
@@ -513,6 +514,7 @@ public class OrderApp extends BaseApp {
         customerFundDetailAdd.setAfterHappenMoney(appendMoney);
         customerFundDetailAdd.setFundType(FundTypeEnum.APPEND.getValue());
         customerFundDetailAdd.setRemark(FundTypeEnum.APPEND.getDesc());
+        customerFundDetailAdd.setUnit(userCache.getUnit());
         LOGGER.info(LogUtils.appLog("追加信用金-新增资金流水：{}"), customerFundDetailAdd);
         iCustomerFundDetailService.addOne(customerFundDetailAdd);
 
@@ -611,6 +613,7 @@ public class OrderApp extends BaseApp {
             backDelayDetail.setAfterHappenMoney(backDelayMoney);
             backDelayDetail.setFundType(FundTypeEnum.DELAY_BACK.getValue());
             backDelayDetail.setRemark(FundTypeEnum.DELAY_BACK.getDesc());
+            backDelayDetail.setUnit(userCache.getUnit());
             LOGGER.info(LogUtils.appLog("放弃订单-退还递延金流水：{}"), backDelayDetail);
             iCustomerFundDetailService.addOne(backDelayDetail);
         }

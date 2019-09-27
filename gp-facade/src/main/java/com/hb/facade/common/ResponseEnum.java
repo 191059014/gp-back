@@ -42,7 +42,8 @@ public enum ResponseEnum {
     BANKCARD_AUTH_FAILED("90109", "银行卡实名认证不通过"),
     PARAM_TYPE_ERROR("90110", "参数格式不正确"),
     MOBILE_ERROR("90111", "手机号格式错误"),
-    NO_SESSION("90199", "缓存过期，请重新登陆");
+    NO_SESSION("90199", "缓存过期，请重新登陆"),
+    PERMISSION_NOT_ENOUGH("90200", "权限不足");
 
 
     /**
