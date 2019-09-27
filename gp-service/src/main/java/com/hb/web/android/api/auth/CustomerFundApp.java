@@ -91,11 +91,15 @@ public class CustomerFundApp extends BaseApp {
         BigDecimal rechargeMoney = rechargeRequestVO.getRechargeMoney();
         String payPassword = rechargeRequestVO.getPayPassword();
         if (BigDecimal.ZERO.compareTo(rechargeMoney) >= 0 || StringUtils.isBlank(payPassword)) {
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+            AppResultModel<Object> appResultModel = AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+            LOGGER.info(LogUtils.appLog("充值，出参：{}"), appResultModel);
+            return appResultModel;
         }
         UserDO userCache = getCurrentUserCache();
         if (!StringUtils.equals(userCache.getPayPassword(), EncryptUtils.encode(payPassword))) {
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PAY_PASSWORD);
+            AppResultModel<Object> appResultModel = AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PAY_PASSWORD);
+            LOGGER.info(LogUtils.appLog("充值，出参：{}"), appResultModel);
+            return appResultModel;
         }
         // 查询客户资金信息
         CustomerFundDO query = iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
@@ -165,18 +169,22 @@ public class CustomerFundApp extends BaseApp {
         BigDecimal depositMoney = depositRequestVO.getDepositMoney();
         String payPassword = depositRequestVO.getPayPassword();
         if (BigDecimal.ZERO.compareTo(depositMoney) >= 0 || StringUtils.isBlank(payPassword)) {
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+            AppResultModel<Object> appResultModel = AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
+            LOGGER.info(LogUtils.appLog("提现，出参：{}"), appResultModel);
+            return appResultModel;
         }
         UserDO userCache = getCurrentUserCache();
         if (!StringUtils.equals(userCache.getPayPassword(), EncryptUtils.encode(payPassword))) {
-            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PAY_PASSWORD);
+            AppResultModel<Object> appResultModel = AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PAY_PASSWORD);
+            LOGGER.info(LogUtils.appLog("提现，出参：{}"), appResultModel);
+            return appResultModel;
         }
         AgentDO agent = iAgentService.getAgentByInviterMobile(userCache.getInviterMobile());
         /**
          * 冻结资金
          */
         CustomerFundDO customerFund = iCustomerFundService.findCustomerFund(new CustomerFundDO(userCache.getUserId()));
-        if (customerFund==null) {
+        if (customerFund == null) {
             LOGGER.info(LogUtils.appLog("客户资金查询为空"));
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_ENOUGH_MONEY);
         }
