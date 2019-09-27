@@ -49,7 +49,7 @@ public class SystemConfig implements InitializingBean {
         String month = StringUtils.fillZero(calendar.get(Calendar.MONTH) + 1 + "", 2);
         String day = StringUtils.fillZero(calendar.get(Calendar.DATE) + "", 2);
         String now = new StringBuilder().append(year).append(month).append(day).toString();
-        LOGGER.info("isSpecialHoliday#now：{}" + now);
+        LOGGER.info("isSpecialHoliday#now：{}", now);
         if (appJson.getSpecialHoliday().contains(now)) {
             return true;
         }
