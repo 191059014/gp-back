@@ -283,10 +283,14 @@ public class CustomerFundApp extends BaseApp {
         UserRankResponseVO responseVO = new UserRankResponseVO();
         List<Rank> rankList = new ArrayList<>();
         for (CustomerFundDO customerFundDO : fundList) {
+            BigDecimal totalProfitAndLossMoney = customerFundDO.getTotalProfitAndLossMoney();
+            if (BigDecimal.ZERO.compareTo(totalProfitAndLossMoney) > 0) {
+                continue;
+            }
             Rank rank = new Rank();
             String userName = userMap.get(customerFundDO.getUserId()) == null ? null : userMap.get(customerFundDO.getUserId()).getUserName();
             rank.setUserName(userName);
-            rank.setTotalProfitAndLossMoney(customerFundDO.getTotalProfitAndLossMoney());
+            rank.setTotalProfitAndLossMoney(totalProfitAndLossMoney);
             rankList.add(rank);
         }
         responseVO.setRankList(rankList);
