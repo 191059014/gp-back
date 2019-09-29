@@ -70,23 +70,25 @@ public class UserApp extends BaseApp {
     @ApiOperation(value = "绑定银行卡")
     @PostMapping("/bindBankCard")
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public AppResultModel bindBankCard(@RequestBody BankCardRequestVO bankCardRequestVO) {
-        LOGGER.info(LogUtils.appLog("绑定银行卡，入参：{}"), String.valueOf(bankCardRequestVO));
-        if (bankCardRequestVO == null || StringUtils.isAnyBlank(bankCardRequestVO.getBankNo(), bankCardRequestVO.getPayPassword())) {
+    public AppResultModel bindBankCard(@RequestBody BankCardRequestVO requestVO) {
+        LOGGER.info(LogUtils.appLog("绑定银行卡，入参：{}"), String.valueOf(requestVO));
+        if (requestVO == null || StringUtils.isAnyBlank(requestVO.getBankNo(), requestVO.getPayPassword())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
-        // 实名认证
-        BankCardRealNameAuthRequestVO bankCardRealNameAuthRequestVO = new BankCardRealNameAuthRequestVO();
-        bankCardRealNameAuthRequestVO.setBankNo(bankCardRequestVO.getBankNo());
-        AppResultModel appResultModel = bankCardRealNameAuth(bankCardRealNameAuthRequestVO);
-        if (!AppResponseCodeEnum.SUCCESS.getCode().equals(appResultModel.getCode())) {
-            return appResultModel;
-        }
         UserDO userCache = getCurrentUserCache();
+        // 实名认证
+        BankCardAuthResult bankCardAuthResult = realNameAuth.bankCardAuth(requestVO.getBankNo(), userCache.getIdCardNo(), userCache.getRealName());
+        if (bankCardAuthResult == null || bankCardAuthResult.getResult() == null) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_BANK_REALAUTH);
+        }
+        if (!StringUtils.equals(BankCardAuthResEnum.success.getCode(), bankCardAuthResult.getCode())) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_BANK_REALAUTH.getCode(), bankCardAuthResult.getMessage());
+        }
         // 更新用户银行卡信息
-        userCache.setBankName(bankCardRequestVO.getBankName());
-        userCache.setBankNo(bankCardRequestVO.getBankNo());
-        userCache.setPayPassword(EncryptUtils.encode(bankCardRequestVO.getPayPassword()));
+        userCache.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
+        userCache.setBankName(requestVO.getBankName());
+        userCache.setBankNo(requestVO.getBankNo());
+        userCache.setPayPassword(EncryptUtils.encode(requestVO.getPayPassword()));
         boolean result = iUserService.updateUserById(userCache.getUserId(), userCache);
         if (result) {
             // 更新缓存
