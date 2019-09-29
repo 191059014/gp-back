@@ -155,7 +155,7 @@ public class UserApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         UserDO currentUser = getCurrentUserCache();
-        if (RealAuthStatusEnum.IS_AUTH.getValue().equals(currentUser.getRealAuthStatus())) {
+        if (!RealAuthStatusEnum.IS_AUTH.getValue().equals(currentUser.getRealAuthStatus())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_IDCARD_REALNAME_AUTH);
         }
         try {
