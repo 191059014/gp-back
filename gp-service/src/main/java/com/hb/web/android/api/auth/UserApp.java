@@ -72,7 +72,7 @@ public class UserApp extends BaseApp {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public AppResultModel bindBankCard(@RequestBody BankCardRequestVO requestVO) {
         LOGGER.info(LogUtils.appLog("绑定银行卡，入参：{}"), String.valueOf(requestVO));
-        if (requestVO == null || StringUtils.isAnyBlank(requestVO.getBankNo(), requestVO.getPayPassword())) {
+        if (requestVO == null || StringUtils.isAnyBlank(requestVO.getBankNo(), requestVO.getBankName(), requestVO.getAccountBank(), requestVO.getPayPassword())) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         UserDO userCache = getCurrentUserCache();
@@ -87,6 +87,7 @@ public class UserApp extends BaseApp {
         // 更新用户银行卡信息
         userCache.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
         userCache.setBankName(requestVO.getBankName());
+        userCache.setAccountBank(requestVO.getAccountBank());
         userCache.setBankNo(requestVO.getBankNo());
         userCache.setPayPassword(EncryptUtils.encode(requestVO.getPayPassword()));
         boolean result = iUserService.updateUserById(userCache.getUserId(), userCache);

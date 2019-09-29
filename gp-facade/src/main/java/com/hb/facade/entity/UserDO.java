@@ -106,6 +106,12 @@ public class UserDO extends BaseDO {
     @SelfTableColumn(value = "payPassword", comment = "支付密码")
     private String payPassword;
 
+    /**
+     * 开户行
+     */
+    @SelfTableColumn(value = "accountBank", comment = "开户行")
+    private String accountBank;
+
     public UserDO() {
     }
 
@@ -233,6 +239,14 @@ public class UserDO extends BaseDO {
         this.payPassword = payPassword;
     }
 
+    public String getAccountBank() {
+        return accountBank;
+    }
+
+    public void setAccountBank(String accountBank) {
+        this.accountBank = accountBank;
+    }
+
     @Override
     public String toString() {
         return "UserDO{" +
@@ -251,6 +265,7 @@ public class UserDO extends BaseDO {
                 ", riskScore='" + riskScore + '\'' +
                 ", iconPath='" + iconPath + '\'' +
                 ", payPassword='" + payPassword + '\'' +
+                ", accountBank='" + accountBank + '\'' +
                 '}' + "," + super.toString();
     }
 }

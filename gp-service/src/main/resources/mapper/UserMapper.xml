@@ -22,6 +22,9 @@
             <if test="bankName != null">
                 bankName,
             </if>
+            <if test="accountBank != null">
+                accountBank,
+            </if>
             <if test="bankNo != null">
                 bankNo,
             </if>
@@ -84,6 +87,9 @@
             </if>
             <if test="bankName != null">
                 #{bankName,jdbcType=VARCHAR},
+            </if>
+            <if test="accountBank != null">
+                #{accountBank,jdbcType=VARCHAR},
             </if>
             <if test="bankNo != null">
                 #{bankNo,jdbcType=VARCHAR},
@@ -150,6 +156,9 @@
             </if>
             <if test="userDO.bankName != null and userDO.bankName !=''">
                 bankName=#{userDO.bankName},
+            </if>
+            <if test="userDO.accountBank != null and userDO.accountBank !=''">
+                accountBank=#{userDO.accountBank},
             </if>
             <if test="userDO.bankNo != null and userDO.bankNo !=''">
                 bankNo=#{userDO.bankNo},
@@ -245,6 +254,9 @@
         </if>
         <if test="userDO.bankName != null and userDO.bankName !=''">
             <![CDATA[ and bankName = #{userDO.bankName} ]]>
+        </if>
+        <if test="userDO.accountBank != null and userDO.accountBank !=''">
+            <![CDATA[ and accountBank = #{userDO.accountBank} ]]>
         </if>
         <if test="userDO.bankNo != null and userDO.bankNo !=''">
             <![CDATA[ and bankNo = #{userDO.bankNo} ]]>
