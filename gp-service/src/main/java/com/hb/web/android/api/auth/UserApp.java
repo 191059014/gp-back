@@ -86,7 +86,7 @@ public class UserApp extends BaseApp {
         // 更新用户银行卡信息
         userCache.setBankName(bankCardRequestVO.getBankName());
         userCache.setBankNo(bankCardRequestVO.getBankNo());
-        userCache.setPayPassword(bankCardRequestVO.getPayPassword());
+        userCache.setPayPassword(EncryptUtils.encode(bankCardRequestVO.getPayPassword()));
         boolean result = iUserService.updateUserById(userCache.getUserId(), userCache);
         if (result) {
             // 更新缓存
