@@ -86,7 +86,7 @@ public class UserApp extends BaseApp {
         }
         // 更新用户银行卡信息
         userCache.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
-        userCache.setBankName(requestVO.getBankName());
+        userCache.setBankName(bankCardAuthResult.getResult().getBank());
         userCache.setAccountBank(requestVO.getAccountBank());
         userCache.setBankNo(requestVO.getBankNo());
         userCache.setPayPassword(EncryptUtils.encode(requestVO.getPayPassword()));
