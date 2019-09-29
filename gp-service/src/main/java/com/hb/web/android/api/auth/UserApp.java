@@ -161,10 +161,10 @@ public class UserApp extends BaseApp {
         try {
             BankCardAuthResult bankCardAuthResult = realNameAuth.bankCardAuth(requestVO.getBankNo(), currentUser.getIdCardNo(), currentUser.getRealName());
             if (bankCardAuthResult == null || bankCardAuthResult.getResult() == null) {
-                return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+                return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_BANK_REALAUTH);
             }
             if (!StringUtils.equals(BankCardAuthResEnum.success.getCode(), bankCardAuthResult.getCode())) {
-                return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL.getCode(), bankCardAuthResult.getMessage());
+                return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_BANK_REALAUTH.getCode(), bankCardAuthResult.getMessage());
             }
             /**
              * 实名认证通过

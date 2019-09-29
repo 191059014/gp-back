@@ -1,15 +1,15 @@
 package com.hb.web.android.base;
 
+import com.hb.facade.common.AppResponseCodeEnum;
+import com.hb.facade.common.AppResultModel;
+import com.hb.facade.constant.AppConstant;
 import com.hb.facade.entity.UserDO;
+import com.hb.facade.enumutil.RealAuthStatusEnum;
 import com.hb.facade.tool.RedisCacheManage;
 import com.hb.remote.tool.AlarmTools;
 import com.hb.unic.cache.service.ICacheService;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
-import com.hb.facade.common.AppResponseCodeEnum;
-import com.hb.facade.common.AppResultModel;
-import com.hb.facade.constant.AppConstant;
-import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import com.hb.web.tool.TokenTools;
 import com.hb.web.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +106,7 @@ public class BaseApp {
             UserDO u1 = new UserDO("U1");
             u1.setUserName("黄彪");
             u1.setInviterMobile("0000");
+            u1.setRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
             return u1;
         }
         String token = getToken();
