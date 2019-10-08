@@ -4,7 +4,7 @@
 
 # 启动WEB
 
-pid=`ps -ef | grep gp-service-agent1-0.0.1-SNAPSHOT.jar | grep -v grep | awk '{print $2}'`
+pid=`ps -ef | grep gp-service-0.0.1-SNAPSHOT.jar | grep -v grep | awk '{print $2}'`
 if [ -n '$pid' ]
 then
     echo "停止正在运行的gp-back进程：$pid"
@@ -15,7 +15,7 @@ echo "==================================================================="
 echo "                       启动gp-back项目                             "
 echo "==================================================================="
 pwd
-nohup java -jar gp-service-agent1-0.0.1-SNAPSHOT.jar > gpback.out 2>&1 &
+nohup java -jar gp-service-0.0.1-SNAPSHOT.jar > gpback.out 2>&1 &
 tail -f gpback.out
 
 # 如果脚本不能正常执行，请参考下面：
