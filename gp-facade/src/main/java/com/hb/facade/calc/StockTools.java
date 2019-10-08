@@ -5,6 +5,7 @@ import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.BigDecimalUtils;
 import com.hb.unic.util.util.DateUtils;
+import com.hb.unic.util.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -99,7 +100,7 @@ public class StockTools {
         c.setTime(currentDate);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
-        String nowStr = hour + "" + minute;
+        String nowStr = StringUtils.fillZero(hour + "", 2) + StringUtils.fillZero(minute + "", 2);
         int now = Integer.parseInt(nowStr);
         LOGGER.info("stockOnLine#当前时间数字：{}", now);
         if ((now >= 930 && now <= 1130) || (now >= 1300 && now <= 1455)) {
@@ -212,7 +213,7 @@ public class StockTools {
     }
 
     public static void main(String[] args) throws ParseException {
-
+        stockOnLine();
     }
 
     /**
