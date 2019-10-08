@@ -50,7 +50,10 @@
     </select>
 
     <select id="getRankList" resultType="com.hb.facade.entity.CustomerFundDO">
-        select * from t_customer_fund where recordStatus = "1" order  by totalProfitAndLossMoney desc
+        select * from t_customer_fund where recordStatus = 1 and totalProfitAndLossMoney>0 order  by totalProfitAndLossMoney desc
+        <if test="pageSize != null and pageSize != 0">
+            <![CDATA[ limit #{startRow},#{pageSize} ]]>
+        </if>
     </select>
 
     <sql id="sqlCondition">
