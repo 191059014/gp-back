@@ -82,6 +82,8 @@ public class LoginFilter implements Filter {
             {
                 add("/controller/login/login");
                 add("/controller/hotNews/findLastestHotNewsList");
+                add("/realNameAuth/testBankCardAuth");
+                add("/realNameAuth/testIDCardAuth");
             }
         };
         if (!greenSet.contains(url)) {

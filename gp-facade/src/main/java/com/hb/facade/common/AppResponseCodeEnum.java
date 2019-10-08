@@ -64,7 +64,8 @@ public enum AppResponseCodeEnum {
     UP_OR_LOW_STOP(2005, "该股票为高风险股票，禁止买入"),
     BUYDATE_CANNOT_SELL(2006, "买入当天禁止卖出"),
     ERROR_PAY_PASSWORD(2007, "支付密码错误"),
-    ERROR_BANK_REALAUTH(2008, "银行卡实名认证失败，请核对信息");
+    ERROR_BANK_REALAUTH(2008, "银行卡实名认证失败，请核对信息"),
+    ERROR_IDCARD_REALAUTH(2009, "身份证实名认证失败，请核对信息");
 
     /**
      * 响应码

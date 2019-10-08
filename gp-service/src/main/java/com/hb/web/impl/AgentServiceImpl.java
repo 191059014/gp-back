@@ -160,12 +160,6 @@ public class AgentServiceImpl implements IAgentService {
             agentMapper.updateAgentById(agentDO.getAgentId(), update);
             throw new BusinessException(ResponseEnum.REALNAME_AUTH_FAILED);
         }
-        if (!StringUtils.equals(IdCardAuthResEnum.success.getCode(), idCardAuthResult.getCode())
-                || !idCardAuthResult.getResult().getResult().getIsok()) {
-            update.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
-            agentMapper.updateAgentById(agentDO.getAgentId(), update);
-            throw new BusinessException(ResponseEnum.REALNAME_AUTH_FAILED);
-        }
         update.setRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
         Integer updateResult = agentMapper.updateAgentById(agentDO.getAgentId(), update);
         if (updateResult <= 0) {
@@ -194,7 +188,7 @@ public class AgentServiceImpl implements IAgentService {
             throw new BusinessException(ResponseEnum.BANKCARD_AUTH_FAILED);
         }
         update.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
-        update.setBankName(bankCardAuthResult.getResult().getBank());
+//        update.setBankName(bankCardAuthResult.getResult().getBank());
         Integer updateResult = agentMapper.updateAgentById(agentDO.getAgentId(), update);
         if (updateResult <= 0) {
             throw new BusinessException(ResponseEnum.ERROR);

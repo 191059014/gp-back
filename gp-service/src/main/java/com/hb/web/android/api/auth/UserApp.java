@@ -86,7 +86,7 @@ public class UserApp extends BaseApp {
         }
         // 更新用户银行卡信息
         userCache.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
-        userCache.setBankName(bankCardAuthResult.getResult().getBank());
+        userCache.setBankName(requestVO.getBankName());
         userCache.setAccountBank(requestVO.getAccountBank());
         userCache.setBankNo(requestVO.getBankNo());
         userCache.setPayPassword(EncryptUtils.encode(requestVO.getPayPassword()));
@@ -117,15 +117,10 @@ public class UserApp extends BaseApp {
                 iUserService.updateUserById(userCache.getUserId(), userCache);
                 // 更新缓存
                 updateUserCache(userCache);
-                return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+                return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_IDCARD_REALAUTH);
             }
-            if (!StringUtils.equals(IdCardAuthResEnum.success.getCode(), idCardAuthResult.getCode())
-                    || !idCardAuthResult.getResult().getResult().getIsok()) {
-                userCache.setRealAuthStatus(RealAuthStatusEnum.AUTH_NOT_PASS.getValue());
-                iUserService.updateUserById(userCache.getUserId(), userCache);
-                // 更新缓存
-                updateUserCache(userCache);
-                return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
+            if (!StringUtils.equals(IdCardAuthResEnum.success.getCode(), idCardAuthResult.getCode())) {
+                return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_IDCARD_REALAUTH.getCode(), idCardAuthResult.getMessage());
             }
             /**
              * 实名认证通过
@@ -176,7 +171,7 @@ public class UserApp extends BaseApp {
              */
             currentUser.setBankRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
             currentUser.setBankNo(requestVO.getBankNo());
-            currentUser.setBankName(bankCardAuthResult.getResult().getBank());
+//            currentUser.setBankName(requestV);
             boolean success = iUserService.updateUserById(currentUser.getUserId(), currentUser);
             LOGGER.info(LogUtils.appLog("银行卡实名认证，更新实名认证状态：{}"), success);
             if (!success) {
