@@ -2,19 +2,109 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>泽尊策略</title>
 </head>
+<link rel="icon" href="img/applogo.png" type="image/x-icon"/>
+<!-- Bootstrap 核心 CSS 文件 -->
+<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="css/home.css" rel="stylesheet">
+
+<!-- Vue.js -->
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<!-- jQuery文件 在bootstrap.min.js之前引入 -->
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!-- Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <body>
 
-<a href="view/payment.html">支付页面</a>
-<br>
-<a href="view/agreement.html">下单协议</a>
-<br>
-<a href="view/introduce.html">一分钟玩转策略</a>
-<br>
-<a href="view/hotNews.html">热点资讯</a>
-<br>
-<a href="view/faq.html">常见问题</a>
-</body>
+<div id="app">
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="container-fluid">
+            欢迎访问泽尊策略<span class="word-douhao">，</span><span class="word-split"></span>易记网址：www.zezuncelve.com<span
+                class="word-douhao">，</span><span class="word-split"></span>客服热线： 400-675-8655
+        </div>
+    </nav>
+    <div class="row menu-content">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-2 menu-logo">
+            <img src="img/applogo.png"/>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 menu-logo-word">
+            <div class="logo-word">泽尊策略</div>
+            <div><a href="www.yuanlinb.com">www.zezuncelve.com</a></div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-10 menu-word-list">
+            <a @click="loadCenterContent('view/shouye.html')" href="#">首页</a>
+            <a @click="loadCenterContent('view/introduce.html')" href="#">新手任务</a>
+            <a @click="loadCenterContent('view/download.html')" href="#">软件下载</a>
+        </div>
+    </div>
+    <div class="row">
+        <div id="myCarousel" class="carousel slide">
+            <!-- 轮播（Carousel）项目 -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="img/slide1.png" alt="First slide">
+                </div>
+                <div class="item">
+                    <img src="img/slide2.jpg" alt="Second slide">
+                </div>
+                <div class="item">
+                    <img src="img/slide3.png" alt="Third slide">
+                </div>
+            </div>
 
+        </div>
+    </div>
+    <div class="row center-content">
+
+    </div>
+    <div class="bottom">
+        <div class="row bottom-center">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 word-list">
+                <a href="www.baidu.com">关于我们</a>
+                <a href="www.baidu.com">平台简介</a>
+                <a @click="loadCenterContent('view/introduce.html')" href="#">新手任务</a>
+                <a @click="loadCenterContent('view/download.html')" href="#">软件下载</a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 download-content">
+                <img class="download-img" src="/web/img/erweima_download.png"/>
+                <div class="download-content-word">手机App下载</div>
+            </div>
+        </div>
+        <div class="row copyright">
+            Copyright © 2019-2029 泽尊策略 www.zezuncelve.com All Rights Reserved.
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    new Vue({
+        el: '#app',
+        data: {
+            userName: "huangbiao"
+        },
+        methods: {
+            cycle: function () {
+                $('#myCarousel').carousel({
+                    interval: 3000
+                })
+            },
+            loadCenterContent: function (url) {
+                $('.center-content').load(url);
+            }
+        },
+        mounted() {
+            this.cycle();
+            this.loadCenterContent('view/shouye.html');
+        }
+    })
+
+</script>
+
+</body>
 </html>
