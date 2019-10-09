@@ -76,6 +76,9 @@ public class UserApp extends BaseApp {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_PARAM_VERIFY);
         }
         UserDO userCache = getCurrentUserCache();
+        if (!RealAuthStatusEnum.IS_AUTH.getValue().equals(userCache.getRealAuthStatus())) {
+            return AppResultModel.generateResponseData(AppResponseCodeEnum.NOT_IDCARD_REALNAME_AUTH);
+        }
         // 实名认证
         BankCardAuthResult bankCardAuthResult = realNameAuth.bankCardAuth(requestVO.getBankNo(), userCache.getIdCardNo(), userCache.getRealName());
         if (bankCardAuthResult == null || bankCardAuthResult.getResult() == null) {
