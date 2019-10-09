@@ -1,5 +1,6 @@
 package com.hb.web.container;
 
+import com.hb.unic.base.container.BaseServiceLocator;
 import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -7,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +50,26 @@ public class SelfRunner implements CommandLineRunner {
     @GetMapping("/clearProperty")
     public Boolean clearProperty(@RequestParam("key") String key) {
         return redisCacheServiceImpl.delete(key);
+    }
+
+    @ApiOperation(value = "强制关掉应用")
+    @GetMapping("/stopApplication")
+    public void stopApplication() {
+        ApplicationContext applicationContext = BaseServiceLocator.getApplicationContext();
+        if (applicationContext instanceof ConfigurableApplicationContext) {
+            System.out.println("stopApplication");
+            ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
+            context.close();
+        } else {
+            while (true) {
+                try {
+                    int i = 9 / 0;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
 }
