@@ -1,14 +1,11 @@
 package com.hb.web.base;
 
-import com.alibaba.fastjson.JSON;
+import com.hb.facade.common.ResponseData;
+import com.hb.facade.common.ResponseEnum;
 import com.hb.facade.entity.AgentDO;
 import com.hb.remote.tool.AlarmTools;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
-import com.hb.facade.common.ResponseData;
-import com.hb.facade.common.ResponseEnum;
-import com.hb.facade.constant.GeneralConst;
-import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import com.hb.web.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,16 +28,13 @@ public class BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
 
     @Autowired
-    public HttpServletRequest request;
+    private AlarmTools alarmTools;
 
     @Autowired
     public HttpServletResponse response;
 
     @Autowired
-    public RedisCacheServiceImpl redisCacheServiceImpl;
-
-    @Autowired
-    private AlarmTools alarmTools;
+    private CurrentSession currentSession;
 
     /**
      * ########## 统一异常处理 ##########
@@ -65,10 +59,7 @@ public class BaseController {
      * @return 代理商
      */
     public AgentDO getAgentCache() {
-        String authorization = request.getHeader("Authorization");
-        String agentCacheStr = redisCacheServiceImpl.get(GeneralConst.USER_SESSION_KEY + authorization);
-        AgentDO agentDO = JSON.parseObject(agentCacheStr, AgentDO.class);
-        return agentDO;
+        return currentSession.getAgentCache();
     }
 
 }
