@@ -1,5 +1,6 @@
 package com.hb.web.impl;
 
+import com.hb.web.base.CurrentSession;
 import com.hb.web.mapper.UserMapper;
 import com.hb.facade.entity.UserDO;
 import com.hb.facade.enumutil.RealAuthStatusEnum;
@@ -39,20 +40,17 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IRolePermissionService iRolePermissionService;
 
-    @Value("${gpweb.unit}")
-    private Integer unit;
-
     @Override
     public List<UserDO> findUserList(UserDO userDO, Integer pageNum, Integer pageSize) {
         if (userDO.getUnit() == null) {
-            userDO.setUnit(unit);
+            userDO.setUnit(CurrentSession.getAgentUnit());
         }
         return userMapper.findUserPageList(userDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(UserDO userDO) {
-        userDO.setUnit(unit);
+        userDO.setUnit(CurrentSession.getAgentUnit());
         return userMapper.findCount(userDO);
     }
 

@@ -1,5 +1,6 @@
 package com.hb.web.impl;
 
+import com.hb.web.base.CurrentSession;
 import com.hb.web.mapper.AgentFundMapper;
 import com.hb.facade.entity.AgentFundDO;
 import com.hb.unic.util.helper.PageHelper;
@@ -20,21 +21,18 @@ import java.util.List;
 @Service
 public class AgentFundServiceImpl implements IAgentFundService {
 
-    @Value("${gpweb.unit}")
-    private Integer unit;
-
     @Autowired
     private AgentFundMapper agentFundMapper;
 
     @Override
     public List<AgentFundDO> findAgentFundList(AgentFundDO agentFundDO, Integer pageNum, Integer pageSize) {
-        agentFundDO.setUnit(unit);
+        agentFundDO.setUnit(CurrentSession.getAgentUnit());
         return agentFundMapper.findAgentFundList(agentFundDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(AgentFundDO agentFundDO) {
-        agentFundDO.setUnit(unit);
+        agentFundDO.setUnit(CurrentSession.getAgentUnit());
         return agentFundMapper.findCount(agentFundDO);
     }
 

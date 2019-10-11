@@ -31,10 +31,10 @@ public class BaseController {
     private AlarmTools alarmTools;
 
     @Autowired
-    public HttpServletResponse response;
+    public HttpServletRequest request;
 
     @Autowired
-    private CurrentSession currentSession;
+    public HttpServletResponse response;
 
     /**
      * ########## 统一异常处理 ##########
@@ -59,7 +59,7 @@ public class BaseController {
      * @return 代理商
      */
     public AgentDO getAgentCache() {
-        return currentSession.getAgentCache();
+        return CurrentSession.getAgentCache();
     }
 
 }

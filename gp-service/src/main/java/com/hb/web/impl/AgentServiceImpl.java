@@ -9,6 +9,7 @@ import com.hb.remote.constant.enumutil.IdCardAuthResEnum;
 import com.hb.remote.model.BankCardAuthResult;
 import com.hb.remote.model.IdCardAuthResult;
 import com.hb.remote.service.IRealNameAuth;
+import com.hb.web.base.CurrentSession;
 import com.hb.web.exception.BusinessException;
 import com.hb.web.mapper.AgentMapper;
 import com.hb.facade.entity.AgentDO;
@@ -46,9 +47,6 @@ public class AgentServiceImpl implements IAgentService {
     @Autowired
     private AgentMapper agentMapper;
 
-    @Value("${gpweb.unit}")
-    private Integer unit;
-
     @Autowired
     private IAgentRoleService iAgentRoleService;
 
@@ -75,13 +73,13 @@ public class AgentServiceImpl implements IAgentService {
 
     @Override
     public List<AgentDO> findAgentList(AgentDO agentDO, Integer pageNum, Integer pageSize) {
-        agentDO.setUnit(unit);
+        agentDO.setUnit(CurrentSession.getAgentUnit());
         return agentMapper.findAgentList(agentDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(AgentDO agentDO) {
-        agentDO.setUnit(unit);
+        agentDO.setUnit(CurrentSession.getAgentUnit());
         return agentMapper.findCount(agentDO);
     }
 
@@ -93,11 +91,7 @@ public class AgentServiceImpl implements IAgentService {
         agentDO.setUpdateUserId(agentCache.getAgentId());
         // 状态
         agentDO.setRecordStatus(GeneralConst.RECORD_STATUS_Y);
-        if (agentDO.getUnit() == null) {
-            agentDO.setAgentLevel(AgentLevelEnum.FIRST.getValue());
-        } else {
-            agentDO.setAgentLevel(AgentLevelEnum.SECOND.getValue());
-        }
+        agentDO.setAgentLevel(AgentLevelEnum.SECOND.getValue());
         return agentMapper.insertSelective(agentDO);
     }
 

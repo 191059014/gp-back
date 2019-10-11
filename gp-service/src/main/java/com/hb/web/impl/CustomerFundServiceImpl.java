@@ -1,5 +1,6 @@
 package com.hb.web.impl;
 
+import com.hb.web.base.CurrentSession;
 import com.hb.web.mapper.CustomerFundMapper;
 import com.hb.facade.entity.CustomerFundDO;
 import com.hb.unic.util.helper.PageHelper;
@@ -23,18 +24,15 @@ public class CustomerFundServiceImpl implements ICustomerFundService {
     @Autowired
     private CustomerFundMapper customerFundMapper;
 
-    @Value("${gpweb.unit}")
-    private Integer unit;
-
     @Override
     public List<CustomerFundDO> findCustomerFundList(CustomerFundDO customerFundDO, Integer pageNum, Integer pageSize) {
-        customerFundDO.setUnit(unit);
+        customerFundDO.setUnit(CurrentSession.getAgentUnit());
         return customerFundMapper.findCustomerFundList(customerFundDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(CustomerFundDO customerFundDO) {
-        customerFundDO.setUnit(unit);
+        customerFundDO.setUnit(CurrentSession.getAgentUnit());
         return customerFundMapper.findCount(customerFundDO);
     }
 

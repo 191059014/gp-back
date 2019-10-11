@@ -1,5 +1,6 @@
 package com.hb.web.impl;
 
+import com.hb.web.base.CurrentSession;
 import com.hb.web.mapper.OrderMapper;
 import com.hb.facade.entity.OrderDO;
 import com.hb.facade.enumutil.OrderStatusEnum;
@@ -31,9 +32,6 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private KeyGenerator keyGenerator;
 
-    @Value("${gpweb.unit}")
-    private Integer unit;
-
     @Override
     public int deleteByPrimaryKey(String orderId) {
         return orderMapper.deleteByPrimaryKey(orderId);
@@ -60,7 +58,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public List<OrderDO> findPageList(OrderDO orderDO, Integer pageNum, Integer pageSize) {
-        orderDO.setUnit(unit);
+        orderDO.setUnit(CurrentSession.getAgentUnit());
         return orderMapper.findList(orderDO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
@@ -89,7 +87,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Integer findCount(OrderDO orderDO) {
-        orderDO.setUnit(unit);
+        orderDO.setUnit(CurrentSession.getAgentUnit());
         return orderMapper.findCount(orderDO);
     }
 
