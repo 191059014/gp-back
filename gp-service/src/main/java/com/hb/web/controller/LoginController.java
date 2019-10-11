@@ -1,18 +1,17 @@
 package com.hb.web.controller;
 
+import com.hb.facade.common.ResponseData;
+import com.hb.facade.common.ResponseEnum;
+import com.hb.facade.constant.GeneralConst;
 import com.hb.facade.entity.AgentDO;
+import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import com.hb.unic.logger.Logger;
 import com.hb.unic.logger.LoggerFactory;
 import com.hb.unic.util.util.EncryptUtils;
 import com.hb.web.api.IAgentService;
 import com.hb.web.base.BaseController;
-import com.hb.facade.common.ResponseData;
-import com.hb.facade.common.ResponseEnum;
-import com.hb.facade.constant.GeneralConst;
-import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,9 +38,6 @@ public class LoginController extends BaseController {
     @Autowired
     RedisCacheServiceImpl redisCacheServiceImpl;
 
-    @Value("${gpweb.unit}")
-    private Integer unit;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @PostMapping("/login")
@@ -64,16 +60,6 @@ public class LoginController extends BaseController {
         LOGGER.info("查询用户信息结果：{}", agent);
         if (agent == null) {
             return ResponseData.generateResponseData(ResponseEnum.USERNAME_WRONG);
-        }
-        // 子系统不能登录总系统
-        if (unit == null) {
-            if (agent.getUnit() != null) {
-                return ResponseData.generateResponseData(ResponseEnum.PERMISSION_NOT_ENOUGH);
-            }
-        } else {
-            if (!unit.equals(agent.getUnit())) {
-                return ResponseData.generateResponseData(ResponseEnum.PERMISSION_NOT_ENOUGH);
-            }
         }
         if (!StringUtils.equals(encodePassword, agent.getPassword())) {
             return ResponseData.generateResponseData(ResponseEnum.PASSWORD_WRONG);

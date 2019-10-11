@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -51,6 +52,9 @@ public class AgentController extends BaseController {
     @Autowired
     private IAgentRoleService iAgentRoleService;
 
+    @Value("${gpweb.addsubagent.key}")
+    private String addAgent_key;
+
     @ApiOperation(value = "分页条件查询代理商列表")
     @PostMapping("/getAgentListPage")
     public ResponseData<List<AgentQueryResponseVO>> getAgentListPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestBody AgentDO agentDO) {
@@ -70,7 +74,10 @@ public class AgentController extends BaseController {
 
     @ApiOperation(value = "添加代理商")
     @PostMapping("/addAgent")
-    public ResponseData addAgent(@RequestBody AgentDO agentDO) {
+    public ResponseData addAgent(@RequestBody AgentDO agentDO, @RequestParam("key") String key) {
+        if (!StringUtils.equals(addAgent_key, key)) {
+            return ResponseData.generateResponseData(ResponseEnum.ADD_AGENT_KEY_ERROR);
+        }
         AgentDO query = new AgentDO();
         query.setMobile(agentDO.getMobile());
         AgentDO queryAgent = iAgentService.findAgent(query);
@@ -84,6 +91,8 @@ public class AgentController extends BaseController {
             return ResponseData.generateResponseData(ResponseEnum.MOBILE_ALREADY_EXIST);
         }
         AgentDO agentCache = getAgentCache();
+        Integer count = iAgentService.findCount(new AgentDO());
+        agentDO.setUnit(count + 1);
         int result = iAgentService.addAgent(agentDO, agentCache);
         if (result > 0) {
             return ResponseData.generateResponseData(ResponseEnum.SUCCESS);

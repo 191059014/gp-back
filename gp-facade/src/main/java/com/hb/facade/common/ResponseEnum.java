@@ -43,7 +43,8 @@ public enum ResponseEnum {
     PARAM_TYPE_ERROR("90110", "参数格式不正确"),
     MOBILE_ERROR("90111", "手机号格式错误"),
     NO_SESSION("90199", "缓存过期，请重新登陆"),
-    PERMISSION_NOT_ENOUGH("90200", "权限不足");
+    PERMISSION_NOT_ENOUGH("90200", "权限不足"),
+    ADD_AGENT_KEY_ERROR("90201", "口令不正确");
 
 
     /**

@@ -1,5 +1,6 @@
 package com.hb.web.impl;
 
+import com.hb.web.base.CurrentSession;
 import com.hb.web.mapper.AgentFundDetailMapper;
 import com.hb.facade.entity.AgentFundDeailDO;
 import com.hb.facade.enumutil.FundTypeEnum;
@@ -28,18 +29,15 @@ public class AgentFundDetailServiceImpl implements IAgentFundDetailService {
     @Autowired
     private AgentFundDetailMapper agentFundDetailMapper;
 
-    @Value("${gpweb.unit}")
-    private Integer unit;
-
     @Override
     public List<AgentFundDeailDO> findAgentFundDetailList(AgentFundDetailRequestVO agentFundDetailRequestVO, Integer pageNum, Integer pageSize) {
-        agentFundDetailRequestVO.setUnit(unit);
+        agentFundDetailRequestVO.setUnit(CurrentSession.getAgentUnit());
         return agentFundDetailMapper.findAgentFundDetailList(agentFundDetailRequestVO, PageHelper.getStartRow(pageNum, pageSize), pageSize);
     }
 
     @Override
     public Integer findCount(AgentFundDetailRequestVO agentFundDetailRequestVO) {
-        agentFundDetailRequestVO.setUnit(unit);
+        agentFundDetailRequestVO.setUnit(CurrentSession.getAgentUnit());
         return agentFundDetailMapper.findCount(agentFundDetailRequestVO);
     }
 
