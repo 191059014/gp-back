@@ -103,7 +103,7 @@ public class BaseApp {
      */
     public UserDO getCurrentUserCache() {
         if (false) {
-            UserDO u1 = new UserDO("U1");
+            UserDO u1 = new UserDO("U2");
             u1.setUserName("黄彪");
             u1.setInviterMobile("0000");
             u1.setRealAuthStatus(RealAuthStatusEnum.IS_AUTH.getValue());
