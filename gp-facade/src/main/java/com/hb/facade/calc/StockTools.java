@@ -90,6 +90,9 @@ public class StockTools {
      * @return boolean
      */
     public static boolean stockOnLine() {
+        if (true) {
+            return true;
+        }
         Date currentDate = DateUtils.getCurrentDate();
         LOGGER.info("stockOnLine#当前时间：{}", DateUtils.date2str(currentDate, DateUtils.DEFAULT_FORMAT));
         if (isSpecialHoliday(currentDate)) {
