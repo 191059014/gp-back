@@ -213,7 +213,8 @@ public class StockTools {
     }
 
     public static void main(String[] args) throws ParseException {
-        stockOnLine();
+//        stockOnLine();
+        System.out.println(needObtainStockInfoFromCache());
     }
 
     /**
@@ -227,4 +228,30 @@ public class StockTools {
     public static BigDecimal calcOrderNetProfit(BigDecimal profit, BigDecimal serviceMoney, BigDecimal delayMoney) {
         return BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, profit, serviceMoney, delayMoney);
     }
+
+    /**
+     * ########## 判断当前时间是否取缓存内的行情数据 ##########
+     *
+     * @return boolean
+     */
+    public static boolean needObtainStockInfoFromCache() {
+        Date currentDate = DateUtils.getCurrentDate();
+        LOGGER.info("needObtainStockInfoFromCache#当前时间：{}", DateUtils.date2str(currentDate, DateUtils.DEFAULT_FORMAT));
+        if (isSpecialHoliday(currentDate)) {
+            LOGGER.info("needObtainStockInfoFromCache#当前时间是非交易日，需要从缓存获取数据");
+            return true;
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        String nowStr = StringUtils.fillZero(hour + "", 2) + StringUtils.fillZero(minute + "", 2);
+        int now = Integer.parseInt(nowStr);
+        LOGGER.info("needObtainStockInfoFromCache#当前时间数字：{}", now);
+        if (now < 930 || (now > 1133 & now < 1300) || now > 1503) {
+            return true;
+        }
+        return false;
+    }
+
 }
