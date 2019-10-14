@@ -169,8 +169,8 @@ public class OrderApp extends BaseApp {
         // 交易冻结金额=原交易冻结金额+策略本金
         BigDecimal newTradeFreezeMoney = BigDecimalUtils.add(customerFund.getTradeFreezeMoney(), strategyOwnMoney);
         updateCustomerFund.setTradeFreezeMoney(newTradeFreezeMoney);
-        // 累计服务费=原累计服务费+服务费
-        BigDecimal newTotalMessageServiceMoney = BigDecimalUtils.add(customerFund.getTotalMessageServiceMoney(), serviceMoney);
+        // 累计服务费=原累计服务费+服务费+递延费
+        BigDecimal newTotalMessageServiceMoney = BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalMessageServiceMoney(), serviceMoney, BigDecimal.ZERO);
         updateCustomerFund.setTotalMessageServiceMoney(newTotalMessageServiceMoney);
         // 累计持仓市值总金额
         updateCustomerFund.setTotalStrategyMoney(BigDecimalUtils.add(customerFund.getTotalStrategyMoney(), strategyMoney));
@@ -363,6 +363,8 @@ public class OrderApp extends BaseApp {
         customerFund.setTotalStrategyMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyMoney(), strategyMoney));
         // 累计持仓信用金总金额=原累计持仓信用金总金额-持仓信用金
         customerFund.setTotalStrategyOwnMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney));
+        // 累计服务费=原累计服务费+服务费+递延费
+        customerFund.setTotalMessageServiceMoney(BigDecimalUtils.subtract(customerFund.getTotalMessageServiceMoney(), backDelayMoney));
         customerFund.setUpdateTime(new Date());
         LOGGER.info(LogUtils.appLog("卖出-更新客户资金信息：{}"), customerFund);
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
@@ -436,6 +438,9 @@ public class OrderApp extends BaseApp {
          */
         customerFundUpdate.setUsableMoney(BigDecimalUtils.subtract(customerFund.getUsableMoney(), delayMoney));
         customerFundUpdate.setAccountTotalMoney(BigDecimalUtils.subtract(customerFund.getAccountTotalMoney(), delayMoney));
+        // 累计服务费=原累计服务费+服务费+递延费
+        BigDecimal newTotalMessageServiceMoney = BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalMessageServiceMoney(), delayMoney);
+        customerFundUpdate.setTotalMessageServiceMoney(newTotalMessageServiceMoney);
         LOGGER.info(LogUtils.appLog("递延-更新账户信息：{}"), customerFundUpdate);
         iCustomerFundService.updateByPrimaryKeySelective(customerFundUpdate);
 
