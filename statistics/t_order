@@ -1,3 +1,4 @@
+# 统计订单
 SELECT
 	u.userId AS 用户标识,
 	u.userName AS 用户名,
@@ -28,5 +29,6 @@ WHERE
 	t.userId = u.userId
 	AND u.inviterMobile = a.mobile
 	AND t.recordStatus = 1
+	AND DATE_FORMAT( t.createTime, '%Y%c%d' ) >= '20191010'
 ORDER BY
 	t.createTime DESC
