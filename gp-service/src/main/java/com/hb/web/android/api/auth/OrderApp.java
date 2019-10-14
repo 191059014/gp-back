@@ -169,9 +169,8 @@ public class OrderApp extends BaseApp {
         // 交易冻结金额=原交易冻结金额+策略本金
         BigDecimal newTradeFreezeMoney = BigDecimalUtils.add(customerFund.getTradeFreezeMoney(), strategyOwnMoney);
         updateCustomerFund.setTradeFreezeMoney(newTradeFreezeMoney);
-        // 累计服务费=原累计服务费+服务费+递延费
-        BigDecimal newTotalMessageServiceMoney = BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalMessageServiceMoney(), serviceMoney, BigDecimal.ZERO);
-        updateCustomerFund.setTotalMessageServiceMoney(newTotalMessageServiceMoney);
+        // 累计服务费（包含服务费和递延费）
+        updateCustomerFund.setTotalMessageServiceMoney(BigDecimalUtils.add(customerFund.getTotalMessageServiceMoney(), serviceMoney));
         // 累计持仓市值总金额
         updateCustomerFund.setTotalStrategyMoney(BigDecimalUtils.add(customerFund.getTotalStrategyMoney(), strategyMoney));
         // 累计持仓信用金总金额
@@ -318,7 +317,7 @@ public class OrderApp extends BaseApp {
         c3.setTime(orderDO.getDelayEndTime());
         int delayEndDate = c3.get(Calendar.DATE);
         if (nowDate == buyDate || nowDate == delayEndDate) {
-            // 当前或者是卖出日期，退还为0，已递延为递延总天数-1-退换天数
+            // 当前时间是卖出日期，退还为0，已递延为递延总天数-1-退换天数
             backDays = 0;
             orderDO.setAlreadyDelayDays(orderDO.getDelayDays() - 1);
         } else {
@@ -357,13 +356,15 @@ public class OrderApp extends BaseApp {
         customerFund.setUsableMoney(BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getUsableMoney(), strategyOwnMoney, profit, backDelayMoney));
         // 交易冻结金额=原交易冻结金额-策略本金
         customerFund.setTradeFreezeMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTradeFreezeMoney(), strategyOwnMoney));
-        // 总盈亏=原总盈亏+利润
-        customerFund.setTotalProfitAndLossMoney(BigDecimalUtils.add(customerFund.getTotalProfitAndLossMoney(), profit));
+        // 总盈亏=原总盈亏+利润-服务费-递延费
+        BigDecimal add1 = BigDecimalUtils.add(customerFund.getTotalProfitAndLossMoney(), profit);
+        BigDecimal net = BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, add1, orderDO.getServiceMoney(), orderDO.getDelayMoney());
+        customerFund.setTotalProfitAndLossMoney(net);
         // 累计持仓市值总金额=原累计持仓市值总金额-持仓市值
         customerFund.setTotalStrategyMoney(BigDecimalUtils.subtract(customerFund.getTotalStrategyMoney(), strategyMoney));
         // 累计持仓信用金总金额=原累计持仓信用金总金额-持仓信用金
         customerFund.setTotalStrategyOwnMoney(BigDecimalUtils.subtractAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalStrategyOwnMoney(), strategyOwnMoney));
-        // 累计服务费=原累计服务费+服务费+递延费
+        // 累计服务费=原累计服务费-退还递延费
         customerFund.setTotalMessageServiceMoney(BigDecimalUtils.subtract(customerFund.getTotalMessageServiceMoney(), backDelayMoney));
         customerFund.setUpdateTime(new Date());
         LOGGER.info(LogUtils.appLog("卖出-更新客户资金信息：{}"), customerFund);
@@ -438,9 +439,8 @@ public class OrderApp extends BaseApp {
          */
         customerFundUpdate.setUsableMoney(BigDecimalUtils.subtract(customerFund.getUsableMoney(), delayMoney));
         customerFundUpdate.setAccountTotalMoney(BigDecimalUtils.subtract(customerFund.getAccountTotalMoney(), delayMoney));
-        // 累计服务费=原累计服务费+服务费+递延费
-        BigDecimal newTotalMessageServiceMoney = BigDecimalUtils.addAll(BigDecimalUtils.DEFAULT_SCALE, customerFund.getTotalMessageServiceMoney(), delayMoney);
-        customerFundUpdate.setTotalMessageServiceMoney(newTotalMessageServiceMoney);
+        // 累计服务费=原累计服务费+递延费
+        customerFundUpdate.setTotalMessageServiceMoney(BigDecimalUtils.add(customerFund.getTotalMessageServiceMoney(), delayMoney));
         LOGGER.info(LogUtils.appLog("递延-更新账户信息：{}"), customerFundUpdate);
         iCustomerFundService.updateByPrimaryKeySelective(customerFundUpdate);
 

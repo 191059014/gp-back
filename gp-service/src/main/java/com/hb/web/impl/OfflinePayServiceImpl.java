@@ -178,8 +178,6 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
             customerFund.setAccountTotalMoney(BigDecimalUtils.subtract(customerFund.getAccountTotalMoney(), happenMoney));
             // 冻结资金减少
             customerFund.setFreezeMoney(BigDecimalUtils.subtract(customerFund.getFreezeMoney(), happenMoney));
-            // 累积出入金额
-            customerFund.setTotalInAndOutMoney(BigDecimalUtils.add(customerFund.getTotalInAndOutMoney(), happenMoney));
             int result = iCustomerFundService.updateByPrimaryKeySelective(customerFund);
             LOGGER.info("更新用户资金信息：{}，结果：{}", customerFund, result);
             if (result <= 0) {
@@ -207,6 +205,10 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
             customerFund.setFreezeMoney(BigDecimalUtils.subtract(freezeMoney, happenMoney));
             // 可用余额增加
             customerFund.setUsableMoney(BigDecimalUtils.add(usableMoney, happenMoney));
+            // 累计提现
+            customerFund.setTotalWithdrawMoney(BigDecimalUtils.subtract(customerFund.getTotalWithdrawMoney(), happenMoney));
+            // 累计出入金额
+            customerFund.setTotalInAndOutMoney(BigDecimalUtils.subtract(customerFund.getTotalInAndOutMoney(), happenMoney));
             iCustomerFundService.updateByPrimaryKeySelective(customerFund);
             /**
              * 更新流水

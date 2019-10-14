@@ -196,8 +196,13 @@ public class CustomerFundApp extends BaseApp {
         }
         freezeMoney = BigDecimalUtils.add(freezeMoney, depositMoney);
         usableMoney = BigDecimalUtils.subtract(usableMoney, depositMoney);
+
         customerFund.setFreezeMoney(freezeMoney);
         customerFund.setUsableMoney(usableMoney);
+        // 累计提现
+        customerFund.setTotalWithdrawMoney(BigDecimalUtils.add(customerFund.getTotalWithdrawMoney(), depositMoney));
+        // 累计出入金额
+        customerFund.setTotalInAndOutMoney(BigDecimalUtils.add(customerFund.getTotalInAndOutMoney(), depositMoney));
         iCustomerFundService.updateByPrimaryKeySelective(customerFund);
         /**
          * 新增用户资金流水
