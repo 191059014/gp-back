@@ -248,7 +248,7 @@ public class StockTools {
         String nowStr = StringUtils.fillZero(hour + "", 2) + StringUtils.fillZero(minute + "", 2);
         int now = Integer.parseInt(nowStr);
         LOGGER.info("needObtainStockInfoFromCache#当前时间数字：{}", now);
-        if (now < 930 || (now > 1133 & now < 1300) || now > 1503) {
+        if (now < 930 || (now > 1135 & now < 1300) || now > 1505) {
             return true;
         }
         return false;
