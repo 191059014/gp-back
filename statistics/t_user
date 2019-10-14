@@ -1,0 +1,26 @@
+# 统计用户信息
+SELECT
+	userId AS 用户 ID,
+	userName AS 用户名,
+	realName AS 真实姓名,
+	mobile AS 手机号,
+	idCardNo AS 身份证号码,
+	bankName AS 银行名称,
+	accountBank AS 开户行,
+	bankNo AS 银行卡号,
+CASE
+	realAuthStatus
+	WHEN 0 THEN
+	'未实名认证'
+	WHEN 1 THEN
+	'已实名认证'
+	WHEN 2 THEN
+	'实名不通过' ELSE realAuthStatus
+	END AS 实名认证状态,
+	createTime AS 创建时间,
+	updateTime AS 更新时间
+FROM
+	t_user
+WHERE
+	recordStatus = 1
+	AND LENGTH( mobile ) = 11

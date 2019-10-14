@@ -1,0 +1,22 @@
+SELECT
+	t2.userId AS 用户标识,
+	t2.userName AS 用户名,
+	t1.totalRechargeMoney AS 总共充值,
+	t1.accountTotalMoney AS 账户总金额,
+	t1.usableMoney AS 可用余额,
+	t1.freezeMoney AS 提现冻结,
+	t1.tradeFreezeMoney AS 交易冻结,
+	t1.totalMessageServiceMoney AS 总共服务费,
+	t1.totalProfitAndLossMoney AS 累计盈亏,
+	t1.totalStrategyMoney AS 持仓总市值,
+	t1.totalStrategyOwnMoney AS 持仓信用金,
+	t3.agentName AS 代理商名称,
+	t1.createTime AS 创建时间 
+FROM
+	t_customer_fund t1
+	INNER JOIN t_user t2
+	INNER JOIN t_agent t3 ON t1.userId = t2.userId 
+	AND t1.agentId = t3.agentId 
+	AND t1.recordStatus = 1 
+ORDER BY
+	t1.createTime DESC

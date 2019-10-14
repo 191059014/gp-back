@@ -1,0 +1,32 @@
+SELECT
+	u.userId AS 用户标识,
+	u.userName AS 用户名,
+	a.agentName AS 代理商名称,
+	t.orderId AS 订单号,
+	t.stockCode AS 股票代码,
+	t.stockName AS 股票名称,
+	t.buyPrice AS 买入价,
+	t.buyNumber AS 买入股数,
+	t.buyTime AS 买入时间,
+	t.strategyMoney AS 建仓市值,
+	t.strategyOwnMoney AS 信用金,
+	t.sellPrice AS 卖出价,
+	t.profit AS 利润,
+	t.serviceMoney AS 服务费,
+	t.delayMoney AS 递延金,
+	t.delayDays AS 总共可递延天数,
+	t.alreadyDelayDays AS 已递延天数,
+	t.delayEndTime AS 递延到期时间,
+	t.backDelayDays AS 退还递延天数,
+	t.backDelayMoney AS 退还递延金,
+	t.createTime AS 创建时间
+FROM
+	t_order_0 t,
+	t_user u,
+	t_agent a
+WHERE
+	t.userId = u.userId
+	AND u.inviterMobile = a.mobile
+	AND t.recordStatus = 1
+ORDER BY
+	t.createTime DESC
