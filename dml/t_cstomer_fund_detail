@@ -1,2 +1,0 @@
-# 清除某个用户的资金流水
-DELETE from t_customer_fund_detail where userId='U1';
