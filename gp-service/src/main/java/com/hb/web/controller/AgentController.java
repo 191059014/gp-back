@@ -84,9 +84,9 @@ public class AgentController extends BaseController {
         if (StringUtils.isAnyBlank(agentDO.getAgentName(), agentDO.getMobile(), agentDO.getPassword())) {
             return ResponseData.generateResponseData(ResponseEnum.ERROR_PARAM_VERIFY);
         }
-        if (!CheckTools.isMobile(agentDO.getMobile())) {
-            return ResponseData.generateResponseData(ResponseEnum.MOBILE_ERROR);
-        }
+//        if (!CheckTools.isMobile(agentDO.getMobile())) {
+//            return ResponseData.generateResponseData(ResponseEnum.MOBILE_ERROR);
+//        }
         if (queryAgent != null) {
             return ResponseData.generateResponseData(ResponseEnum.MOBILE_ALREADY_EXIST);
         }
