@@ -1,1 +1,2 @@
-delete from t_offline_pay_check;
+# 删除某个用户的线下审核信息
+delete from t_offline_pay_check where userid='U41';
