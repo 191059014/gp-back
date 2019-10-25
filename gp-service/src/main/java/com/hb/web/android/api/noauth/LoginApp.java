@@ -229,16 +229,13 @@ public class LoginApp extends BaseApp {
         if (!StringUtils.equals(verify, mobileVerify)) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.ERROR_MOBILE_VERIFYCODE);
         }
-        UserDO userCache = getCurrentUserCache();
-        if (StringUtils.isNotBlank(password)) {
-            userCache.setPassword(EncryptUtils.encode(password));
-        }
-        boolean success = iUserService.updateUserById(userCache.getUserId(), userCache);
+        UserDO update = new UserDO();
+        update.setPassword(EncryptUtils.encode(password));
+        boolean success = iUserService.updateUserByMobile(phoneNum, update);
         LOGGER.info(LogUtils.appLog("重置密码结果：{}"), success);
         if (!success) {
             return AppResultModel.generateResponseData(AppResponseCodeEnum.FAIL);
         }
-        updateUserCache(userCache);
         return AppResultModel.generateResponseData(AppResponseCodeEnum.SUCCESS);
     }
 
