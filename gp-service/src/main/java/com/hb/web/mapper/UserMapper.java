@@ -28,7 +28,7 @@ public interface UserMapper {
     /**
      * ########## 查询总条数 ##########
      *
-     * @param userDO   用户信息
+     * @param userDO 用户信息
      * @return 总条数
      */
     Integer findCount(@Param("userDO") UserDO userDO);
@@ -36,7 +36,7 @@ public interface UserMapper {
     /**
      * ########## 查询用户 ##########
      *
-     * @param userDO   用户信息
+     * @param userDO 用户信息
      * @return 用户信息
      */
     UserDO findUser(@Param("userDO") UserDO userDO);
@@ -73,4 +73,6 @@ public interface UserMapper {
      * @return 用户信息集合
      */
     List<UserDO> getUserListByUserIdSet(@Param("userIdSet") Set<String> userIdSet);
+
+    boolean updateUserByMobile(@Param("mobile") String mobile, @Param("userDO") UserDO userDO);
 }

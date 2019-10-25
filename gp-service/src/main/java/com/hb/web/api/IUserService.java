@@ -45,7 +45,6 @@ public interface IUserService {
     /**
      * ########## 添加用户 ##########
      *
-     *
      * @param userDO 用户信息
      * @return 是否成功
      */
@@ -54,12 +53,20 @@ public interface IUserService {
     /**
      * ########## 修改用户 ##########
      *
-     *
      * @param userId 用户ID
      * @param userDO 用户信息
      * @return 是否成功
      */
     boolean updateUserById(String userId, UserDO userDO);
+
+    /**
+     * ########## 修改用户 ##########
+     *
+     * @param mobile 手机号
+     * @param userDO 用户信息
+     * @return 是否成功
+     */
+    boolean updateUserByMobile(String mobile, UserDO userDO);
 
     /**
      * ########## 通过agentId删除用户 ##########
@@ -76,7 +83,7 @@ public interface IUserService {
      */
     List<Map<String, Object>> getRealAuthStatusList();
 
-    /** 
+    /**
      * ########## 通过用户ID集合查询用户信息集合 ##########
      *
      * @param userIdSet 用户ID集合

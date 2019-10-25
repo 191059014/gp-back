@@ -209,6 +209,73 @@
         where userId=#{userId}
     </update>
 
+    <update id="updateUserByMobile">
+        update t_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userDO.userName != null and userDO.userName !=''">
+                userName=#{userDO.userName},
+            </if>
+            <if test="userDO.realName != null and userDO.realName !=''">
+                realName=#{userDO.realName},
+            </if>
+            <if test="userDO.password != null and userDO.password !=''">
+                password=#{userDO.password},
+            </if>
+            <if test="userDO.bankName != null and userDO.bankName !=''">
+                bankName=#{userDO.bankName},
+            </if>
+            <if test="userDO.accountBank != null and userDO.accountBank !=''">
+                accountBank=#{userDO.accountBank},
+            </if>
+            <if test="userDO.bankNo != null and userDO.bankNo !=''">
+                bankNo=#{userDO.bankNo},
+            </if>
+            <if test="userDO.idCardNo != null and userDO.idCardNo !=''">
+                idCardNo=#{userDO.idCardNo},
+            </if>
+            <if test="userDO.realAuthStatus != null and userDO.realAuthStatus !=''">
+                realAuthStatus=#{userDO.realAuthStatus},
+            </if>
+            <if test="userDO.bankRealAuthStatus != null and userDO.bankRealAuthStatus !=''">
+                bankRealAuthStatus=#{userDO.bankRealAuthStatus},
+            </if>
+            <if test="userDO.mobile != null and userDO.mobile !=''">
+                mobile=#{userDO.mobile},
+            </if>
+            <if test="userDO.inviterMobile != null and userDO.inviterMobile !=''">
+                inviterMobile=#{userDO.inviterMobile},
+            </if>
+            <if test="userDO.riskLevel != null and userDO.riskLevel !=''">
+                riskLevel=#{userDO.riskLevel},
+            </if>
+            <if test="userDO.riskScore != null and userDO.riskScore !=''">
+                riskScore=#{userDO.riskScore},
+            </if>
+            <if test="userDO.iconPath != null and userDO.iconPath !=''">
+                iconPath=#{userDO.iconPath},
+            </if>
+            <if test="userDO.payPassword != null and userDO.payPassword !=''">
+                payPassword=#{userDO.payPassword},
+            </if>
+            <if test="userDO.createTime != null">
+                createTime=#{userDO.createTime},
+            </if>
+            <if test="userDO.createUserId != null and userDO.createUserId !=''">
+                createUserId=#{userDO.createUserId},
+            </if>
+            <if test="userDO.updateTime != null">
+                updateTime=#{userDO.updateTime},
+            </if>
+            <if test="userDO.updateUserId != null and userDO.updateUserId !=''">
+                updateUserId=#{userDO.updateUserId},
+            </if>
+            <if test="userDO.recordStatus != null and userDO.recordStatus !=''">
+                recordStatus=#{userDO.recordStatus},
+            </if>
+        </trim>
+        where mobile=#{mobile}
+    </update>
+
     <delete id="deleteUserById">
         update t_user set recordStatus=0 where userId=#{userId}
     </delete>

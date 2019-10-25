@@ -2,6 +2,7 @@ package com.hb.web.container;
 
 import com.hb.unic.base.container.BaseServiceLocator;
 import com.hb.unic.cache.service.impl.RedisCacheServiceImpl;
+import com.hb.unic.util.util.EncryptUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -70,6 +71,12 @@ public class SelfRunner implements CommandLineRunner {
             }
         }
 
+    }
+
+    @ApiOperation(value = "获取加密后的密码")
+    @GetMapping("/getEncryptText")
+    public String getEncryptText(@RequestParam("password") String password) {
+        return EncryptUtils.encode(password);
     }
 
 }

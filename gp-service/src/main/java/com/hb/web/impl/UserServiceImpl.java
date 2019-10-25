@@ -83,6 +83,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public boolean updateUserByMobile(String mobile, UserDO userDO) {
+        userDO.setUpdateTime(DateUtils.getCurrentDate());
+        return userMapper.updateUserByMobile(mobile, userDO);
+    }
+
+    @Override
     public boolean deleteUserById(String agentId) {
         return userMapper.deleteUserById(agentId);
     }
