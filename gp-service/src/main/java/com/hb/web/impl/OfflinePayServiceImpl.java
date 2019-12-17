@@ -233,7 +233,8 @@ public class OfflinePayServiceImpl implements IOfflinePayService {
      * @param offlinePayChekDO 充值信息
      */
     private void rechargeMoney(OfflinePayChekDO offlinePayChekDO) {
-        if (OfflineCheckStatusEnum.AUDITING.getValue().equals(offlinePayChekDO.getCheckStatus())) {
+        if (OfflineCheckStatusEnum.AUDITING.getValue().equals(offlinePayChekDO.getCheckStatus())
+                || OfflineCheckStatusEnum.REJECT.getValue().equals(offlinePayChekDO.getCheckStatus())) {
             return;
         }
         String userId = offlinePayChekDO.getUserId();
