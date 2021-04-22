@@ -31,7 +31,7 @@
         <unic-cache.version>0.0.1-SNAPSHOT</unic-cache.version>
 
         <!-- mybatis -->
-        <mybatis.version>3.4.6</mybatis.version>
+        <mybatis.version>3.5.6</mybatis.version>
         <!-- swagger2 -->
         <swagger.version>2.9.2</swagger.version>
     </properties>
